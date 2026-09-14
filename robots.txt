@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://elorum.github.io/Konexo/sitemap.xml
