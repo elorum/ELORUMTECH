@@ -1,0 +1,9 @@
+{
+  "name": "elorumtech",
+  "private": true,
+  "version": "0.1.0",
+  "description": "ELORUMTECH Compatibility Engine",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs"
+  }
+}
