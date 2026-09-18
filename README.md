@@ -12,3 +12,7 @@ Compatibility first, products second. Exact-model data must be manufacturer-conf
 
 ## SEO foundation
 The site includes descriptive metadata, canonical URL, Open Graph metadata, WebApplication structured data, robots.txt, sitemap.xml, mobile responsive content, and crawlable explanatory copy.
+
+## Search Console
+
+See [docs/GSC_SITEMAP_CHECKLIST.md](docs/GSC_SITEMAP_CHECKLIST.md) for the production URL, sitemap, and GSC property setup.
