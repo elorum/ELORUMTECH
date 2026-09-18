@@ -154,13 +154,84 @@ test('no awin / sca_ref affiliate patterns in repo HTML', () => {
   walk(root);
 });
 
-test('sitemap has 21 locs and every loc file exists', () => {
+
+
+test('TB one-cable guide for laptop→dock+oneCable', () => {
+  const guides = engine.guideLinksFor('MacBook / USB-C laptop', 'USB-C / Thunderbolt dock', {
+    video: true, refresh: true, charging: true, data: false, oneCable: true, capture: false
+  });
+  assert.ok(guides.some(g => g[0].includes('thunderbolt-dock-one-cable-4k-120.html')), JSON.stringify(guides));
+});
+
+test('default laptop→dock without oneCable still hub/laptop-dock', () => {
+  const guides = engine.guideLinksFor('Windows USB-C laptop', 'USB-C / Thunderbolt dock', {
+    video: true, refresh: true, charging: true, data: true, oneCable: false, capture: false
+  });
+  const hrefs = guides.map(g => g[0]);
+  assert.ok(hrefs.some(h => h.includes('usb-c-hub-vs-dock.html')), hrefs.join(','));
+  assert.ok(hrefs.some(h => h.includes('laptop-to-docking-station.html')), hrefs.join(','));
+  assert.ok(!hrefs.some(h => h.includes('thunderbolt-dock-one-cable-4k-120.html')), 'TB should not replace default pair');
+});
+
+test('capture intent returns capture guide not play-only primary', () => {
+  const guides = engine.guideLinksFor('PlayStation 5', '4K / 120 Hz HDMI display', {
+    video: true, refresh: true, charging: false, data: false, oneCable: false, capture: true
+  });
+  assert.equal(guides[0][0], 'guides/hdmi-capture-passthrough-path.html');
+  assert.ok(!guides.some(g => g[0].includes('ps5-to-1440p-monitor.html')));
+});
+
+test('Xbox primary guide preference + neutral HDMI secondary label', () => {
+  const guides = engine.guideLinksFor('Xbox Series X|S', '4K / 120 Hz HDMI display', {
+    video: true, refresh: true, charging: false, data: false, oneCable: false, capture: false
+  });
+  assert.ok(guides[0][0].includes('xbox-series-display-compatibility.html'));
+  if (guides[1]) {
+    assert.match(guides[1][1], /Ultra High Speed HDMI|HDMI cable/i);
+    assert.doesNotMatch(guides[1][1], /^PS5/i);
+  }
+});
+
+test('port capability warn appears for USB-C laptop paths in buildResult spec', () => {
+  const r = buildResult('MacBook / USB-C laptop', '4K USB-C monitor', {
+    video: true, refresh: true, charging: false, data: false, oneCable: false, capture: false
+  });
+  assert.match(r.spec, /Port capability warn|DP Alt Mode/i);
+});
+
+test('sitemap loc count updated and all files exist', () => {
   const xml = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
   const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
-  assert.equal(locs.length, 21, 'expected 21 locs, got ' + locs.length);
+  assert.equal(locs.length, 24, 'expected 24 locs, got ' + locs.length);
   for (const loc of locs) {
     const rel = loc.replace('https://elorum.github.io/ELORUMTECH/', '').replace(/\/$/, '');
-    const file = rel === '' ? path.join(root, 'index.html') : path.join(root, rel);
+    const file = rel === '' ? path.join(root, 'index.html')
+      : rel === 'guides' ? path.join(root, 'guides', 'index.html')
+      : path.join(root, rel);
     assert.ok(fs.existsSync(file), 'missing file for ' + loc + ' -> ' + file);
   }
+});
+
+test('new BUILD NOW pages exist', () => {
+  for (const f of [
+    'guides/hdmi-capture-passthrough-path.html',
+    'guides/dual-monitor-dock-mst-vs-thunderbolt.html',
+    'guides/index.html',
+    'assets/og-default.png'
+  ]) {
+    assert.ok(fs.existsSync(path.join(root, f)), f);
+  }
+});
+
+test('og:image default present on homepage', () => {
+  const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  assert.match(html, /og:image.*assets\/og-default\.png/);
+  assert.match(html, /twitter:image.*assets\/og-default\.png/);
+});
+
+test('index auto-solve helpers present (applyQueryPicks + replaceState)', () => {
+  const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  assert.match(html, /history\.replaceState/);
+  assert.match(html, /matched\.src && matched\.dst/);
+  assert.match(html, /optionExactMatch/);
 });

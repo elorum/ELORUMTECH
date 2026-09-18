@@ -102,6 +102,10 @@
     if (intents.capture) {
       notes.push('Record/capture intent: play-only console→TV paths do not need a capture card; capture requires HDMI (or similar) loop/in hardware when you record or stream from the source.');
     }
+    /* N — port-capability honesty (not SKU explosion) */
+    if ((f.isLaptop || f.isPhone || f.isIpad) && !f.destCharger) {
+      notes.push('Port capability warn: Confirm DP Alt Mode / Thunderbolt / USB4 on this specific port—connector shape alone is not proof of video. See Methodology for how we frame unknowns.');
+    }
     return notes;
   }
 
@@ -113,17 +117,29 @@
       guides.push([href, label]);
     }
 
+    /* J/M — capture intent: capture guide first; never prefer play-only console→monitor guides */
     if (intents.capture) {
-      /* no dedicated capture guide yet — fall through to path guides */
+      add('guides/hdmi-capture-passthrough-path.html', 'HDMI capture / passthrough path');
+      return guides.slice(0, 2);
     }
+
+    /* A/M — laptop → dock + oneCable: prioritize Thunderbolt one-cable guide */
+    if (f.isLaptop && f.destDock && intents.oneCable) {
+      add('guides/thunderbolt-dock-one-cable-4k-120.html', 'Thunderbolt dock one-cable 4K/120');
+      add(intents.refresh ? 'guides/usb4-vs-thunderbolt-4-monitor.html' : 'guides/usb-c-hub-vs-dock.html',
+          intents.refresh ? 'USB4 vs Thunderbolt 4 · monitors' : 'USB-C hub vs dock');
+      return guides.slice(0, 2);
+    }
+
     if (f.isXbox) {
       add('guides/xbox-series-display-compatibility.html', 'Xbox Series display compatibility');
-      if (f.destHdmi || f.dest1440) add('guides/ps5-hdmi-2-1-cable-path.html', 'HDMI 2.1 / Ultra High Speed cable path');
+      if (f.destHdmi || f.dest1440) add('guides/ps5-hdmi-2-1-cable-path.html', 'Ultra High Speed HDMI cable path');
     }
     if (f.isDeck) {
       add('guides/steam-deck-external-display.html', 'Steam Deck external display');
       if (f.destHdmi) add('guides/usb-c-to-hdmi-adapter-path.html', 'USB-C → HDMI adapter path');
       if (f.destDock) add('guides/usb-c-hub-vs-dock.html', 'USB-C hub vs dock');
+      if (f.destPortable) add('guides/usb-c-laptop-to-4k-monitor.html', 'USB-C → monitor / portable patterns');
     }
     if (f.isIpad) {
       add('guides/ipad-usbc-to-monitor-hdmi.html', 'iPad USB-C → monitor / HDMI');
@@ -157,6 +173,7 @@
         add('guides/steam-deck-external-display.html', 'Steam Deck external display');
         add('guides/usb-c-hub-vs-dock.html', 'USB-C hub vs dock');
       } else {
+        /* default laptop→dock without oneCable: hub + laptop-dock (no TB orphan regression) */
         add('guides/usb-c-hub-vs-dock.html', 'USB-C hub vs dock');
         add('guides/laptop-to-docking-station.html', 'Laptop → docking station');
       }
@@ -166,7 +183,7 @@
         add('guides/ps5-to-1440p-monitor.html', 'PS5 → 1440p monitor');
       } else if (f.isXbox) {
         add('guides/xbox-series-display-compatibility.html', 'Xbox Series display compatibility');
-        add('guides/ps5-hdmi-2-1-cable-path.html', 'HDMI Ultra High Speed cable path');
+        add('guides/ps5-hdmi-2-1-cable-path.html', 'Ultra High Speed HDMI cable path');
       } else if (f.isPhone) {
         add('guides/usb-c-phone-to-monitor.html', 'USB-C phone → monitor');
         add('guides/usb-c-to-hdmi-adapter-path.html', 'USB-C → HDMI adapter path');
@@ -218,6 +235,7 @@
     }
     return guides.slice(0, 2);
   }
+
 
   /**
    * Classify outcome category from source, destination, intents.
