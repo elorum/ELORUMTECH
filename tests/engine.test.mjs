@@ -235,3 +235,21 @@ test('index auto-solve helpers present (applyQueryPicks + replaceState)', () => 
   assert.match(html, /matched\.src && matched\.dst/);
   assert.match(html, /optionExactMatch/);
 });
+
+test('DEF-B-001 DisplayPort guide Engine CTA includes src + dst + intents', () => {
+  const html = fs.readFileSync(path.join(root, 'guides/displayport-monitor-connection-path.html'), 'utf8');
+  const m = html.match(/href="\.\.\/\?([^"]+)"/);
+  assert.ok(m, 'Engine CTA query href present');
+  const q = m[1].replace(/&amp;/g, '&');
+  assert.match(q, /src=MacBook%20%2F%20USB-C%20laptop/);
+  assert.match(q, /dst=DisplayPort%20monitor/);
+  assert.match(q, /intents=video,refresh/);
+});
+
+test('DEF-N-001 #portWarn element exists in homepage markup', () => {
+  const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  const markup = html.split(/function\s+solve/)[0];
+  assert.match(markup, /id=["']portWarn["']/);
+  assert.match(html, /getElementById\(['"]portWarn['"]\)/);
+});
+
