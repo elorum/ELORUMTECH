@@ -202,7 +202,8 @@ test('Xbox primary guide preference + neutral HDMI secondary label', () => {
   });
   assert.ok(guides[0][0].includes('xbox-series-display-compatibility.html'));
   if (guides[1]) {
-    assert.match(guides[1][1], /Ultra High Speed HDMI|HDMI cable/i);
+    /* BC-1: AVR preferred 2nd for console×HDMI; must stay PS5-neutral */
+    assert.match(guides[1][1], /Ultra High Speed HDMI|HDMI cable|AVR|passthrough/i);
     assert.doesNotMatch(guides[1][1], /^PS5/i);
   }
 });
@@ -343,4 +344,90 @@ test('engine.js contains dual-monitor href (BN-1 orphan closed)', () => {
   assert.match(js, /nintendo-switch-2-display-path\.html/);
   assert.match(js, /Nintendo Switch 2/);
 });
+
+test('BC-1 AVR guideLinksFor orphan closed for console×HDMI', () => {
+  const cases = [
+    ['PlayStation 5', '4K / 120 Hz HDMI display'],
+    ['Xbox Series X|S', '1440p / 165 Hz HDMI monitor'],
+    ['Nintendo Switch 2', '4K / 120 Hz HDMI display'],
+  ];
+  let hits = 0;
+  for (const [src, dst] of cases) {
+    const guides = engine.guideLinksFor(src, dst, {
+      video: true, refresh: true, charging: false, data: false, oneCable: false, capture: false
+    });
+    if (guides.some(g => g[0].includes('console-hdmi-avr-passthrough-path.html'))) hits++;
+  }
+  assert.ok(hits >= 1, 'expected AVR in ≥1 console×HDMI case, hits=' + hits);
+  assert.equal(hits, 3, 'AVR should wire for PS5, Xbox, Switch2 × HDMI');
+});
+
+test('BC-2 Switch2 never pairs laptop USB-C→4K guide', () => {
+  const dests = [
+    '4K USB-C monitor',
+    'Portable USB-C display',
+    'USB-C / Thunderbolt dock',
+    '4K / 120 Hz HDMI display',
+    'DisplayPort monitor',
+  ];
+  for (const dst of dests) {
+    const guides = engine.guideLinksFor('Nintendo Switch 2', dst, {
+      video: true, refresh: true, charging: false, data: false, oneCable: false, capture: false
+    });
+    assert.ok(!guides.some(g => g[0].includes('usb-c-laptop-to-4k-monitor.html')),
+      'Switch2×' + dst + ' leaked laptop guide: ' + JSON.stringify(guides));
+  }
+});
+
+test('BC-3 four siblings link to AVR guide', () => {
+  for (const f of [
+    'guides/ps5-hdmi-2-1-cable-path.html',
+    'guides/xbox-series-display-compatibility.html',
+    'guides/nintendo-switch-2-display-path.html',
+    'guides/hdmi-capture-passthrough-path.html',
+  ]) {
+    const html = fs.readFileSync(path.join(root, f), 'utf8');
+    assert.match(html, /console-hdmi-avr-passthrough-path\.html/, f);
+  }
+  const cap = fs.readFileSync(path.join(root, 'guides/hdmi-capture-passthrough-path.html'), 'utf8');
+  assert.match(cap, /play-only|skip capture|contrast/i);
+});
+
+test('BC-4 iPad matrix cites Apple Support tiers', () => {
+  const html = fs.readFileSync(path.join(root, 'guides/ipad-usbc-to-monitor-hdmi.html'), 'utf8');
+  assert.match(html, /108894|support\.apple\.com\/en-us\/108894/);
+  assert.match(html, /6K|5K|4K30|4K60/);
+  assert.match(html, /Stage Manager/);
+  assert.doesNotMatch(html, /amzn|tag=|best hub/i);
+  assert.match(html, /src=iPad%20\(USB-C\)/);
+});
+
+test('BC-5 phone failure tree KEEP + OEM sources', () => {
+  const html = fs.readFileSync(path.join(root, 'guides/usb-c-phone-to-monitor.html'), 'utf8');
+  assert.match(html, /KEEP.*charg|charge cable for charging/i);
+  assert.match(html, /NO PURCHASE|NO-PURCHASE/i);
+  assert.match(html, /samsung\.com.*dex|DeX/i);
+  assert.doesNotMatch(html, /amzn\.to|amazon\.com\/[^"']*tag=|sca_ref=/i);
+  assert.doesNotMatch(html, /href=["'][^"']*(?:amzn|amazon\.com\/dp)/i);
+  assert.match(html, /src=USB-C%20phone/);
+});
+
+test('BC-7 favicon present at repo root', () => {
+  assert.ok(fs.existsSync(path.join(root, 'favicon.ico')), 'favicon.ico missing');
+  const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  assert.match(html, /rel=["'](?:shortcut )?icon["']/i);
+  assert.match(html, /index,follow/);
+});
+
+test('BC-6 charge-only diagnostic on methodology or ≥2 guides', () => {
+  const meth = fs.readFileSync(path.join(root, 'methodology.html'), 'utf8');
+  const phone = fs.readFileSync(path.join(root, 'guides/usb-c-phone-to-monitor.html'), 'utf8');
+  const hdmi = fs.readFileSync(path.join(root, 'guides/usb-c-to-hdmi-adapter-path.html'), 'utf8');
+  const hasMeth = /charge-only|charge only/i.test(meth) && /KEEP/i.test(meth);
+  const hasPhone = /charge-only|KEEP the charge cable/i.test(phone);
+  const hasHdmi = /charge-only/i.test(hdmi);
+  assert.ok(hasMeth || (hasPhone && hasHdmi), 'need methodology section or ≥2 guide callouts');
+  assert.ok(!fs.existsSync(path.join(root, 'guides/charge-only-cable-diagnostic.html')), 'no thin charge-only URL');
+});
+
 
