@@ -69,8 +69,9 @@
       isIpad: /iPad/i.test(a),
       isDeck: /Steam Deck|handheld/i.test(a),
       isXbox: /Xbox/i.test(a),
+      isSwitch2: /Nintendo Switch 2/i.test(a),
       isLaptop: /MacBook|Windows/i.test(a),
-      isConsole: /PlayStation|Xbox/i.test(a),
+      isConsole: /PlayStation|Xbox|Nintendo Switch 2/i.test(a),
       isUsbCHost: /MacBook|Windows|phone|iPad|Steam Deck|handheld/i.test(a),
       destCharger: /charger/i.test(b),
       destPortable: /Portable USB-C/i.test(b),
@@ -126,11 +127,21 @@
     /* A/M — laptop → dock + oneCable: prioritize Thunderbolt one-cable guide */
     if (f.isLaptop && f.destDock && intents.oneCable) {
       add('guides/thunderbolt-dock-one-cable-4k-120.html', 'Thunderbolt dock one-cable 4K/120');
-      add(intents.refresh ? 'guides/usb4-vs-thunderbolt-4-monitor.html' : 'guides/usb-c-hub-vs-dock.html',
-          intents.refresh ? 'USB4 vs Thunderbolt 4 · monitors' : 'USB-C hub vs dock');
+      /* BN-1: dual-monitor can fill second slot when data; TB stays first */
+      if (intents.data) {
+        add('guides/dual-monitor-dock-mst-vs-thunderbolt.html', 'Dual-monitor: MST vs Thunderbolt');
+      } else {
+        add(intents.refresh ? 'guides/usb4-vs-thunderbolt-4-monitor.html' : 'guides/usb-c-hub-vs-dock.html',
+            intents.refresh ? 'USB4 vs Thunderbolt 4 · monitors' : 'USB-C hub vs dock');
+      }
       return guides.slice(0, 2);
     }
 
+    /* BN-3 — Switch 2: HDMI-via-dock host (not Deck Alt Mode) */
+    if (f.isSwitch2) {
+      add('guides/nintendo-switch-2-display-path.html', 'Nintendo Switch 2 → display path');
+      if (f.destHdmi || f.dest1440) add('guides/ps5-hdmi-2-1-cable-path.html', 'Ultra High Speed HDMI cable path');
+    }
     if (f.isXbox) {
       add('guides/xbox-series-display-compatibility.html', 'Xbox Series display compatibility');
       if (f.destHdmi || f.dest1440) add('guides/ps5-hdmi-2-1-cable-path.html', 'Ultra High Speed HDMI cable path');
@@ -173,9 +184,13 @@
         add('guides/steam-deck-external-display.html', 'Steam Deck external display');
         add('guides/usb-c-hub-vs-dock.html', 'USB-C hub vs dock');
       } else {
-        /* default laptop→dock without oneCable: hub + laptop-dock (no TB orphan regression) */
+        /* default laptop→dock without oneCable: hub + dual-monitor (data) or laptop-dock */
         add('guides/usb-c-hub-vs-dock.html', 'USB-C hub vs dock');
-        add('guides/laptop-to-docking-station.html', 'Laptop → docking station');
+        if (intents.data) {
+          add('guides/dual-monitor-dock-mst-vs-thunderbolt.html', 'Dual-monitor: MST vs Thunderbolt');
+        } else {
+          add('guides/laptop-to-docking-station.html', 'Laptop → docking station');
+        }
       }
     } else if (f.dest1440 || f.destHdmi) {
       if (f.isPS5) {
@@ -359,6 +374,8 @@
       path = a + ' → USB-C PD charger (wattage + cable rating)';
       if (f.isPhone) {
         spec = 'USB-C PD path (phone): match charger PD profile to the phone’s documented fast-charge/PD requirement and use a cable rated for that wattage. Keep the OEM charger when it already meets the need.';
+      } else if (f.isSwitch2) {
+        spec = 'USB-C PD path (Nintendo Switch 2): TV Mode requires the Switch 2 dock with the Switch 2 AC adapter (NGN-01 class)—not a random laptop PD brick as the video path. Handheld charging can use documented USB-C PD; picture on a TV still needs the dock HDMI path.';
       } else if (f.isConsole) {
         spec = 'USB-C PD path (console accessory): the console picture path is HDMI, not a laptop-style PD charger destination. For controllers/accessories, match PD or USB power to accessory docs. For the TV/monitor, use HDMI.';
       } else if (f.isIpad) {
@@ -380,6 +397,10 @@
       } else if (f.isIpad) {
         spec = 'Dock path (iPad): prefer hubs/docks documented for iPad USB-C video and PD. External display modes vary by iPad model (verify exact model / Stage Manager limits). A full Thunderbolt laptop dock is often overkill.';
         keepYours = 'Keep a working iPad-compatible hub if it already drives your display and charges within documented limits.';
+      } else if (f.isSwitch2) {
+        path = a + ' → Nintendo Switch 2 dock → HDMI OUT → display (laptop USB-C dock is not the TV path)';
+        spec = 'Dock path (Nintendo Switch 2): TV Mode video goes through the Nintendo Switch 2 dock HDMI out—not a laptop Thunderbolt/USB-C dock and not a generic USB-C→monitor Alt Mode assumption. Keep the official Switch 2 dock, Switch 2 AC adapter (NGN-01 class), and Ultra High Speed HDMI. Original Switch dock/HDMI/AC are documented as unsuitable for Switch 2 TV mode.';
+        keepYours = 'Keep your Nintendo Switch 2 dock, correct AC adapter, and Ultra High Speed HDMI when they already deliver TV Mode; do not buy a laptop dock for Switch 2 video.';
       } else if (f.isConsole) {
         path = a + ' → HDMI OUT → display (laptop-style USB-C dock is not the video path)';
         spec = 'Dock path (console): Xbox Series and PlayStation use HDMI OUT for video—not a USB-C/Thunderbolt laptop dock. Use HDMI to the display. “Console dock” marketing is a different category—verify HDMI claims separately.';
@@ -402,6 +423,10 @@
       } else if (f.isIpad) {
         spec = 'Portable USB-C display (iPad): many iPads can mirror/extend within model-specific external display limits—verify exact iPad model. Use a video-capable USB-C cable; charge-only cables fail.';
         keepYours = 'Keep a cable that already drives the portable panel; verify iPad external-display mode for your model.';
+      } else if (f.isSwitch2) {
+        path = a + ' → Nintendo Switch 2 dock → HDMI → HDMI display (not portable USB-C upstream)';
+        spec = 'Portable USB-C display (Nintendo Switch 2): do not assume USB-C Alt Mode direct-to-monitor. Nintendo documents TV Mode via the Switch 2 dock HDMI path. Use an HDMI TV/monitor with the official dock + Ultra High Speed HDMI + correct AC; skip portable USB-C upstream for Switch 2 play.';
+        keepYours = 'Keep the Switch 2 dock + HDMI display path; skip USB-C portable panels as a substitute for dock TV Mode.';
       } else if (f.isConsole) {
         path = a + ' → HDMI (not portable USB-C upstream) → suitable display';
         spec = 'Portable USB-C display (console): consoles are HDMI-out. A portable USB-C panel will not accept console video without an unsupported conversion path—use an HDMI monitor/TV and verify the HDMI input.';
@@ -418,7 +443,11 @@
 
     if (f.destDp) {
       path = a + ' → DisplayPort path → DisplayPort monitor';
-      if (f.isConsole) {
+      if (f.isSwitch2) {
+        path = a + ' → Nintendo Switch 2 dock → HDMI OUT → display HDMI IN (no DisplayPort out)';
+        spec = 'DisplayPort monitor (Nintendo Switch 2): Switch 2 TV Mode is HDMI via the dock—not DisplayPort out and not USB-C Alt Mode to a DP panel. Use the monitor’s HDMI input with Ultra High Speed HDMI from the Switch 2 dock.';
+        keepYours = 'Keep the Switch 2 dock + HDMI-to-monitor path; do not assume DP-only peaks or Alt Mode success.';
+      } else if (f.isConsole) {
         path = a + ' → HDMI OUT → display (consoles do not output DisplayPort)';
         spec = 'DisplayPort monitor (console): Xbox Series and PS5 output HDMI only. Use the monitor’s HDMI input (check HDMI refresh/VRR limits—often different from DP marketing peaks). An active DP conversion path is the wrong default for play.';
         keepYours = 'Keep an HDMI cable to the monitor’s HDMI input; do not assume DisplayPort-only peaks apply.';
@@ -442,7 +471,10 @@
 
     if (f.dest1440) {
       path = a + ' → HDMI path → 1440p high-refresh monitor';
-      if (f.isPS5 || f.isXbox) {
+      if (f.isSwitch2) {
+        spec = 'HDMI path (Nintendo Switch 2 → 1440p/high refresh): TV Mode is Switch 2 dock → Ultra High Speed HDMI → monitor HDMI IN. Confirm the monitor’s HDMI timings (not DP marketing). Keep the official dock + correct AC; do not treat USB-C→monitor adapters as the documented path.';
+        keepYours = 'Keep Switch 2 dock + Ultra High Speed HDMI when 1440p / refresh already works on the HDMI input.';
+      } else if (f.isPS5 || f.isXbox) {
         spec = 'HDMI path (console → 1440p/high refresh): verify the monitor’s HDMI input timings (not DisplayPort marketing), VRR if needed, and cable bandwidth. ' + (f.isXbox ? 'Xbox Series outputs HDMI like other modern consoles—confirm HDMI features per Microsoft display docs for your model.' : 'Keep the supplied HDMI cable when it already delivers the mode.');
         keepYours = 'Keep the supplied or existing HDMI cable when it already delivers your 1440p / refresh / VRR target.';
       } else if (f.isPhone || f.isIpad) {
@@ -460,7 +492,11 @@
 
     if (f.destHdmi) {
       path = a + ' → HDMI path → display';
-      if (f.isPS5 || f.isXbox) {
+      if (f.isSwitch2) {
+        path = a + ' → Nintendo Switch 2 dock → Ultra High Speed HDMI → display';
+        spec = 'HDMI path (Nintendo Switch 2): Nintendo documents TV Mode via the Switch 2 dock HDMI connector with Ultra High Speed HDMI and the Switch 2 AC adapter. KEEP the official dock path when it already works. Play-only does not require capture hardware. Do not claim USB-C Alt Mode direct-to-monitor success for Switch 2.';
+        keepYours = 'Keep the Nintendo Switch 2 dock, NGN-01-class AC adapter, and Ultra High Speed HDMI when TV Mode already works.';
+      } else if (f.isPS5 || f.isXbox) {
         spec = 'HDMI path (console): verify source HDMI output, certified/Ultra High Speed cable bandwidth and display HDMI refresh capability (4K/120, VRR as needed). ' + (f.isXbox ? 'Xbox Series uses HDMI out—confirm features against Microsoft guidance and your display’s HDMI input (not DP-only marketing).' : 'Keep the supplied cable when it works.');
         keepYours = 'Keep the supplied HDMI cable when it already supports your resolution, refresh and features.';
       } else if (f.isPhone) {
@@ -490,6 +526,10 @@
     } else if (f.isIpad) {
       spec = 'USB-C monitor path (iPad): verify your iPad model’s external display support, use a video-capable USB-C cable to a USB-C monitor input, and confirm PD if you want charge + video. Limits vary by model—verify exact iPad.';
       keepYours = 'Keep a cable that already drives the monitor; verify model-specific external display modes before buying hubs.';
+    } else if (f.isSwitch2) {
+      path = a + ' → Nintendo Switch 2 dock → HDMI → monitor HDMI IN (not USB-C Alt Mode upstream)';
+      spec = 'USB-C monitor path (Nintendo Switch 2): do not assume DisplayPort Alt Mode USB-C→monitor success. Nintendo documents video output in TV Mode via the Switch 2 dock HDMI path. Use the monitor’s HDMI input with the official dock + Ultra High Speed HDMI + correct AC.';
+      keepYours = 'Keep the Switch 2 dock + HDMI path; skip buying a USB-C video cable as a substitute for dock TV Mode.';
     } else if (f.isConsole) {
       path = a + ' → HDMI OUT → monitor HDMI IN (not USB-C upstream)';
       spec = 'USB-C monitor path (console): consoles do not output display over USB-C. Use the monitor’s HDMI input with a suitable HDMI cable instead of the USB-C upstream port.';
