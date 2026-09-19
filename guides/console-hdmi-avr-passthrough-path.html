@@ -1,0 +1,80 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Console → AVR / HDMI Feature Passthrough Path | ELORUMTECH</title>
+<meta name="description" content="Direct TV + eARC vs AVR in the video path for 4K120/VRR. Ultra High Speed cables both hops; enhanced/8K input modes. Keep gear when modes work—not a capture guide.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://elorum.github.io/ELORUMTECH/guides/console-hdmi-avr-passthrough-path.html">
+<meta property="og:type" content="article"><meta property="og:url" content="https://elorum.github.io/ELORUMTECH/guides/console-hdmi-avr-passthrough-path.html">
+<meta property="og:title" content="Console → AVR / HDMI Feature Passthrough | ELORUMTECH">
+<meta property="og:description" content="Direct TV + eARC vs AVR video path. Keep-yours when modes already work.">
+<meta property="og:image" content="https://elorum.github.io/ELORUMTECH/assets/og-default.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://elorum.github.io/ELORUMTECH/assets/og-default.png">
+<style>*{box-sizing:border-box}body{margin:0;background:#07090d;color:#f6f8fb;font-family:system-ui,-apple-system,sans-serif}.w{width:min(900px,calc(100% - 34px));margin:auto}nav{height:72px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #202733}a{color:#79f2c0;text-decoration:none}.brand{font-weight:800;letter-spacing:.08em}.hero{padding:72px 0 34px}.tag{color:#79f2c0;font-size:12px;text-transform:uppercase;letter-spacing:.12em}h1{font-size:clamp(42px,7vw,72px);line-height:1;letter-spacing:-.045em;margin:18px 0}h2{font-size:30px;margin-top:42px}.lead,p,li{color:#aab5c4;line-height:1.7}.lead{font-size:19px}.answer,.check,.faq,.related,.cta,.sources{border:1px solid #293241;background:#0d1219;border-radius:18px;padding:20px;margin:22px 0}.answer strong,.cta strong{color:#79f2c0}.cta .btn{display:inline-block;margin-top:12px;border:0;border-radius:14px;padding:14px 18px;font-weight:800;background:#79f2c0;color:#06100c}.check h3{margin-top:0}.faq details{border-top:1px solid #293241;padding:12px 0}.faq details:first-of-type{border-top:0;padding-top:0}.faq summary{cursor:pointer;color:#f6f8fb;font-weight:650}.related ul,.sources ul{margin:12px 0 0;padding-left:18px}.related li,.sources li{margin:8px 0}.confidence{display:inline-block;border:1px solid #3a4656;border-radius:999px;padding:7px 10px;color:#c8d1dc;font-size:12px}.updated{color:#738094;font-size:13px;margin:10px 0 0}footer{border-top:1px solid #202733;margin-top:60px;padding:28px 0 50px;color:#738094;font-size:12px}footer a{color:#8fa0b5}</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Console → AVR / HDMI Feature Passthrough Path","dateModified":"2026-09-19","author":{"@type":"Organization","name":"ELORUMTECH"},"publisher":{"@type":"Organization","name":"ELORUMTECH"},"mainEntityOfPage":"https://elorum.github.io/ELORUMTECH/guides/console-hdmi-avr-passthrough-path.html"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is this an HDMI capture-card guide?","acceptedAnswer":{"@type":"Answer","text":"No. This page is about audio/video receivers (AVR) and HDMI feature passthrough for play. Capture/record workflows are covered separately."}},{"@type":"Question","name":"Should I put the AVR in the video path?","acceptedAnswer":{"@type":"Answer","text":"Only when you need AVR video switching or the AVR’s HDMI features for your target mode. Direct console→TV with TV eARC/ARC audio is often valid—KEEP that path when 4K120/VRR already work."}},{"@type":"Question","name":"What cables do I need with an AVR in-line?","acceptedAnswer":{"@type":"Answer","text":"For high modes (for example 4K120 or 8K-class signaling), use Ultra High Speed–class HDMI on both hops: console→AVR and AVR→TV. AVR makers often require Enhanced / 8K Enhanced input modes plus matching TV settings."}},{"@type":"Question","name":"Do I need capture hardware to watch on a TV?","acceptedAnswer":{"@type":"Answer","text":"No. Play-only viewing never requires a capture card."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://elorum.github.io/ELORUMTECH/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://elorum.github.io/ELORUMTECH/guides/"},{"@type":"ListItem","position":3,"name":"Console AVR HDMI passthrough","item":"https://elorum.github.io/ELORUMTECH/guides/console-hdmi-avr-passthrough-path.html"}]}</script>
+</head><body><div class="w"><nav><a class="brand" href="../">ELORUMTECH</a><a href="../">Compatibility Engine</a></nav><main>
+<section class="hero"><div class="tag">Console → AVR · Not capture</div>
+<h1>Console → AVR / HDMI feature passthrough</h1>
+<p class="lead">Decide whether the console should go <strong style="color:#f6f8fb">direct to the TV</strong> (audio via eARC) or through an <strong style="color:#f6f8fb">audio/video receiver</strong> in the HDMI video path. This is <em>not</em> a capture-card guide.</p>
+<p class="updated">Updated: 2026-09-19</p></section>
+<div class="answer"><strong>Lead answer:</strong> If console → TV already delivers your 4K/high-refresh/VRR target and the TV can send audio back via eARC/ARC, <strong>KEEP that direct path</strong>. Put the AVR in the video path only when you need AVR HDMI switching or confirmed high-bandwidth passthrough—and then use Ultra High Speed cables on <em>both</em> hops plus the receiver’s enhanced/8K input modes.</div>
+<span class="confidence">Confidence: console HDMI docs + AVR maker enhanced-mode framing • exact receiver matrices vary</span>
+
+<h2>1. Play-only / keep-TV + eARC first</h2>
+<div class="check"><h3>Direct TV often wins</h3>
+<p>PlayStation, Xbox, and other HDMI consoles do not need an AVR to <em>show a picture</em>. Many modern TVs accept high HDMI modes on a game port and return audio over eARC. If that already works: <strong>KEEP YOURS</strong>—do not insert an AVR “because surround” until you confirm you need AVR video switching or speaker amp topology that requires it.</p>
+<p>Capture hardware is still unrelated: viewing never requires a capture card. See the capture guide only if you record/stream.</p></div>
+
+<h2>2. When the AVR is in the video path</h2>
+<div class="check"><h3>Topology</h3>
+<p><b>Console HDMI OUT → Ultra High Speed HDMI → AVR HDMI IN → Ultra High Speed HDMI → TV HDMI IN.</b> Audio can stay on the AVR’s speaker outputs; the TV may be used as a display-only sink.</p>
+<ul>
+<li>Every hop must support the target mode (4K120, VRR, HDR class as needed).</li>
+<li>A weak cable on either hop breaks features even if the other hop is fine.</li>
+<li>AVR “HDMI passthrough” / enhanced formats are model- and firmware-specific—verify the maker’s 4K/8K signal-format docs for <em>your</em> receiver.</li>
+</ul></div>
+
+<div class="check"><h3>Enhanced / 8K input modes</h3>
+<p>AVR makers (for example Denon manuals for 4K/8K Signal Format) describe Standard vs Enhanced vs 8K Enhanced modes that gate high chroma / 4K120 / 8K-class signaling. Enable the mode that matches your console + TV + cable class; if picture fails after enabling Enhanced, fall back per the maker’s troubleshooting—not by inventing a new receiver SKU.</p></div>
+
+<h2>3. Decision tree</h2>
+<ul>
+<li><b>Picture + TV speakers / eARC already OK?</b> → Direct console→TV. KEEP. Stop.</li>
+<li><b>Need AVR speakers + confirmed high HDMI features?</b> → AVR in video path; Ultra High Speed both hops; set enhanced/8K modes; match console display settings.</li>
+<li><b>Features work direct but fail with AVR in-line?</b> → Diagnose AVR input mode, firmware, and both cables—compare against the KEEP direct path.</li>
+<li><b>Only need to record/stream?</b> → That is capture topology (different guide)—not AVR shopping.</li>
+</ul>
+
+<p>ELORUMTECH does <strong>not</strong> place AVR/receiver affiliate roundups or shopping Related blocks on this page.</p>
+
+<section class="cta" aria-labelledby="cta-heading"><h2 id="cta-heading" style="margin-top:0">Try the Compatibility Engine</h2>
+<p><strong>Suggested:</strong> PS5 or Xbox → HDMI display. Intents: Video + Highest refresh. (No separate AVR destination in the Engine this cycle—solve the console×HDMI path first.)</p>
+<a class="btn" href="../?src=PlayStation%205&amp;dst=4K%20%2F%20120%20Hz%20HDMI%20display&amp;intents=video,refresh">Open Engine PS5 → HDMI →</a>
+<a class="btn" style="margin-left:8px;background:transparent;border:1px solid #79f2c0;color:#79f2c0" href="../?src=Xbox%20Series%20X%7CS&amp;dst=4K%20%2F%20120%20Hz%20HDMI%20display&amp;intents=video,refresh">Xbox → HDMI →</a>
+</section>
+
+<section class="sources" aria-labelledby="sources-heading"><h2 id="sources-heading" style="margin-top:0">Sources</h2>
+<ul>
+<li><a href="https://support.xbox.com/en-US/help/hardware-network/display-sound/4k-gaming-at-120hz" rel="noopener">Xbox Support — 4K gaming at 120 Hz</a> (console HDMI feature framing)</li>
+<li><a href="https://manuals.denon.com/AVRX2800H/EU/EN/DRDZSYuvqzolrz.php" rel="noopener">Denon Online Manual — 4K/8K Signal Format</a> (example AVR Enhanced / 8K Enhanced + Ultra High Speed cable notes; not a SKU recommendation)</li>
+<li>HDMI Forum — Ultra High Speed cable class for high-bandwidth modes (verify current certification lists on hdmi.org)</li>
+<li>In-site: <a href="ps5-hdmi-2-1-cable-path.html">PS5 / Ultra High Speed HDMI cable path</a>, <a href="xbox-series-display-compatibility.html">Xbox Series display</a>, <a href="hdmi-capture-passthrough-path.html">capture path (contrast only)</a></li>
+</ul>
+</section>
+
+<section class="faq" aria-labelledby="faq-heading"><h2 id="faq-heading" style="margin-top:0">FAQ</h2>
+<details><summary>Is this a capture guide?</summary><p>No. AVR / audio video receiver / HDMI feature passthrough for play—not record/stream capture cards.</p></details>
+<details><summary>Should the AVR sit in the video path?</summary><p>Only when needed. Direct TV + eARC is often valid—KEEP when high modes already work.</p></details>
+<details><summary>Cable class with AVR in-line?</summary><p>Ultra High Speed on both hops for high modes; enable AVR enhanced/8K formats per maker docs.</p></details>
+<details><summary>Do I need capture to watch TV?</summary><p>No.</p></details>
+</section>
+
+<section class="related" aria-labelledby="related-heading"><h2 id="related-heading" style="margin-top:0">Related on ELORUMTECH</h2>
+<ul>
+<li><a href="ps5-hdmi-2-1-cable-path.html">PS5 / Ultra High Speed HDMI cable path</a></li>
+<li><a href="xbox-series-display-compatibility.html">Xbox Series display compatibility</a></li>
+<li><a href="hdmi-capture-passthrough-path.html">HDMI capture / passthrough (record/stream—different goal)</a></li>
+<li><a href="nintendo-switch-2-display-path.html">Nintendo Switch 2 → display path</a></li>
+<li><a href="./">Guides directory</a></li>
+<li><a href="../">Compatibility Engine</a></li>
+</ul></section>
+</main><footer>ELORUMTECH — Make anything work together • Beta<div class="flinks" style="margin-top:10px"><a href="./">Guides</a> · <a href="../about.html">About</a> · <a href="../methodology.html">Methodology</a> · <a href="../disclosure.html">Disclosure</a></div></footer></div></body></html>
