@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ELORUMTECH — Cable, Adapter, Dock &amp; Charger Compatibility Engine</title><meta name="description" content="Compatibility Engine for USB-C, HDMI, Thunderbolt docks and PD chargers. Pick what you have and what to connect—get the path before you buy."><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="https://elorum.github.io/ELORUMTECH/"><meta property="og:type" content="website"><meta property="og:url" content="https://elorum.github.io/ELORUMTECH/"><meta property="og:title" content="ELORUMTECH — Make anything work together"><meta property="og:description" content="Tell us what you own, what you want to connect it to, and what you want it to do."><meta name="twitter:card" content="summary_large_image"><style>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ELORUMTECH — Cable, Adapter, Dock &amp; Charger Compatibility Engine</title><meta name="description" content="Compatibility Engine for USB-C, HDMI, Thunderbolt docks and PD chargers. Pick what you have and what to connect—get the path before you buy."><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="https://elorum.github.io/ELORUMTECH/"><meta property="og:type" content="website"><meta property="og:url" content="https://elorum.github.io/ELORUMTECH/"><meta property="og:title" content="ELORUMTECH — Make anything work together"><meta property="og:description" content="Tell us what you own, what you want to connect it to, and what you want it to do."><meta name="twitter:card" content="summary_large_image"><meta property="og:image" content="https://elorum.github.io/ELORUMTECH/assets/og-default.png"><meta name="twitter:image" content="https://elorum.github.io/ELORUMTECH/assets/og-default.png"><style>
 *{box-sizing:border-box}body{margin:0;background:#07090d;color:#f6f8fb;font-family:system-ui,-apple-system,sans-serif}.w{width:min(1050px,calc(100% - 34px));margin:auto}
 nav{height:76px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #202733}.brand{font-weight:800;letter-spacing:.08em}.beta{color:#8c98aa;font-size:12px}
 .hero{text-align:center;padding:80px 0 40px}h1{font-size:clamp(48px,8vw,88px);line-height:.95;letter-spacing:-.05em;margin:20px 0}.sub{max-width:720px;margin:auto;color:#aab5c4;font-size:19px;line-height:1.6}
@@ -42,6 +42,7 @@ footer .flinks{margin-top:10px}
 <main>
 <section class="hero">
 <div class="tag">Universal device compatibility</div>
+<p style="color:#738094;font-size:13px;margin:8px 0 0">Updated: 2026-09-19</p>
 <h1>Make anything<br>work together.</h1>
 <p class="sub">Tell us what you have, what you want to connect it to, and what you want it to do. ELORUMTECH works out the connection before recommending anything to buy.</p>
 <div class="box">
@@ -83,7 +84,7 @@ footer .flinks{margin-top:10px}
 <h2 class="ok" id="resultTitle">Connection path found</h2>
 <p id="path"></p>
 <div class="spec" id="spec"></div>
-<div class="keep" id="keepYours"></div>
+<div class="keep" id="keepYours"></div><div class="spec warn" id="portWarn" style="display:none;margin-top:10px" role="status"></div>
 <div id="guideLinks" class="spec" style="display:none;margin-top:10px"></div>
 <p class="warn">Exact model capabilities must be verified before purchase. ELORUMTECH should say “keep yours” whenever existing hardware already meets the requirement.</p>
 </div>
@@ -130,6 +131,10 @@ footer .flinks{margin-top:10px}
 <div class="card"><a href="guides/steam-deck-external-display.html"><h3>Steam Deck → external display</h3><p>USB-C DP Alt Mode, docks, HDMI adapters and when a dock is optional.</p></a></div>
 <div class="card"><a href="guides/displayport-monitor-connection-path.html"><h3>DisplayPort monitor path</h3><p>USB-C/TB→DP, HDMI-vs-DP for consoles, bandwidth and keep-yours.</p></a></div>
 <div class="card"><a href="guides/xbox-series-display-compatibility.html"><h3>Xbox Series → display</h3><p>HDMI out, 4K/120 and 1440p paths, cable class and VRR checks.</p></a></div>
+<div class="card"><a href="guides/hdmi-capture-passthrough-path.html"><strong>HDMI capture / passthrough</strong><p>Play-only skips capture. Record/stream path with passthrough caveats—no product modules.</p></a></div>
+<div class="card"><a href="guides/dual-monitor-dock-mst-vs-thunderbolt.html"><strong>Dual-monitor: MST vs Thunderbolt</strong><p>Keep-TB / don’t-buy-MST paths for Windows vs Mac multi-display reality.</p></a></div>
+<div class="card"><a href="guides/"><strong>All guides directory</strong><p>Browse every connection guide and open the Engine with preselected pairs.</p></a></div>
+
 </div>
 </section>
 
@@ -149,7 +154,7 @@ footer .flinks{margin-top:10px}
 </main>
 <footer>
 <div>ELORUMTECH — Make anything work together • Beta</div>
-<div class="flinks"><a href="about.html">About</a>·<a href="methodology.html">Methodology</a>·<a href="disclosure.html">Disclosure</a></div>
+<div class="flinks"><a href="guides/">Guides</a>·<a href="about.html">About</a>·<a href="methodology.html">Methodology</a>·<a href="disclosure.html">Disclosure</a></div>
 </footer>
 </div>
 <script src="engine.js"></script>
@@ -191,15 +196,26 @@ footer .flinks{margin-top:10px}
     if(outcome==='CAPTURE HARDWARE REQUIRED') return 'capture';
     return 'keep';
   }
+  function optionExactMatch(selectEl, wanted){
+    if(!wanted) return false;
+    for(var i=0;i<selectEl.options.length;i++){
+      if(selectEl.options[i].text===wanted||selectEl.options[i].value===wanted){
+        selectEl.selectedIndex=i;
+        return true;
+      }
+    }
+    return false;
+  }
   function applyQueryPicks(){
+    var matched={src:false,dst:false};
     try{
       var q=new URLSearchParams(location.search);
       var src=q.get('src')||q.get('a');
       var dst=q.get('dst')||q.get('b');
       var intents=q.get('intents');
       var a=document.getElementById('a'), b=document.getElementById('b');
-      if(src){ for(var i=0;i<a.options.length;i++){ if(a.options[i].text===src||a.options[i].value===src){a.selectedIndex=i;break;} } }
-      if(dst){ for(var j=0;j<b.options.length;j++){ if(b.options[j].text===dst||b.options[j].value===dst){b.selectedIndex=j;break;} } }
+      matched.src=optionExactMatch(a, src);
+      matched.dst=optionExactMatch(b, dst);
       if(intents){
         var set={};
         intents.split(',').forEach(function(x){set[x.trim()]=true;});
@@ -211,6 +227,23 @@ footer .flinks{margin-top:10px}
         });
       }
     }catch(e){}
+    return matched;
+  }
+  function syncShareUrl(a,b,intents){
+    try{
+      var keys=['video','refresh','charging','data','oneCable','capture'];
+      var parts=[];
+      keys.forEach(function(k){ if(intents[k]) parts.push(k); });
+      var params=new URLSearchParams();
+      params.set('src', a);
+      params.set('dst', b);
+      if(parts.length) params.set('intents', parts.join(','));
+      var url=location.pathname+'?'+params.toString()+location.hash;
+      if(history.replaceState) history.replaceState(null,'',url);
+    }catch(e){}
+  }
+  function isUsbCHost(a){
+    return /MacBook|Windows|phone|iPad|Steam Deck|handheld/i.test(a);
   }
   window.solve=function(){
     var a=document.getElementById('a').value;
@@ -230,6 +263,15 @@ footer .flinks{margin-top:10px}
     var ky=document.getElementById('keepYours');
     if(result.keepYours){ky.style.display='block';ky.textContent=result.keepYours;}
     else{ky.style.display='none';ky.textContent='';}
+    var pw=document.getElementById('portWarn');
+    if(pw){
+      if(isUsbCHost(a) && !/charger/i.test(b)){
+        pw.style.display='block';
+        pw.innerHTML='<strong class="warn">Port capability:</strong> Confirm DP Alt Mode / Thunderbolt / USB4 on <em>this specific port</em>. Connector shape alone does not prove video. See <a href="methodology.html" style="color:#79f2c0">Methodology</a>.';
+      } else {
+        pw.style.display='none'; pw.innerHTML='';
+      }
+    }
     var gl=document.getElementById('guideLinks');
     if(result.guides&&result.guides.length){
       gl.style.display='block';
@@ -239,9 +281,14 @@ footer .flinks{margin-top:10px}
     var r=document.getElementById('r');
     r.classList.add('show');
     r.scrollIntoView({behavior:'smooth',block:'center'});
+    syncShareUrl(a,b,intents);
   };
   document.getElementById('solveBtn').addEventListener('click',function(){window.solve();});
-  applyQueryPicks();
+  var matched=applyQueryPicks();
+  /* O — auto-solve only when both src and dst exact-match live options */
+  if(matched.src && matched.dst){
+    try{ window.solve(); }catch(e){}
+  }
 })();
 </script>
 </body></html>
