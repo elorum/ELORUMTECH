@@ -137,14 +137,25 @@
       return guides.slice(0, 2);
     }
 
-    /* BN-3 — Switch 2: HDMI-via-dock host (not Deck Alt Mode) */
+    /* BN-3 / BC-2 — Switch 2: HDMI-via-dock host (not Deck Alt Mode); never laptop USB-C guide */
     if (f.isSwitch2) {
       add('guides/nintendo-switch-2-display-path.html', 'Nintendo Switch 2 → display path');
-      if (f.destHdmi || f.dest1440) add('guides/ps5-hdmi-2-1-cable-path.html', 'Ultra High Speed HDMI cable path');
+      if (f.destHdmi || f.dest1440) {
+        /* BC-1: AVR as preferred 2nd slot for console×HDMI (not capture) */
+        add('guides/console-hdmi-avr-passthrough-path.html', 'Console → AVR / HDMI feature passthrough');
+      } else if (!f.destCharger) {
+        /* USB-C monitor / portable / dock / DP: dock-HDMI honesty helpers — never laptop USB-C→4K */
+        add('guides/ps5-hdmi-2-1-cable-path.html', 'Ultra High Speed HDMI cable path');
+        add('guides/console-hdmi-avr-passthrough-path.html', 'Console → AVR / HDMI feature passthrough');
+      }
+      return guides.slice(0, 2);
     }
     if (f.isXbox) {
       add('guides/xbox-series-display-compatibility.html', 'Xbox Series display compatibility');
-      if (f.destHdmi || f.dest1440) add('guides/ps5-hdmi-2-1-cable-path.html', 'Ultra High Speed HDMI cable path');
+      if (f.destHdmi || f.dest1440) {
+        /* BC-1: AVR 2nd slot for Xbox×HDMI */
+        add('guides/console-hdmi-avr-passthrough-path.html', 'Console → AVR / HDMI feature passthrough');
+      }
     }
     if (f.isDeck) {
       add('guides/steam-deck-external-display.html', 'Steam Deck external display');
@@ -195,10 +206,11 @@
     } else if (f.dest1440 || f.destHdmi) {
       if (f.isPS5) {
         add('guides/ps5-hdmi-2-1-cable-path.html', 'PS5 HDMI 2.1 cable path');
-        add('guides/ps5-to-1440p-monitor.html', 'PS5 → 1440p monitor');
+        /* BC-1: AVR preferred 2nd (primary cable/display guide stays first) */
+        add('guides/console-hdmi-avr-passthrough-path.html', 'Console → AVR / HDMI feature passthrough');
       } else if (f.isXbox) {
         add('guides/xbox-series-display-compatibility.html', 'Xbox Series display compatibility');
-        add('guides/ps5-hdmi-2-1-cable-path.html', 'Ultra High Speed HDMI cable path');
+        add('guides/console-hdmi-avr-passthrough-path.html', 'Console → AVR / HDMI feature passthrough');
       } else if (f.isPhone) {
         add('guides/usb-c-phone-to-monitor.html', 'USB-C phone → monitor');
         add('guides/usb-c-to-hdmi-adapter-path.html', 'USB-C → HDMI adapter path');
