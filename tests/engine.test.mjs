@@ -34,6 +34,7 @@ test('new sources and destinations present', () => {
     assert.ok(html.includes(s), 'missing source ' + s);
   }
   assert.ok(html.includes('DisplayPort monitor'));
+  assert.ok(html.includes('AVR / AV receiver (HDMI path)'));
 });
 
 test('normalizeIntents defaults', () => {
@@ -163,14 +164,18 @@ test('TB one-cable guide for laptop→dock+oneCable', () => {
   assert.ok(guides.some(g => g[0].includes('thunderbolt-dock-one-cable-4k-120.html')), JSON.stringify(guides));
 });
 
-test('default laptop→dock without oneCable still hub/laptop-dock', () => {
+test('BN-4 default laptop→dock without oneCable surfaces TB (hub peer kept)', () => {
   const guides = engine.guideLinksFor('Windows USB-C laptop', 'USB-C / Thunderbolt dock', {
     video: true, refresh: true, charging: true, data: false, oneCable: false, capture: false
   });
   const hrefs = guides.map(g => g[0]);
-  assert.ok(hrefs.some(h => h.includes('usb-c-hub-vs-dock.html')), hrefs.join(','));
-  assert.ok(hrefs.some(h => h.includes('laptop-to-docking-station.html')), hrefs.join(','));
-  assert.ok(!hrefs.some(h => h.includes('thunderbolt-dock-one-cable-4k-120.html')), 'TB should not replace default pair');
+  assert.ok(hrefs.some(h => h.includes('usb-c-hub-vs-dock.html')), 'hub-vs-dock peer: ' + hrefs.join(','));
+  assert.ok(
+    hrefs.some(h => h.includes('thunderbolt-dock-one-cable-4k-120.html')) ||
+    hrefs.some(h => h.includes('dual-monitor-dock-mst-vs-thunderbolt.html')),
+    'TB and/or dual-monitor in max-2: ' + hrefs.join(',')
+  );
+  assert.equal(guides.length <= 2, true);
 });
 
 test('BN-1 laptop→dock+data surfaces dual-monitor guide', () => {
@@ -430,4 +435,66 @@ test('BC-6 charge-only diagnostic on methodology or ≥2 guides', () => {
   assert.ok(!fs.existsSync(path.join(root, 'guides/charge-only-cable-diagnostic.html')), 'no thin charge-only URL');
 });
 
+test('BN-3 AVR destination option exact + PS5 primary AVR guide + KEEP/direct TV language', () => {
+  const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  assert.ok(html.includes('<option>AVR / AV receiver (HDMI path)</option>'));
+  const r = buildResult('PlayStation 5', 'AVR / AV receiver (HDMI path)', {
+    video: true, refresh: true, charging: false, data: false, oneCable: false, capture: false
+  });
+  assert.ok([OUTCOMES.KEEP, OUTCOMES.DIRECT].includes(r.outcome), r.outcome);
+  assert.ok(r.guides[0][0].includes('console-hdmi-avr-passthrough-path.html'), JSON.stringify(r.guides));
+  assert.match(r.spec + ' ' + r.keepYours, /KEEP|direct TV|eARC/i);
+  assert.match(r.spec, /Ultra High Speed/i);
+});
 
+test('BN-3 Xbox / Switch2 × AVR destination include AVR guide; Switch2 dock-HDMI', () => {
+  const xbox = buildResult('Xbox Series X|S', 'AVR / AV receiver (HDMI path)', {
+    video: true, refresh: true, charging: false, data: false, oneCable: false, capture: false
+  });
+  assert.ok(xbox.guides.some(g => g[0].includes('console-hdmi-avr-passthrough-path.html')), JSON.stringify(xbox.guides));
+  const sw = buildResult('Nintendo Switch 2', 'AVR / AV receiver (HDMI path)', {
+    video: true, refresh: true, charging: false, data: false, oneCable: false, capture: false
+  });
+  assert.ok(sw.guides.some(g => g[0].includes('nintendo-switch-2-display-path.html')), JSON.stringify(sw.guides));
+  assert.ok(sw.guides.some(g => g[0].includes('console-hdmi-avr-passthrough-path.html')), JSON.stringify(sw.guides));
+  assert.match(sw.spec + ' ' + sw.path + ' ' + sw.keepYours, /dock/i);
+  assert.doesNotMatch(sw.spec, /Alt Mode direct-to-monitor success/i);
+});
+
+test('BN-3 capture intent still early-returns capture guide only', () => {
+  const guides = engine.guideLinksFor('PlayStation 5', 'AVR / AV receiver (HDMI path)', {
+    video: true, refresh: true, charging: false, data: false, oneCable: false, capture: true
+  });
+  assert.equal(guides[0][0], 'guides/hdmi-capture-passthrough-path.html');
+  assert.equal(guides.length, 1);
+});
+
+test('BN-3 console × HDMI display still gets AVR as secondary', () => {
+  const guides = engine.guideLinksFor('PlayStation 5', '4K / 120 Hz HDMI display', {
+    video: true, refresh: true, charging: false, data: false, oneCable: false, capture: false
+  });
+  assert.ok(guides[0][0].includes('ps5-hdmi-2-1-cable-path.html'));
+  assert.ok(guides.some(g => g[0].includes('console-hdmi-avr-passthrough-path.html')), JSON.stringify(guides));
+});
+
+test('BN-4 oneCable+data still prioritizes TB first', () => {
+  const guides = engine.guideLinksFor('MacBook / USB-C laptop', 'USB-C / Thunderbolt dock', {
+    video: true, refresh: true, charging: true, data: true, oneCable: true, capture: false
+  });
+  assert.equal(guides[0][0], 'guides/thunderbolt-dock-one-cable-4k-120.html');
+});
+
+test('BN-4 MacBook × dock default intents include TB or dual-monitor; outcome not flipped solely to upsell', () => {
+  const r = buildResult('MacBook / USB-C laptop', 'USB-C / Thunderbolt dock', {
+    video: true, refresh: true, charging: false, data: false, oneCable: false, capture: false
+  });
+  assert.ok(
+    r.guides.some(g => g[0].includes('thunderbolt-dock-one-cable-4k-120.html')) ||
+    r.guides.some(g => g[0].includes('dual-monitor-dock-mst-vs-thunderbolt.html')),
+    JSON.stringify(r.guides)
+  );
+  assert.ok(r.guides.some(g => g[0].includes('usb-c-hub-vs-dock.html')), 'hub-vs-dock peer retained');
+  assert.equal(r.guides.length <= 2, true);
+  // User chose dock dest — DOCK is expected; we must not invent DOCK on KEEP monitor paths (checked elsewhere)
+  assert.equal(r.outcome, OUTCOMES.DOCK);
+});

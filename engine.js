@@ -77,6 +77,7 @@
       destPortable: /Portable USB-C/i.test(b),
       destDock: /dock/i.test(b),
       dest1440: /1440p/i.test(b),
+      destAvr: /AVR \/ AV receiver/i.test(b),
       destHdmi: /HDMI/i.test(b),
       destDp: /DisplayPort/i.test(b),
       destUsbCMon: /4K USB-C monitor/i.test(b) || (/USB-C monitor/i.test(b) && !/Portable/i.test(b) && !/dock/i.test(b) && !/charger/i.test(b) && !/DisplayPort/i.test(b) && !/HDMI/i.test(b))
@@ -125,14 +126,37 @@
     }
 
     /* A/M — laptop → dock + oneCable: prioritize Thunderbolt one-cable guide */
-    if (f.isLaptop && f.destDock && intents.oneCable) {
+        if (f.isLaptop && f.destDock && intents.oneCable) {
       add('guides/thunderbolt-dock-one-cable-4k-120.html', 'Thunderbolt dock one-cable 4K/120');
       /* BN-1: dual-monitor can fill second slot when data; TB stays first */
       if (intents.data) {
         add('guides/dual-monitor-dock-mst-vs-thunderbolt.html', 'Dual-monitor: MST vs Thunderbolt');
+      } else if (intents.refresh) {
+        add('guides/usb4-vs-thunderbolt-4-monitor.html', 'USB4 vs Thunderbolt 4 · monitors');
       } else {
-        add(intents.refresh ? 'guides/usb4-vs-thunderbolt-4-monitor.html' : 'guides/usb-c-hub-vs-dock.html',
-            intents.refresh ? 'USB4 vs Thunderbolt 4 · monitors' : 'USB-C hub vs dock');
+        /* keep laptop→docking guide reachable in Engine graph (BN-4 default path now uses TB) */
+        add('guides/laptop-to-docking-station.html', 'Laptop → docking station');
+      }
+      return guides.slice(0, 2);
+    }
+
+
+    /* BN-3 — explicit AVR destination: primary AVR guide; KEEP direct TV + eARC first (copy in buildResult) */
+    if (f.destAvr) {
+      if (f.isSwitch2) {
+        add('guides/nintendo-switch-2-display-path.html', 'Nintendo Switch 2 → display path');
+        add('guides/console-hdmi-avr-passthrough-path.html', 'Console → AVR / HDMI feature passthrough');
+        return guides.slice(0, 2);
+      }
+      add('guides/console-hdmi-avr-passthrough-path.html', 'Console → AVR / HDMI feature passthrough');
+      if (f.isXbox) {
+        add('guides/xbox-series-display-compatibility.html', 'Xbox Series display compatibility');
+      } else if (f.isPS5) {
+        add('guides/ps5-hdmi-2-1-cable-path.html', 'PS5 HDMI 2.1 cable path');
+      } else if (f.isConsole) {
+        add('guides/ps5-hdmi-2-1-cable-path.html', 'Ultra High Speed HDMI cable path');
+      } else if (f.isLaptop || f.isIpad || f.isPhone || f.isDeck) {
+        add('guides/usb-c-to-hdmi-adapter-path.html', 'USB-C → HDMI adapter path');
       }
       return guides.slice(0, 2);
     }
@@ -195,12 +219,14 @@
         add('guides/steam-deck-external-display.html', 'Steam Deck external display');
         add('guides/usb-c-hub-vs-dock.html', 'USB-C hub vs dock');
       } else {
-        /* default laptop→dock without oneCable: hub + dual-monitor (data) or laptop-dock */
+        /* BN-4: laptop→dock without oneCable — keep hub-vs-dock as peer; surface TB and/or dual-monitor in max-2.
+           Rationale: default chips (video+refresh) previously hid Thunderbolt one-cable honesty behind oneCable literacy.
+           hub-vs-dock remains slot 1; slot 2 is TB (default) or dual-monitor (data). Do not force DOCK outcome. */
         add('guides/usb-c-hub-vs-dock.html', 'USB-C hub vs dock');
         if (intents.data) {
           add('guides/dual-monitor-dock-mst-vs-thunderbolt.html', 'Dual-monitor: MST vs Thunderbolt');
         } else {
-          add('guides/laptop-to-docking-station.html', 'Laptop → docking station');
+          add('guides/thunderbolt-dock-one-cable-4k-120.html', 'Thunderbolt dock one-cable 4K/120');
         }
       }
     } else if (f.dest1440 || f.destHdmi) {
@@ -274,6 +300,20 @@
     if (intents.capture) {
       return OUTCOMES.CAPTURE;
     }
+
+    /* BN-3 — AVR destination: same keep/direct posture as HDMI display (not capture, not dock upsell) */
+    if (f.destAvr) {
+      if (f.isConsole) {
+        if (intents.refresh) return OUTCOMES.KEEP;
+        return OUTCOMES.DIRECT;
+      }
+      /* USB-C hosts reach AVR via HDMI adapter/dock out — adapter class, not dock-required for AVR itself */
+      if (f.isLaptop || f.isIpad || f.isPhone || f.isDeck) {
+        return OUTCOMES.ADAPTER;
+      }
+      return OUTCOMES.DIRECT;
+    }
+
 
     /* Charger destinations */
     if (f.destCharger) {
@@ -398,6 +438,24 @@
         spec = 'USB-C PD path (laptop): verify device power requirement, charger PD/EPR profile and cable wattage. A phone brick often under-powers a laptop. Keep a working OEM charger when it sustains load.';
       }
       keepYours = 'Keep your existing PD charger and cable when they already meet the device’s documented wattage and cable rating.';
+      return finalize(outcome, path, spec, keepYours, notes, a, b, f, intents);
+    }
+
+
+    if (f.destAvr) {
+      if (f.isSwitch2) {
+        path = a + ' → Nintendo Switch 2 dock → Ultra High Speed HDMI → TV direct (eARC) or AVR only if needed → display';
+        spec = 'AVR destination (Nintendo Switch 2): KEEP direct dock → TV with eARC/ARC audio when your 4K/high-refresh/VRR modes already work. Put the AVR in the HDMI video path only when you need receiver features that eARC cannot cover. Ultra High Speed HDMI on every hop that stays in the video path. TV Mode is dock-HDMI only—never USB-C Alt Mode direct-to-monitor and never a laptop Thunderbolt dock as the TV path. Play-only does not need capture.';
+        keepYours = 'Keep Switch 2 dock + Ultra High Speed HDMI + direct TV (eARC) when modes already work; add AVR in-path only when required.';
+      } else if (f.isPS5 || f.isXbox || f.isConsole) {
+        path = a + ' → HDMI OUT → TV direct (eARC) or AVR only if needed → display';
+        spec = 'AVR destination (console): KEEP direct console → TV with eARC/ARC audio when your resolution, refresh and VRR already work. Put the AVR in the HDMI video path only when you need receiver video processing or inputs eARC cannot replace. Use Ultra High Speed HDMI on both hops if the AVR stays in the video path. Play-only viewing does not require capture hardware.';
+        keepYours = 'Keep a working direct TV + eARC path; keep Ultra High Speed HDMI you already own. Add AVR in the video path only when needed.';
+      } else {
+        path = a + ' → HDMI path → AVR (optional) → display';
+        spec = 'AVR destination (USB-C host): most laptops/phones/tablets reach an AVR via USB-C→HDMI adapter or dock HDMI out, then HDMI into the receiver. Prefer the simplest HDMI path that meets your mode. KEEP working adapters. An AVR is not required when the display path already works without it.';
+        keepYours = 'Keep a working USB-C→HDMI path and skip an AVR in-video when the display already meets your needs.';
+      }
       return finalize(outcome, path, spec, keepYours, notes, a, b, f, intents);
     }
 
