@@ -484,6 +484,45 @@ test('BN-4 oneCable+data still prioritizes TB first', () => {
   assert.equal(guides[0][0], 'guides/thunderbolt-dock-one-cable-4k-120.html');
 });
 
+test('M006 BN-1 guide AVR deep-links exact-match KEEP YOURS with AVR in two slots', () => {
+  const dstText = 'AVR / AV receiver (HDMI path)';
+  const encodedDst = 'dst=' + encodeURIComponent(dstText);
+  const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  assert.ok(index.includes('<option>' + dstText + '</option>'));
+  const pages = [
+    'guides/console-hdmi-avr-passthrough-path.html',
+    'guides/ps5-hdmi-2-1-cable-path.html',
+    'guides/xbox-series-display-compatibility.html',
+    'guides/nintendo-switch-2-display-path.html'
+  ];
+  const seenSrc = new Set();
+  for (const file of pages) {
+    const html = fs.readFileSync(path.join(root, file), 'utf8');
+    assert.match(html, /dst=4K%20%2F%20120%20Hz%20HDMI%20display/, file + ' lost HDMI-display CTA');
+    const hrefs = [...html.matchAll(/href="(\.\.\/\?[^"]+)"/g)].map((m) => m[1].replace(/&amp;/g, '&'));
+    const avrHrefs = hrefs.filter((h) => h.includes(encodedDst));
+    assert.ok(avrHrefs.length >= 1, file + ' missing AVR dst deep-link');
+    for (const href of avrHrefs) {
+      const q = new URLSearchParams(href.split('?')[1]);
+      assert.equal(q.get('dst'), dstText, file);
+      const src = q.get('src');
+      assert.ok(index.includes('<option>' + src + '</option>'), file + ' src not a live option: ' + src);
+      seenSrc.add(src);
+      const intents = {};
+      String(q.get('intents') || '').split(',').filter(Boolean).forEach((k) => { intents[k] = true; });
+      assert.equal(intents.capture, undefined);
+      const r = buildResult(src, q.get('dst'), intents);
+      assert.equal(r.outcome, OUTCOMES.KEEP, src + ' → ' + r.outcome);
+      assert.ok(r.guides.length >= 1 && r.guides.length <= 2, JSON.stringify(r.guides));
+      assert.ok(
+        r.guides.some((g) => g[0].includes('console-hdmi-avr-passthrough-path.html')),
+        src + ' guides ' + JSON.stringify(r.guides)
+      );
+    }
+  }
+  assert.ok(seenSrc.has('PlayStation 5') && seenSrc.has('Xbox Series X|S') && seenSrc.has('Nintendo Switch 2'));
+});
+
 test('BN-4 MacBook × dock default intents include TB or dual-monitor; outcome not flipped solely to upsell', () => {
   const r = buildResult('MacBook / USB-C laptop', 'USB-C / Thunderbolt dock', {
     video: true, refresh: true, charging: false, data: false, oneCable: false, capture: false
