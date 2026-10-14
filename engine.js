@@ -19,8 +19,37 @@
     DIRECT: 'DIRECT CONNECTION',
     ADAPTER: 'ADAPTER/CABLE REQUIRED',
     DOCK: 'DOCK REQUIRED',
-    CAPTURE: 'CAPTURE HARDWARE REQUIRED'
+    CAPTURE: 'CAPTURE HARDWARE REQUIRED',
+    LIKELY: 'LIKELY WORKS — VERIFY',
+    NO_PATH: 'NO PATH',
+    UNKNOWN: 'UNKNOWN'
   };
+
+  /* Single source of truth for badge class + heading: UI must derive both from result.outcome. */
+  var PRESENTATION = {};
+  PRESENTATION[OUTCOMES.KEEP] = { cls: 'keep', title: 'Keep what you have', works: true };
+  PRESENTATION[OUTCOMES.DIRECT] = { cls: 'direct', title: 'Direct connection path', works: true };
+  PRESENTATION[OUTCOMES.LIKELY] = { cls: 'direct', title: 'Likely works — verify your cable and ports', works: true };
+  PRESENTATION[OUTCOMES.ADAPTER] = { cls: 'adapter', title: 'Works with the right adapter or cable', works: true };
+  PRESENTATION[OUTCOMES.DOCK] = { cls: 'dock', title: 'Works through a dock', works: true };
+  PRESENTATION[OUTCOMES.CAPTURE] = { cls: 'capture', title: 'Capture hardware path', works: true };
+  PRESENTATION[OUTCOMES.NO_PATH] = { cls: 'nopath', title: 'No working path for this pair', works: false };
+  PRESENTATION[OUTCOMES.UNKNOWN] = { cls: 'unknown', title: 'Unknown — we can’t confirm a path', works: false };
+
+  var SOURCES_LIST = ['MacBook / USB-C laptop', 'Windows USB-C laptop', 'PlayStation 5', 'USB-C phone', 'iPad (USB-C)', 'Steam Deck / handheld', 'Xbox Series X|S', 'Nintendo Switch 2'];
+  var DESTINATIONS_LIST = ['4K USB-C monitor', '4K / 120 Hz HDMI display', '1440p / 165 Hz HDMI monitor', 'AVR / AV receiver (HDMI path)', 'USB-C / Thunderbolt dock', 'Portable USB-C display', 'USB-C PD charger', 'DisplayPort monitor'];
+
+  /* Manufacturer sources actually read (dates = accessed / published). Claims without a source are labelled unconfirmed. */
+  var REFS = {
+    nintendoTv: { label: 'Nintendo Support — How to connect Nintendo Switch 2 to a TV (dock, AC adapter NGN-01, Ultra High Speed HDMI)', url: 'https://en-americas-support.nintendo.com/app/answers/detail/a_id/68459/', date: 'accessed 2026-10-15' },
+    nintendoCompat: { label: 'Nintendo Support — Switch / Switch 2 accessory compatibility (original dock, AC adapter, HDMI cable not for Switch 2 TV mode)', url: 'https://en-americas-support.nintendo.com/app/answers/detail/a_id/68426/', date: 'accessed 2026-10-15' },
+    nintendoBlank: { label: 'Nintendo Support — Blank screen on the TV with Nintendo Switch 2', url: 'https://en-americas-support.nintendo.com/app/answers/detail/a_id/68442', date: 'accessed 2026-10-15' },
+    sonyPs5: { label: 'PlayStation Support — PS5 resolution / 4K 120 Hz troubleshooting', url: 'https://www.playstation.com/en-us/support/hardware/ps5-4k-resolution-guide/', date: 'page date not shown; accessed 2026-10-15' }
+  };
+
+  function isKnownSource(a) { return SOURCES_LIST.indexOf(a) !== -1; }
+  function isKnownDest(b) { return DESTINATIONS_LIST.indexOf(b) !== -1; }
+  function anyIntent(i) { return Object.keys(DEFAULT_INTENTS).some(function (k) { return !!i[k]; }); }
 
   var DEFAULT_INTENTS = {
     video: true,
@@ -293,9 +322,34 @@
   /**
    * Classify outcome category from source, destination, intents.
    */
-  function classifyOutcome(a, b, intentsRaw) {
+  function classifyOutcome(a, b, intentsRaw, opts) {
+    var raw = rawOutcome(a, b, intentsRaw);
+    /* No KEEP YOURS without ownership data */
+    if (raw === OUTCOMES.KEEP && !(opts && opts.ownsPath)) return OUTCOMES.LIKELY;
+    return raw;
+  }
+
+  function rawOutcome(a, b, intentsRaw) {
     var intents = normalizeIntents(intentsRaw);
     var f = flags(a, b);
+
+    if (!isKnownSource(a) || !isKnownDest(b)) return OUTCOMES.UNKNOWN;
+    if (!anyIntent(intents)) return OUTCOMES.UNKNOWN;
+
+    var wantsPicture = intents.video || intents.refresh || intents.oneCable;
+    /* F1/F2 — console pairs the body text rules out */
+    if (f.isConsole && !intents.capture) {
+      if (f.destCharger) {
+        /* A PD charger is never a picture destination; PS5/Xbox consoles are not powered from USB-C PD. */
+        if (wantsPicture || intents.data || !f.isSwitch2) return OUTCOMES.NO_PATH;
+        return OUTCOMES.UNKNOWN; /* Switch 2 handheld charging from a third-party PD charger: not confirmed by Nintendo here */
+      }
+      if (f.destDock) {
+        return (wantsPicture || !f.isSwitch2) ? OUTCOMES.NO_PATH : OUTCOMES.UNKNOWN;
+      }
+      if (f.destPortable) return OUTCOMES.NO_PATH;
+      if (f.destUsbCMon || f.destDp) return OUTCOMES.UNKNOWN; /* only works if that monitor also has an HDMI input */
+    }
 
     if (intents.capture) {
       return OUTCOMES.CAPTURE;
@@ -358,7 +412,7 @@
     /* Portable USB-C display */
     if (f.destPortable) {
       if (f.isPhone || f.isIpad) return OUTCOMES.ADAPTER;
-      if (f.isDeck) return intents.oneCable ? OUTCOMES.DIRECT : OUTCOMES.ADAPTER;
+      if (f.isDeck) return OUTCOMES.DIRECT; /* direct video-rated USB-C cable */
       if (f.isLaptop) return intents.oneCable ? OUTCOMES.DIRECT : OUTCOMES.KEEP;
       return OUTCOMES.ADAPTER;
     }
@@ -406,11 +460,26 @@
     return OUTCOMES.DIRECT;
   }
 
-  function buildResult(a, b, intentsRaw) {
+  function buildResult(a, b, intentsRaw, opts) {
     var intents = normalizeIntents(intentsRaw);
     var f = flags(a, b);
-    var outcome = classifyOutcome(a, b, intents);
+    var ctx = { owns: !!(opts && opts.ownsPath) };
+    var outcome = classifyOutcome(a, b, intents, opts);
     var notes = intentNotes(intents, f);
+
+    if (!isKnownSource(a) || !isKnownDest(b)) {
+      return finalize(outcome,
+        'No path checked: ' + (!isKnownSource(a) ? 'the source device is not in our list' : 'the destination is not in our list') + '.',
+        'ELORUMTECH only answers for the devices listed in the selector. We do not guess specs for devices we have not checked.',
+        'Pick the closest listed device only if it really matches your hardware, or check the manufacturer’s port specifications.',
+        [], a, b, f, intents, ctx);
+    }
+    if (!anyIntent(intents)) {
+      return finalize(outcome, 'No goal selected.', 'Choose at least one goal (Video, Highest refresh rate, Charging, Data, One cable or Record / capture). The default goal is Video + Highest refresh rate.', '', [], a, b, f, intents, ctx);
+    }
+    if (f.isConsole && !intents.capture && (outcome === OUTCOMES.NO_PATH || outcome === OUTCOMES.UNKNOWN)) {
+      return consoleBlocked(outcome, a, b, f, intents, ctx);
+    }
     var path = '';
     var spec = '';
     var keepYours = '';
@@ -419,7 +488,8 @@
       path = a + ' → HDMI (or documented video out) → capture device IN → PC/stream software (display/TV optional via loop-out)';
       spec = 'Capture is separate from play-only viewing. A capture card or capture-capable device sits in the video path when you record or stream. Console→TV play does not require capture hardware. Verify HDMI version/bandwidth on capture IN and whether you need passthrough to a display. Standards-backed framing—verify exact capture device specs.';
       keepYours = 'Keep your existing display cable for play-only viewing; add capture hardware only if Record / capture is a real goal.';
-      return finalize(outcome, path, spec, keepYours, notes, a, b, f, intents);
+      if (f.destAvr) spec += ' Your AVR destination is not part of this capture answer: put the capture device between the source and the AVR/TV only if it passes through the modes you need (verify on the capture device spec sheet).';
+      return finalize(outcome, path, spec, keepYours, notes, a, b, f, intents, ctx);
     }
 
     if (f.destCharger) {
@@ -438,7 +508,7 @@
         spec = 'USB-C PD path (laptop): verify device power requirement, charger PD/EPR profile and cable wattage. A phone brick often under-powers a laptop. Keep a working OEM charger when it sustains load.';
       }
       keepYours = 'Keep your existing PD charger and cable when they already meet the device’s documented wattage and cable rating.';
-      return finalize(outcome, path, spec, keepYours, notes, a, b, f, intents);
+      return finalize(outcome, path, spec, keepYours, notes, a, b, f, intents, ctx);
     }
 
 
@@ -456,7 +526,7 @@
         spec = 'AVR destination (USB-C host): most laptops/phones/tablets reach an AVR via USB-C→HDMI adapter or dock HDMI out, then HDMI into the receiver. Prefer the simplest HDMI path that meets your mode. KEEP working adapters. An AVR is not required when the display path already works without it.';
         keepYours = 'Keep a working USB-C→HDMI path and skip an AVR in-video when the display already meets your needs.';
       }
-      return finalize(outcome, path, spec, keepYours, notes, a, b, f, intents);
+      return finalize(outcome, path, spec, keepYours, notes, a, b, f, intents, ctx);
     }
 
     if (f.destDock) {
@@ -482,7 +552,7 @@
         spec = 'Dock path (laptop): verify USB-C / USB4 / Thunderbolt host requirement, display support matrix and PD wattage. Decide hub vs dock by display count, PD and bandwidth. Keep a dock that already meets the desk load.';
         keepYours = 'Keep your current dock when it already drives your displays, PD wattage and peripherals.';
       }
-      return finalize(outcome, path, spec, keepYours, notes, a, b, f, intents);
+      return finalize(outcome, path, spec, keepYours, notes, a, b, f, intents, ctx);
     }
 
     if (f.destPortable) {
@@ -508,7 +578,7 @@
         spec = 'Portable USB-C display (laptop): verify host DP Alt Mode/Thunderbolt/USB4 display, portable panel USB-C video input, and whether the panel needs separate power.';
         keepYours = 'Keep a working video-rated cable when it already drives the panel.';
       }
-      return finalize(outcome, path, spec, keepYours, notes, a, b, f, intents);
+      return finalize(outcome, path, spec, keepYours, notes, a, b, f, intents, ctx);
     }
 
     if (f.destDp) {
@@ -536,7 +606,7 @@
         spec = 'DisplayPort path: match source output, cable/adapter, and monitor DP input capabilities for resolution and refresh.';
         keepYours = 'Keep working DP cables/adapters when the mode already works.';
       }
-      return finalize(outcome, path, spec, keepYours, notes, a, b, f, intents);
+      return finalize(outcome, path, spec, keepYours, notes, a, b, f, intents, ctx);
     }
 
     if (f.dest1440) {
@@ -557,7 +627,7 @@
         spec = 'HDMI path (laptop → 1440p/high refresh): use USB-C/Thunderbolt→HDMI adapter or dock HDMI out rated for the timing, plus an HDMI cable and monitor HDMI input that match.';
         keepYours = 'Keep working adapters; skip conversion if a USB-C/DP monitor path already works.';
       }
-      return finalize(outcome, path, spec, keepYours, notes, a, b, f, intents);
+      return finalize(outcome, path, spec, keepYours, notes, a, b, f, intents, ctx);
     }
 
     if (f.destHdmi) {
@@ -585,7 +655,7 @@
         spec = 'HDMI path (USB-C laptop): verify host DP Alt Mode/Thunderbolt display, adapter or dock HDMI rating, certified cable bandwidth and display refresh capability.';
         keepYours = 'Keep working hardware when the mode already works.';
       }
-      return finalize(outcome, path, spec, keepYours, notes, a, b, f, intents);
+      return finalize(outcome, path, spec, keepYours, notes, a, b, f, intents, ctx);
     }
 
     /* Default: USB-C monitor */
@@ -613,26 +683,83 @@
         ? 'If your existing Thunderbolt/USB-C cable already carries video and PD to this monitor, keep it and skip a dock.'
         : 'Keep a rated USB-C/Thunderbolt cable when it already works.';
     }
-    return finalize(outcome, path, spec, keepYours, notes, a, b, f, intents);
+    return finalize(outcome, path, spec, keepYours, notes, a, b, f, intents, ctx);
   }
 
-  function finalize(outcome, path, spec, keepYours, notes, a, b, f, intents) {
-    if (notes.length) {
-      spec = spec + ' ' + notes.join(' ');
+  function consoleBlocked(outcome, a, b, f, intents, ctx) {
+    var path, spec, alt;
+    var isS2 = f.isSwitch2;
+    var tv = isS2 ? 'Nintendo Switch 2 dock → Ultra High Speed HDMI → HDMI input on a TV or monitor' : 'console HDMI OUT → HDMI input on a TV or monitor';
+    if (f.destCharger) {
+      path = 'No picture path: a USB-C PD charger is not a display.';
+      spec = isS2
+        ? (outcome === OUTCOMES.NO_PATH
+          ? 'A PD charger cannot show a picture. Nintendo documents TV mode only through the Nintendo Switch 2 dock with the Nintendo Switch 2 AC adapter (NGN-01) and an Ultra High Speed HDMI cable.'
+          : 'Charging only: Nintendo documents charging Switch 2 directly with its own adapters (the original Switch AC adapter charges it when plugged in directly, but not for TV mode). Whether your third-party PD charger charges it reliably is not confirmed here — check its wattage and Nintendo’s guidance.')
+        : 'A PD charger cannot show a picture, and the console itself is powered from mains, not from a USB-C PD charger. Controllers or accessories have their own charging requirements — check their documentation.';
+      alt = 'For picture use: ' + tv + '.';
+    } else if (f.destDock) {
+      path = 'No working path: a laptop USB-C/Thunderbolt dock is not a console video path.';
+      spec = isS2
+        ? 'Nintendo documents TV mode through the Nintendo Switch 2 dock (with the NGN-01 AC adapter and an Ultra High Speed HDMI cable). A laptop USB-C/Thunderbolt dock is not a documented path, and the original Nintendo Switch dock is not compatible with Switch 2.'
+        : 'This console outputs video over HDMI. A laptop USB-C/Thunderbolt dock does not take console video. Selected goals such as one cable or charging do not apply to this console output.';
+      alt = 'Use ' + tv + '.';
+    } else if (f.destPortable) {
+      path = 'No working path: a portable USB-C display does not accept console video over USB-C.';
+      spec = isS2
+        ? 'Nintendo documents Switch 2 TV output only through the dock’s HDMI port. A portable USB-C panel works only if it also has an HDMI input (check the panel’s spec sheet).'
+        : 'The console outputs HDMI. A portable USB-C panel works only if it also has an HDMI input (check the panel’s spec sheet).';
+      alt = 'Use ' + tv + '.';
+    } else {
+      path = 'Unknown: works only if this monitor also has an HDMI input.';
+      spec = (isS2 ? 'Switch 2 outputs to a display through the dock’s HDMI port, ' : 'The console outputs HDMI only, ') + 'not over USB-C or DisplayPort. We cannot see whether your monitor has an HDMI input or which HDMI modes it supports — check its spec sheet. A DisplayPort/USB-C conversion path is not a supported default.';
+      alt = 'If the monitor has an HDMI input: ' + tv + '.';
     }
-    /* Always ensure keep-yours sentence for KEEP or DIRECT */
-    if ((outcome === OUTCOMES.KEEP || outcome === OUTCOMES.DIRECT) && !keepYours) {
-      keepYours = 'Keep your existing cable or direct path when it already meets the stated intents.';
+    return finalize(outcome, path, spec, alt, [], a, b, f, intents, ctx);
+  }
+
+  function refsFor(f, outcome) {
+    var r = [];
+    if (f.isSwitch2) r.push(REFS.nintendoTv, REFS.nintendoCompat, REFS.nintendoBlank);
+    else if (f.isPS5 && outcome !== OUTCOMES.UNKNOWN && !f.destCharger && !f.destDock && !f.destPortable) r.push(REFS.sonyPs5);
+    return r;
+  }
+
+  function finalize(outcome, path, spec, keepYours, notes, a, b, f, intents, ctx) {
+    var blocked = outcome === OUTCOMES.NO_PATH || outcome === OUTCOMES.UNKNOWN;
+    if (notes.length && !blocked) {
+      if (f.isConsole) {
+        /* generic one-cable/charging/data/port text does not apply to console HDMI output */
+        notes = notes.filter(function (n) { return !/^(One-cable|Charging|Data|Port capability)/.test(n); });
+      }
+      if (notes.length) spec = spec + ' ' + notes.join(' ');
     }
-    if (outcome === OUTCOMES.KEEP && keepYours && path.indexOf('keep') === -1) {
-      /* path stays technical; keepYours carries the sentence */
+    var owns = !!(ctx && ctx.owns);
+    var nextLabel = '';
+    if (blocked) nextLabel = 'What to do instead';
+    else if (owns) nextLabel = 'Keep yours';
+    else nextLabel = 'If you already own this';
+    if (!keepYours && !blocked) keepYours = 'If your existing cable or direct path already meets the selected goals, keep it.';
+    if (outcome === OUTCOMES.LIKELY && keepYours) {
+      keepYours = keepYours.replace(/^Keep /, 'Keep ') + ' We don’t know what you own: confirm the cable rating and port support before buying anything.';
     }
+    var refs = (f && isKnownSource(a) && isKnownDest(b)) ? refsFor(f, outcome) : [];
+    var claimStatus = refs.length
+      ? 'Device-specific claims checked against the manufacturer sources below.'
+      : (blocked ? 'No compatibility is claimed.' : 'Standards-based guidance — not confirmed by the manufacturer for your exact model. Verify the port and cable specs.');
+    var p = PRESENTATION[outcome];
     return {
       outcome: outcome,
+      badgeClass: p.cls,
+      title: p.title,
+      works: p.works,
       path: path,
       spec: spec,
       keepYours: keepYours,
-      guides: guideLinksFor(a, b, f, intents),
+      nextLabel: nextLabel,
+      sources: refs,
+      claimStatus: claimStatus,
+      guides: (isKnownSource(a) && isKnownDest(b)) ? guideLinksFor(a, b, f, intents) : [],
       intents: intents
     };
   }
@@ -641,6 +768,11 @@
     OUTCOMES: OUTCOMES,
     DEFAULT_INTENTS: DEFAULT_INTENTS,
     normalizeIntents: normalizeIntents,
+    PRESENTATION: PRESENTATION,
+    SOURCES_LIST: SOURCES_LIST,
+    DESTINATIONS_LIST: DESTINATIONS_LIST,
+    isKnownSource: isKnownSource,
+    isKnownDest: isKnownDest,
     classifyOutcome: classifyOutcome,
     buildResult: buildResult,
     guideLinksFor: function (a, b, intentsRaw) {

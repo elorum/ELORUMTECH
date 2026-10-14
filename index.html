@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><script src="/ELORUMTECH/analytics.js" defer></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ELORUMTECH — Cable, Adapter, Dock &amp; Charger Compatibility Engine</title><meta name="description" content="Compatibility Engine for USB-C, HDMI, Thunderbolt docks and PD chargers. Pick what you have and what to connect—get the path before you buy."><meta name="robots" content="index,follow,max-image-preview:large"><link rel="icon" href="favicon.ico" sizes="any"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><link rel="canonical" href="https://elorum.github.io/ELORUMTECH/"><meta property="og:type" content="website"><meta property="og:url" content="https://elorum.github.io/ELORUMTECH/"><meta property="og:title" content="ELORUMTECH — Make anything work together"><meta property="og:description" content="Tell us what you own, what you want to connect it to, and what you want it to do."><meta name="twitter:card" content="summary_large_image"><meta property="og:image" content="https://elorum.github.io/ELORUMTECH/assets/og-default.png"><meta name="twitter:image" content="https://elorum.github.io/ELORUMTECH/assets/og-default.png"><style>
+<!doctype html><html lang="en"><head><script src="/ELORUMTECH/analytics.js" defer></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Will this cable, adapter or dock work? USB-C, HDMI &amp; Thunderbolt checker — ELORUMTECH</title><meta name="description" content="Check whether a USB-C, HDMI, DisplayPort or Thunderbolt connection will work before you buy: pick your device, display, dock or charger and your goal. Clear NO PATH and UNKNOWN answers."><meta name="robots" content="index,follow,max-image-preview:large"><link rel="icon" href="favicon.ico" sizes="any"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><!-- GSC placeholder: <meta name="google-site-verification" content=""> — Nicki adds the real token from Search Console; never invent one. --><link rel="canonical" href="https://elorum.github.io/ELORUMTECH/"><meta property="og:type" content="website"><meta property="og:url" content="https://elorum.github.io/ELORUMTECH/"><meta property="og:title" content="Will this cable, adapter or dock work? USB-C, HDMI &amp; Thunderbolt checker"><meta property="og:description" content="Tell us what you own, what you want to connect it to, and what you want it to do."><meta name="twitter:card" content="summary_large_image"><meta property="og:image" content="https://elorum.github.io/ELORUMTECH/assets/og-default.png"><meta name="twitter:image" content="https://elorum.github.io/ELORUMTECH/assets/og-default.png"><style>
 *{box-sizing:border-box}body{margin:0;background:#07090d;color:#f6f8fb;font-family:system-ui,-apple-system,sans-serif}.w{width:min(1050px,calc(100% - 34px));margin:auto}
 nav{height:76px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #202733}.brand{font-weight:800;letter-spacing:.08em}.beta{color:#8c98aa;font-size:12px}
 .hero{text-align:center;padding:80px 0 40px}h1{font-size:clamp(48px,8vw,88px);line-height:.95;letter-spacing:-.05em;margin:20px 0}.sub{max-width:720px;margin:auto;color:#aab5c4;font-size:19px;line-height:1.6}
@@ -8,7 +8,7 @@ nav{height:76px;display:flex;align-items:center;justify-content:space-between;bo
 .field label{display:block;color:#7d899a;margin-bottom:8px;text-transform:uppercase;letter-spacing:.1em;font-size:12px}
 select{width:100%;background:transparent;border:0;color:white;font-size:16px;font-weight:650}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
-.chips button.chip{border:1px solid #2b3544;border-radius:999px;padding:9px 12px;color:#bac4d1;font-size:13px;background:transparent;cursor:pointer;font-family:inherit}
+.chips button.chip{min-height:44px;border:1px solid #2b3544;border-radius:999px;padding:9px 14px;color:#bac4d1;font-size:13px;background:transparent;cursor:pointer;font-family:inherit}
 .chips button.chip[aria-pressed="true"]{border-color:#79f2c0;color:#06100c;background:#79f2c0;font-weight:700}
 .chips button.chip:focus-visible{outline:2px solid #79f2c0;outline-offset:2px}
 .btn{width:100%;border:0;border-radius:14px;padding:16px;font-weight:800;background:#79f2c0;color:#06100c;cursor:pointer}
@@ -33,19 +33,31 @@ select{width:100%;background:transparent;border:0;color:white;font-size:16px;fon
 footer{border-top:1px solid #202733;padding:30px 0 50px;color:#738094;font-size:12px}
 footer a{color:#8fa0b5;text-decoration:none;margin:0 8px}.footer a:hover,footer a:hover{color:#79f2c0}
 footer .flinks{margin-top:10px}
+.outcome.nopath{background:#3a0d12;color:#ffd0d0;border-color:#ff7b7b}
+.outcome.unknown{background:transparent;color:#cfd8e3;border-color:#8c98aa;border-style:dashed}
+.skip{position:absolute;left:-9999px;top:8px;z-index:10000;background:#79f2c0;color:#06100c;padding:12px 16px;border-radius:10px;font-weight:800}.skip:focus{left:12px}
+.brand a{color:#f6f8fb;text-decoration:none}.navlinks{display:flex;gap:4px;flex-wrap:wrap}.navlinks a{color:#c4cedb;text-decoration:none;padding:12px 10px;min-height:44px;display:inline-flex;align-items:center;border-radius:10px}.navlinks a:hover,.navlinks a:focus-visible{color:#79f2c0}
+a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid #79f2c0;outline-offset:2px}
+.own{display:flex;align-items:center;gap:10px;min-height:44px;color:#c4cedb;font-size:14px;text-align:left}.own input{width:22px;height:22px}
+.goalnote{color:#9aa6b8;font-size:13px;text-align:left;margin:0 0 6px}
+.notice{display:none;text-align:left;margin:0 0 14px;padding:12px;border:1px dashed #8c98aa;border-radius:12px;color:#dbe4ef}.notice.show{display:block}
+.srcs{margin-top:10px;font-size:14px;color:#c4cedb}.srcs a{color:#79f2c0}
+nav{height:auto;min-height:76px;flex-wrap:wrap;gap:6px}
 @media(max-width:700px){.grid,.cards{grid-template-columns:1fr}.arrow{text-align:center;transform:rotate(90deg)}}
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"ELORUMTECH","description":"Device compatibility and connection finder for cables, adapters, docks and chargers.","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","url":"https://elorum.github.io/ELORUMTECH/"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does ELORUMTECH check before recommending a cable or dock?","acceptedAnswer":{"@type":"Answer","text":"ELORUMTECH checks the full connection path: source capability, protocol, cable/adapter/dock, destination capability, and the outcome you want (video, refresh rate, charging, data, one-cable, optional capture)."}},{"@type":"Question","name":"Why is USB-C alone not enough for compatibility?","acceptedAnswer":{"@type":"Answer","text":"USB-C is a connector shape. Ports differ in video Alt Mode, USB4, Thunderbolt, data speed and Power Delivery. Shape does not prove 4K, 120 Hz or charging will work."}},{"@type":"Question","name":"When does ELORUMTECH say keep what you have?","acceptedAnswer":{"@type":"Answer","text":"When your existing cable, adapter, dock or display path already meets the required resolution, refresh, charging and features. Compatibility first means not selling hardware you do not need."}}]}</script>
 </head><body><div class="w">
-<nav aria-label="Site header"><div class="brand">ELORUMTECH</div><div class="beta">COMPATIBILITY ENGINE • BETA</div></nav>
-<main>
+<a class="skip" href="#main">Skip to content</a>
+<nav aria-label="Site header"><div class="brand"><a href="./" aria-label="ELORUMTECH home">ELORUMTECH</a> <span class="beta">BETA</span></div><div class="navlinks"><a href="#checker">Checker</a><a href="guides/">Guides</a><a href="#troubleshooting">Troubleshooting</a><a href="methodology.html">Methodology</a><a href="about.html">About</a></div></nav>
+<main id="main">
 <section class="hero">
-<div class="tag">Universal device compatibility</div>
-<p style="color:#738094;font-size:13px;margin:8px 0 0">Updated: 2026-09-19</p>
-<h1>Make anything<br>work together.</h1>
-<p class="sub">Tell us what you have, what you want to connect it to, and what you want it to do. ELORUMTECH works out the connection before recommending anything to buy.</p>
-<div class="box">
+<div class="tag">USB-C · HDMI · DisplayPort · Thunderbolt · USB PD</div>
+<p style="color:#9aa6b8;font-size:13px;margin:8px 0 0">Updated: 2026-10-15</p>
+<h1>Will this cable, adapter or dock work?</h1>
+<p class="sub">Pick your device, what you want to connect it to and your goal. ELORUMTECH tells you whether there is a working path, when there is <strong>no path</strong>, and when it is <strong>unknown</strong> — before you buy anything.</p>
+<div class="box" id="checker">
+<div id="unknownNotice" class="notice" role="alert"></div>
 <div class="grid">
 <div class="field"><label for="a">I have</label>
 <select id="a" name="source-device">
@@ -71,7 +83,8 @@ footer .flinks{margin-top:10px}
 <option>DisplayPort monitor</option>
 </select></div>
 </div>
-<div class="chips" role="group" aria-label="Connection intents">
+<p class="goalnote" id="goalNote">Your goal (choose at least one; default: Video + Highest refresh rate):</p>
+<div class="chips" role="group" aria-label="Connection goals" aria-describedby="goalNote">
 <button type="button" class="chip" data-intent="video" aria-pressed="true" aria-label="Video">✓ Video</button>
 <button type="button" class="chip" data-intent="refresh" aria-pressed="true" aria-label="Highest refresh rate">✓ Highest refresh rate</button>
 <button type="button" class="chip" data-intent="charging" aria-pressed="false" aria-label="Charging">Charging</button>
@@ -79,18 +92,30 @@ footer .flinks{margin-top:10px}
 <button type="button" class="chip" data-intent="oneCable" aria-pressed="false" aria-label="One cable">One cable</button>
 <button type="button" class="chip" data-intent="capture" aria-pressed="false" aria-label="Record / capture">Record / capture</button>
 </div>
+<label class="own"><input type="checkbox" id="ownsPath"> I already have a cable/adapter for this connection and it works</label>
 <button class="btn" type="button" id="solveBtn">MAKE IT WORK →</button>
 <div id="r" class="result" aria-live="polite">
 <div class="tag">Compatibility result</div>
-<div id="outcomeBadge" class="outcome keep" role="status">KEEP YOURS</div>
-<h2 class="ok" id="resultTitle">Connection path found</h2>
+<div id="outcomeBadge" class="outcome unknown" role="status"></div>
+<h2 id="resultTitle"></h2>
 <p id="path"></p>
 <div class="spec" id="spec"></div>
-<div class="keep" id="keepYours"></div><div class="spec warn" id="portWarn" style="display:none;margin-top:10px" role="status"></div>
+<div class="keep" id="keepYours"></div><div class="srcs" id="sources"></div><div class="spec warn" id="portWarn" style="display:none;margin-top:10px" role="status"></div>
 <div id="guideLinks" class="spec" style="display:none;margin-top:10px"></div>
-<p class="warn">Exact model capabilities must be verified before purchase. ELORUMTECH should say “keep yours” whenever existing hardware already meets the requirement.</p>
+<p class="warn">Check your exact model’s specifications before you buy. If what you already own does the job, you don’t need anything new.</p>
 </div>
 </div>
+</section>
+
+<section class="guides" id="troubleshooting">
+<div class="tag">Symptom first</div>
+<h2>Connected, but it doesn’t work?</h2>
+<div class="cards">
+<div class="card"><h3>Black screen / “no signal”</h3><p>Check the cheap things first: the display input selected, a different port, a video-capable cable (charge-only USB-C cables carry no picture), and firmware. Then follow the symptom checklist in the <a href="guides/usb-c-to-hdmi-adapter-path.html#no-picture" style="color:#79f2c0">USB-C → HDMI guide</a>.</p></div>
+<div class="card"><h3>Stuck at 60 Hz</h3><p>Every hop must support the mode: host port, adapter or dock, cable and the display input. Hubs and many adapters cap refresh. See <a href="guides/usb-c-laptop-to-4k-monitor.html#stuck-60hz" style="color:#79f2c0">USB-C laptop → 4K monitor: stuck at 60 Hz</a>.</p></div>
+<div class="card"><h3>PS5 won’t do 4K 120 Hz</h3><p>Sony’s checklist starts with the TV’s HDMI 2.1 port, TV firmware, the included or Ultra High Speed cable, and removing a receiver from the path. See <a href="guides/ps5-hdmi-2-1-cable-path.html#ps5-4k120" style="color:#79f2c0">PS5 4K 120 Hz troubleshooting</a>.</p></div>
+</div>
+<p>Scope: ELORUMTECH covers video, charging and dock connections for the devices in the checker. Audio-only paths (Bluetooth, turntables, speakers) are out of scope.</p>
 </section>
 
 <section class="verified" id="verified">
@@ -157,7 +182,7 @@ footer .flinks{margin-top:10px}
 </section>
 </main>
 <footer>
-<div>ELORUMTECH — Make anything work together • Beta</div>
+<div>ELORUMTECH — connection checker for USB-C, HDMI, DisplayPort, Thunderbolt and USB PD • Beta</div>
 <div class="flinks"><a href="guides/">Guides</a>·<a href="about.html">About</a>·<a href="methodology.html">Methodology</a>·<a href="disclosure.html">Disclosure</a></div>
 </footer>
 </div>
@@ -192,14 +217,6 @@ footer .flinks{margin-top:10px}
     });
     return i;
   }
-  function outcomeClass(outcome){
-    if(outcome==='KEEP YOURS') return 'keep';
-    if(outcome==='DIRECT CONNECTION') return 'direct';
-    if(outcome==='ADAPTER/CABLE REQUIRED') return 'adapter';
-    if(outcome==='DOCK REQUIRED') return 'dock';
-    if(outcome==='CAPTURE HARDWARE REQUIRED') return 'capture';
-    return 'keep';
-  }
   function optionExactMatch(selectEl, wanted){
     if(!wanted) return false;
     for(var i=0;i<selectEl.options.length;i++){
@@ -220,6 +237,16 @@ footer .flinks{margin-top:10px}
       var a=document.getElementById('a'), b=document.getElementById('b');
       matched.src=optionExactMatch(a, src);
       matched.dst=optionExactMatch(b, dst);
+      var bad=[];
+      if(src&&!matched.src) bad.push('device “'+src.slice(0,60)+'”');
+      if(dst&&!matched.dst) bad.push('destination “'+dst.slice(0,60)+'”');
+      if(bad.length){
+        var n=document.getElementById('unknownNotice');
+        n.textContent='Unknown '+bad.join(' and ')+' in this link. We have not checked it, so we will not guess. Pick a listed device below, or check the manufacturer’s specifications.';
+        n.classList.add('show');
+        unknownPick={src:(src&&!matched.src)?src:null,dst:(dst&&!matched.dst)?dst:null};
+        matched.unknown=true;
+      }
       if(intents){
         var set={};
         intents.split(',').forEach(function(x){set[x.trim()]=true;});
@@ -249,27 +276,39 @@ footer .flinks{margin-top:10px}
   function isUsbCHost(a){
     return /MacBook|Windows|phone|iPad|Steam Deck|handheld/i.test(a);
   }
+  var unknownPick=null;
+  function el(tag,text){var e=document.createElement(tag); if(text) e.textContent=text; return e;}
   window.solve=function(){
-    var a=document.getElementById('a').value;
-    var b=document.getElementById('b').value;
+    var a=unknownPick&&unknownPick.src!=null?unknownPick.src:document.getElementById('a').value;
+    var b=unknownPick&&unknownPick.dst!=null?unknownPick.dst:document.getElementById('b').value;
+    unknownPick=null;
     var intents=readIntents();
-    var result=ElorumEngine.buildResult(a,b,intents);
+    var owns=document.getElementById('ownsPath').checked;
+    var result=ElorumEngine.buildResult(a,b,intents,{ownsPath:owns});
+    /* badge + heading come from the same final result */
     var badge=document.getElementById('outcomeBadge');
     badge.textContent=result.outcome;
-    badge.className='outcome '+outcomeClass(result.outcome);
-    document.getElementById('resultTitle').textContent=
-      result.outcome==='KEEP YOURS'?'Keep what you have':
-      result.outcome==='DIRECT CONNECTION'?'Direct connection path':
-      result.outcome==='CAPTURE HARDWARE REQUIRED'?'Capture hardware path':
-      'Connection path found';
+    badge.className='outcome '+result.badgeClass;
+    var title=document.getElementById('resultTitle');
+    title.textContent=result.title;
+    title.className=result.works?'ok':'warn';
     document.getElementById('path').textContent=result.path;
     document.getElementById('spec').textContent=result.spec;
     var ky=document.getElementById('keepYours');
-    if(result.keepYours){ky.style.display='block';ky.textContent=result.keepYours;}
-    else{ky.style.display='none';ky.textContent='';}
+    ky.textContent='';
+    if(result.keepYours){ky.style.display='block';ky.appendChild(el('strong',result.nextLabel+': '));ky.appendChild(document.createTextNode(result.keepYours));}
+    else{ky.style.display='none';}
+    var src=document.getElementById('sources');
+    src.textContent='';
+    src.appendChild(el('p',result.claimStatus));
+    if(result.sources&&result.sources.length){
+      var ul=el('ul');
+      result.sources.forEach(function(x){var li=el('li');var aEl=el('a',x.label);aEl.href=x.url;aEl.rel='noopener';li.appendChild(aEl);li.appendChild(document.createTextNode(' ('+x.date+')'));ul.appendChild(li);});
+      src.appendChild(ul);
+    }
     var pw=document.getElementById('portWarn');
     if(pw){
-      if(isUsbCHost(a) && !/charger/i.test(b)){
+      if(result.works && isUsbCHost(a) && !/charger/i.test(b)){
         pw.style.display='block';
         pw.innerHTML='<strong class="warn">Port capability:</strong> Confirm DP Alt Mode / Thunderbolt / USB4 on <em>this specific port</em>. Connector shape alone does not prove video. See <a href="methodology.html" style="color:#79f2c0">Methodology</a>.';
       } else {
@@ -285,12 +324,21 @@ footer .flinks{margin-top:10px}
     var r=document.getElementById('r');
     r.classList.add('show');
     r.scrollIntoView({behavior:'smooth',block:'center'});
-    syncShareUrl(a,b,intents);
+    if(ElorumEngine.isKnownSource(a)&&ElorumEngine.isKnownDest(b)) syncShareUrl(a,b,intents);
+    /* tool event through the existing consent gate; device categories + outcome only, no personal data */
+    if(window.elorumTrack){
+      var goals=Object.keys(intents).filter(function(k){return intents[k];}).join(',')||'none';
+      window.elorumTrack('compat_check',{
+        source_device: ElorumEngine.isKnownSource(a)?a:'unknown',
+        destination: ElorumEngine.isKnownDest(b)?b:'unknown',
+        outcome: result.outcome, goals: goals, owns_path: owns?'yes':'no'
+      });
+    }
   };
   document.getElementById('solveBtn').addEventListener('click',function(){window.solve();});
   var matched=applyQueryPicks();
   /* O — auto-solve only when both src and dst exact-match live options */
-  if(matched.src && matched.dst){
+  if((matched.src && matched.dst) || matched.unknown){
     try{ window.solve(); }catch(e){}
   }
 })();

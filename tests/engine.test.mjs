@@ -49,7 +49,7 @@ test('PS5 → HDMI play-only never CAPTURE', () => {
   const intents = { video: true, refresh: true, charging: false, data: false, oneCable: false, capture: false };
   const o = classifyOutcome('PlayStation 5', '4K / 120 Hz HDMI display', intents);
   assert.notEqual(o, OUTCOMES.CAPTURE);
-  assert.ok([OUTCOMES.KEEP, OUTCOMES.DIRECT].includes(o), o);
+  assert.ok([OUTCOMES.LIKELY, OUTCOMES.DIRECT].includes(o), o);
 });
 
 test('Xbox → HDMI play-only never CAPTURE', () => {
@@ -90,11 +90,10 @@ test('laptop → dock destination → DOCK', () => {
   assert.equal(o, OUTCOMES.DOCK);
 });
 
-test('laptop → PD charger → KEEP YOURS', () => {
-  const o = classifyOutcome('MacBook / USB-C laptop', 'USB-C PD charger', {
-    video: false, refresh: false, charging: true, data: false, oneCable: false, capture: false
-  });
-  assert.equal(o, OUTCOMES.KEEP);
+test('laptop → PD charger → KEEP YOURS only with ownership, else LIKELY', () => {
+  const i = { video: false, refresh: false, charging: true, data: false, oneCable: false, capture: false };
+  assert.equal(classifyOutcome('MacBook / USB-C laptop', 'USB-C PD charger', i, { ownsPath: true }), OUTCOMES.KEEP);
+  assert.equal(classifyOutcome('MacBook / USB-C laptop', 'USB-C PD charger', i), OUTCOMES.LIKELY);
 });
 
 test('buildResult always has outcome, path, spec, keepYours, guides≤2', () => {
@@ -280,7 +279,7 @@ test('BN-2/3 Switch 2 × HDMI → KEEP/DIRECT + Switch guide', () => {
   const r = buildResult('Nintendo Switch 2', '4K / 120 Hz HDMI display', {
     video: true, refresh: true, charging: false, data: false, oneCable: false, capture: false
   });
-  assert.ok([OUTCOMES.KEEP, OUTCOMES.DIRECT].includes(r.outcome), r.outcome);
+  assert.ok([OUTCOMES.LIKELY, OUTCOMES.DIRECT].includes(r.outcome), r.outcome);
   assert.ok(r.guides.some(g => g[0].includes('nintendo-switch-2-display-path.html')), JSON.stringify(r.guides));
   assert.match(r.spec + ' ' + r.keepYours, /dock|KEEP|Ultra High Speed/i);
   assert.doesNotMatch(r.spec, /Alt Mode success|direct Alt Mode/i);
@@ -291,7 +290,7 @@ test('BN-3 Switch 2 × USB-C monitor does not claim DIRECT Alt Mode', () => {
     video: true, refresh: true, charging: false, data: false, oneCable: false, capture: false
   });
   assert.notEqual(r.outcome, OUTCOMES.DIRECT);
-  assert.equal(r.outcome, OUTCOMES.ADAPTER);
+  assert.equal(r.outcome, OUTCOMES.UNKNOWN); /* depends on an HDMI input we cannot see */
   assert.match(r.spec, /dock|HDMI/i);
   assert.doesNotMatch(r.spec, /DisplayPort Alt Mode success|direct Alt Mode success/i);
   assert.ok(r.guides.some(g => g[0].includes('nintendo-switch-2-display-path.html')));
@@ -441,7 +440,7 @@ test('BN-3 AVR destination option exact + PS5 primary AVR guide + KEEP/direct TV
   const r = buildResult('PlayStation 5', 'AVR / AV receiver (HDMI path)', {
     video: true, refresh: true, charging: false, data: false, oneCable: false, capture: false
   });
-  assert.ok([OUTCOMES.KEEP, OUTCOMES.DIRECT].includes(r.outcome), r.outcome);
+  assert.ok([OUTCOMES.LIKELY, OUTCOMES.DIRECT].includes(r.outcome), r.outcome);
   assert.ok(r.guides[0][0].includes('console-hdmi-avr-passthrough-path.html'), JSON.stringify(r.guides));
   assert.match(r.spec + ' ' + r.keepYours, /KEEP|direct TV|eARC/i);
   assert.match(r.spec, /Ultra High Speed/i);
@@ -512,7 +511,8 @@ test('M006 BN-1 guide AVR deep-links exact-match KEEP YOURS with AVR in two slot
       String(q.get('intents') || '').split(',').filter(Boolean).forEach((k) => { intents[k] = true; });
       assert.equal(intents.capture, undefined);
       const r = buildResult(src, q.get('dst'), intents);
-      assert.equal(r.outcome, OUTCOMES.KEEP, src + ' → ' + r.outcome);
+      assert.equal(r.outcome, OUTCOMES.LIKELY, src + ' → ' + r.outcome);
+      assert.equal(buildResult(src, q.get('dst'), intents, { ownsPath: true }).outcome, OUTCOMES.KEEP);
       assert.ok(r.guides.length >= 1 && r.guides.length <= 2, JSON.stringify(r.guides));
       assert.ok(
         r.guides.some((g) => g[0].includes('console-hdmi-avr-passthrough-path.html')),
@@ -536,4 +536,141 @@ test('BN-4 MacBook × dock default intents include TB or dual-monitor; outcome n
   assert.equal(r.guides.length <= 2, true);
   // User chose dock dest — DOCK is expected; we must not invent DOCK on KEEP monitor paths (checked elsewhere)
   assert.equal(r.outcome, OUTCOMES.DOCK);
+});
+
+/* ---- ELORUMTECH review 001: QA F1/F2, NO PATH / UNKNOWN, ownership, goals ---- */
+const ALL_INTENT_SETS = [
+  { video: true, refresh: true },
+  { video: true },
+  { charging: true },
+  { data: true },
+  { oneCable: true },
+  { charging: true, data: true, oneCable: true },
+  { video: true, refresh: true, charging: true, data: true, oneCable: true }
+];
+const full = (o) => Object.assign({ video: false, refresh: false, charging: false, data: false, oneCable: false, capture: false }, o);
+
+test('F1: PS5 → USB-C PD charger is NO PATH for every non-capture goal; badge/title derived from it', () => {
+  for (const i of ALL_INTENT_SETS) {
+    const r = buildResult('PlayStation 5', 'USB-C PD charger', full(i));
+    assert.equal(r.outcome, OUTCOMES.NO_PATH, JSON.stringify(i));
+    assert.equal(r.badgeClass, 'nopath');
+    assert.equal(r.works, false);
+    assert.doesNotMatch(r.title, /path found|works/i);
+    assert.match(r.path, /not a display/i);
+  }
+});
+
+test('F2: Switch 2 → laptop USB-C/Thunderbolt dock never DIRECT; NO PATH for picture goals, no generic TB/one-cable text', () => {
+  for (const i of ALL_INTENT_SETS) {
+    const r = buildResult('Nintendo Switch 2', 'USB-C / Thunderbolt dock', full(i));
+    assert.notEqual(r.outcome, OUTCOMES.DIRECT, JSON.stringify(i));
+    assert.ok([OUTCOMES.NO_PATH, OUTCOMES.UNKNOWN].includes(r.outcome), r.outcome);
+    if (i.video || i.refresh || i.oneCable) assert.equal(r.outcome, OUTCOMES.NO_PATH);
+    assert.equal(r.works, false);
+    assert.doesNotMatch(r.spec, /One-cable intent|Thunderbolt \/ USB-C DisplayPort Alt Mode path when/i);
+    assert.ok(r.sources.some((s) => /nintendo\.com/.test(s.url)), 'Nintendo source missing');
+  }
+});
+
+test('PS5/Xbox → laptop dock and portable USB-C display are NO PATH', () => {
+  for (const src of ['PlayStation 5', 'Xbox Series X|S']) {
+    for (const dst of ['USB-C / Thunderbolt dock', 'Portable USB-C display']) {
+      assert.equal(buildResult(src, dst, full({ video: true, refresh: true })).outcome, OUTCOMES.NO_PATH, src + ' ' + dst);
+    }
+  }
+});
+
+test('Console → USB-C or DisplayPort monitor is UNKNOWN (depends on HDMI input), never a working badge', () => {
+  for (const src of ['PlayStation 5', 'Xbox Series X|S', 'Nintendo Switch 2']) {
+    for (const dst of ['4K USB-C monitor', 'DisplayPort monitor']) {
+      const r = buildResult(src, dst, full({ video: true, refresh: true }));
+      assert.equal(r.outcome, OUTCOMES.UNKNOWN, src + ' ' + dst);
+      assert.equal(r.badgeClass, 'unknown');
+      assert.match(r.path, /HDMI input/);
+    }
+  }
+});
+
+test('Badge class and title always come from PRESENTATION[outcome] for every pair × goal; no KEEP without ownership', () => {
+  for (const a of engine.SOURCES_LIST) for (const b of engine.DESTINATIONS_LIST) for (const i of ALL_INTENT_SETS.concat([{ capture: true, video: true }])) {
+    for (const owns of [false, true]) {
+      const r = buildResult(a, b, full(i), { ownsPath: owns });
+      const p = engine.PRESENTATION[r.outcome];
+      assert.ok(p, 'no presentation for ' + r.outcome);
+      assert.equal(r.badgeClass, p.cls);
+      assert.equal(r.title, p.title);
+      if (!owns) assert.notEqual(r.outcome, OUTCOMES.KEEP, a + ' → ' + b + ' KEEP without ownership');
+      if (r.outcome === OUTCOMES.NO_PATH || r.outcome === OUTCOMES.UNKNOWN) assert.equal(r.nextLabel, 'What to do instead');
+    }
+  }
+});
+
+test('Unknown URL devices return UNKNOWN with no silent fallback and no guides', () => {
+  for (const [a, b] of [['Toaster', '4K USB-C monitor'], ['PlayStation 5', '<script>alert(1)</script>'], ['', '']]) {
+    const r = buildResult(a, b, full({ video: true }));
+    assert.equal(r.outcome, OUTCOMES.UNKNOWN);
+    assert.equal(r.guides.length, 0);
+    assert.match(r.path, /not in our list/);
+  }
+  const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  assert.match(html, /id="unknownNotice"/);
+  assert.match(html, /n\.textContent=/); /* untrusted URL text rendered as text, not HTML */
+});
+
+test('No goal selected → UNKNOWN asking for a goal; default goal stated in UI', () => {
+  const r = buildResult('MacBook / USB-C laptop', '4K USB-C monitor', full({}));
+  assert.equal(r.outcome, OUTCOMES.UNKNOWN);
+  assert.match(r.spec, /at least one goal/i);
+  const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  assert.match(html, /default: Video \+ Highest refresh rate/);
+});
+
+test('Steam Deck → portable USB-C display: badge matches direct-cable path (QA F3)', () => {
+  const r = buildResult('Steam Deck / handheld', 'Portable USB-C display', full({ video: true }));
+  assert.equal(r.outcome, OUTCOMES.DIRECT);
+  assert.match(r.path, /USB-C cable/);
+});
+
+test('Capture + AVR mentions the AVR destination (QA F5)', () => {
+  const r = buildResult('Xbox Series X|S', 'AVR / AV receiver (HDMI path)', full({ capture: true, video: true }));
+  assert.equal(r.outcome, OUTCOMES.CAPTURE);
+  assert.match(r.spec, /AVR destination/);
+});
+
+test('UI derives badge/title from result, has skip link, header nav, ownership input, 44px chips, consent-gated tool event', () => {
+  const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  assert.match(html, /badge\.className='outcome '\+result\.badgeClass/);
+  assert.match(html, /title\.textContent=result\.title/);
+  assert.doesNotMatch(html, /Connection path found/);
+  assert.doesNotMatch(html, /ELORUMTECH should say/);
+  assert.match(html, /class="skip" href="#main"/);
+  assert.match(html, /<main id="main">/);
+  assert.match(html, /<a href="\.\/" aria-label="ELORUMTECH home">/);
+  assert.match(html, /id="ownsPath"/);
+  assert.match(html, /min-height:44px/);
+  assert.match(html, /<h1>Will this cable, adapter or dock work\?<\/h1>/);
+  assert.match(html, /window\.elorumTrack\('compat_check'/);
+  const an = fs.readFileSync(path.join(root, 'analytics.js'), 'utf8');
+  assert.match(an, /window\.elorumTrack = function/);
+  assert.match(an, /getConsent\(\) !== "granted"/);
+  assert.match(an, /G-NBJBV3XERH/); /* same property, no new service */
+});
+
+test('Symptom-first troubleshooting anchors exist and are linked from home', () => {
+  const home = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  for (const [file, id] of [['guides/usb-c-to-hdmi-adapter-path.html', 'no-picture'], ['guides/usb-c-laptop-to-4k-monitor.html', 'stuck-60hz'], ['guides/ps5-hdmi-2-1-cable-path.html', 'ps5-4k120']]) {
+    const g = fs.readFileSync(path.join(root, file), 'utf8');
+    assert.match(g, new RegExp('id="' + id + '"'), file);
+    assert.ok(home.includes(file + '#' + id), 'home link to ' + file + '#' + id);
+  }
+});
+
+test('Custom 404 exists, noindex, absolute links; sitemap still 26 URLs without 404', () => {
+  const nf = fs.readFileSync(path.join(root, '404.html'), 'utf8');
+  assert.match(nf, /noindex/);
+  assert.match(nf, /href="\/ELORUMTECH\/#checker"/);
+  const sm = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
+  assert.equal((sm.match(/<loc>/g) || []).length, 26);
+  assert.doesNotMatch(sm, /404/);
 });
