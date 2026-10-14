@@ -38,21 +38,22 @@
 
     var banner = document.createElement("section");
     banner.id = "elorumtech-analytics-consent";
-    banner.setAttribute("role", "dialog");
+    banner.setAttribute("role", "region");
+    banner.setAttribute("aria-live", "polite");
     banner.setAttribute("aria-label", "Analytics choice");
-    banner.style.cssText = "position:fixed;left:16px;right:16px;bottom:16px;z-index:9999;max-width:720px;margin:auto;padding:18px;border:1px solid #2b3544;border-radius:16px;background:#0e131c;color:#f6f8fb;box-shadow:0 16px 48px rgba(0,0,0,.45);font:15px/1.5 system-ui,-apple-system,sans-serif";
+    banner.style.cssText = "position:fixed;left:8px;right:8px;bottom:8px;z-index:9999;max-width:720px;margin:auto;padding:10px 12px;border:1px solid #2b3544;border-radius:12px;background:#0e131c;color:#f6f8fb;box-shadow:0 8px 24px rgba(0,0,0,.45);font:13px/1.4 system-ui,-apple-system,sans-serif;display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px";
 
     var copy = document.createElement("p");
-    copy.style.cssText = "margin:0 0 14px";
-    copy.textContent = "ELORUMTECH uses optional Google Analytics to understand which guides and compatibility tools are useful. Analytics only starts if you allow it.";
+    copy.style.cssText = "margin:0;flex:1 1 260px";
+    copy.textContent = "Optional Google Analytics helps us see which guides and checks are useful. It only starts if you allow it.";
 
     var actions = document.createElement("div");
-    actions.style.cssText = "display:flex;flex-wrap:wrap;gap:10px";
+    actions.style.cssText = "display:flex;flex-wrap:wrap;gap:8px";
 
     var accept = document.createElement("button");
     accept.type = "button";
     accept.textContent = "Allow analytics";
-    accept.style.cssText = "border:0;border-radius:10px;padding:11px 15px;background:#79f2c0;color:#06100c;font-weight:800;cursor:pointer";
+    accept.style.cssText = "border:0;border-radius:10px;min-height:44px;padding:8px 14px;background:#79f2c0;color:#06100c;font-weight:800;cursor:pointer";
     accept.addEventListener("click", function () {
       setConsent("granted");
       loadAnalytics();
@@ -62,7 +63,7 @@
     var reject = document.createElement("button");
     reject.type = "button";
     reject.textContent = "Necessary only";
-    reject.style.cssText = "border:1px solid #445064;border-radius:10px;padding:11px 15px;background:transparent;color:#f6f8fb;font-weight:700;cursor:pointer";
+    reject.style.cssText = "border:1px solid #445064;border-radius:10px;min-height:44px;padding:8px 14px;background:transparent;color:#f6f8fb;font-weight:700;cursor:pointer";
     reject.addEventListener("click", function () {
       setConsent("denied");
       removeBanner();
@@ -74,6 +75,17 @@
     banner.appendChild(actions);
     document.body.appendChild(banner);
   }
+
+  /* Tool events go through the same consent gate as page analytics. Callers must not pass personal data. */
+  window.elorumTrack = function (name, params) {
+    if (getConsent() !== "granted" || typeof window.gtag !== "function") return;
+    var safe = { page_path: location.pathname };
+    Object.keys(params || {}).forEach(function (k) {
+      var v = params[k];
+      if (typeof v === "string") safe[k] = v.slice(0, 100);
+    });
+    window.gtag("event", name, safe);
+  };
 
   function trackToolInteractions() {
     document.addEventListener("click", function (event) {
