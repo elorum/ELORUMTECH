@@ -9,11 +9,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
 const require = createRequire(import.meta.url);
 const bios = require(path.join(root, 'bios-fastboot.js'));
-const { diagnose, VERDICTS, GROUP, ALLOWED, FILE_IDENTITY, TESTED_CASE, LINKS } = bios;
+const { diagnose, normalize, VERDICTS, GROUP, ALLOWED, FILE_IDENTITY, TESTED_CASE, LINKS } = bios;
 const SP_B550I = 'https://drivers.softpedia.com/get/MOTHERBOARD/GIGABYTE/Gigabyte-B550I-AORUS-PRO-AX-rev-1-0-Fast-Boot-Utility-B20-0420-1-for-Windows-10-64-bit.shtml';
 const GDC = 'https://www.gigabyte.com/Support/Consumer/Download';
 const SP_LIST = 'https://drivers.softpedia.com/get/MOTHERBOARD/GIGABYTE';
-const WV = 'The Softpedia listing is titled for Windows 10 64-bit; the tested PC’s Windows version was not recorded.';
+const WV = 'Per its URL, the Softpedia page is for Windows 10 64-bit; the tested PC’s Windows version was not recorded.';
+const GB_B550I = 'https://www.gigabyte.com/Motherboard/B550I-AORUS-PRO-AX-rev-10/support';
 
 const PAGE_REL = 'guides/bios-fast-boot-troubleshooter.html';
 const PAGE_URL = 'https://elorum.github.io/ELORUMTECH/' + PAGE_REL;
@@ -184,9 +185,10 @@ test('BF-16 page: required testimony wording, unknown versions and no universal 
   assert.doesNotMatch(visible, /Windows (10|11) (version )?\d{2}H\d/);
 });
 
-test('BF-17 page: OWNER_PROVIDED_SOURCE — one exact-board Softpedia link, scoped, nofollow; no hosting, no SOURCE_UNVERIFIED', () => {
+test('BF-17 page: owner-provided source — one exact-board Softpedia link, scoped, nofollow; no hosting, no internal status jargon (REM01 F6)', () => {
   assert.doesNotMatch(visible, /SOURCE_UNVERIFIED/);
-  assert.match(visible, /OWNER_PROVIDED_SOURCE/);
+  assert.doesNotMatch(visible, /OWNER_PROVIDED_SOURCE|Status:/);
+  assert.match(visible, /the owner of the tested PC identified the Softpedia page below/);
   const spLinks = [...page.matchAll(/<a [^>]*href="(https:\/\/drivers\.softpedia\.com[^"]*)"[^>]*>/g)];
   for (const m of spLinks) {
     assert.equal(m[1], SP_B550I, 'unexpected softpedia url ' + m[1]);
@@ -224,19 +226,21 @@ test('BF-17c logic: LINKS constants match the page, owner-provided status, nofol
   assert.deepEqual(LINKS.ALL_BOARDS.map((l) => l.url), [GDC]);
   assert.ok(!page.includes('href="' + SP_LIST + '"'), 'generic Softpedia listing removed (B11)');
   assert.ok(LINKS.TESTED_BOARD.scope.includes('Windows version was not recorded'));
-  for (const l of [LINKS.TESTED_BOARD, ...LINKS.ALL_BOARDS]) {
+  assert.equal(LINKS.TESTED_BOARD_OFFICIAL.url, GB_B550I);
+  for (const l of [LINKS.TESTED_BOARD, LINKS.TESTED_BOARD_OFFICIAL, ...LINKS.ALL_BOARDS]) {
     assert.ok(page.includes('href="' + l.url + '"'), 'page lacks ' + l.url);
     if (/softpedia/.test(l.url)) assert.equal(l.rel, 'nofollow noopener');
   }
 });
 
 test('BF-17d logic: only the exact tested-board branch shows the B550I link; unknown/other-board branches show all-boards link', () => {
-  const t = diagnose(TESTED);
+  const t = diagnose({ ...TESTED, os: 'win10-64' });
   assert.equal(t.links[0].url, SP_B550I);
   assert.ok(t.links.some((l) => l.url === GDC));
   assert.match(t.steps[0], /owner of the tested PC/);
-  assert.ok(t.cautions.some((c) => /titled for Windows 10 64-bit/.test(c)), 'win11 input gets the Win10-title caution');
-  assert.ok(!diagnose({ ...TESTED, os: 'win10-64' }).cautions.some((c) => /titled for Windows 10 64-bit/.test(c)));
+  const w11 = diagnose(TESTED);
+  assert.ok(w11.cautions.some((c) => /Per its URL, the Softpedia page is for Windows 10 64-bit/.test(c)), 'win11 input gets the Win10-URL caution');
+  assert.ok(!t.cautions.some((c) => /Per its URL/.test(c)));
   for (const inp of [{ ...OTHER_GB, listing: 'listed' }, { ...OTHER_GB, listing: 'not-checked' }, { ...TESTED, revision: 'other' }, { ...TESTED, revision: 'unknown' }, { ...TESTED, model: 'unknown' }, { ...TESTED, vendor: 'unknown' }, { ...TESTED, os: 'unknown' }, {}]) {
     const r = diagnose(inp);
     assert.ok(r.links.some((l) => l.url === GDC), 'all-boards link missing for ' + JSON.stringify(inp));
@@ -337,4 +341,118 @@ test('BF-24 page: UEFI Firmware Settings missing/restarts section cites Dell KB 
   assert.ok(page.includes('href="https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/boot-to-uefi-mode-or-legacy-bios-mode"'));
   assert.doesNotMatch(visible, /Microsoft does not recommend disabling Fast Startup/);
   assert.match(visible, /Fast Startup is enabled by default and that disabling it is not recommended/);
+});
+
+// ---- REM01 (REV FAIL 76/6242108067) ----
+const pageNoStyle = page.replace(/<style[\s\S]*?<\/style>/g, ' ');
+const jsSrc = fs.readFileSync(path.join(root, 'bios-fastboot.js'), 'utf8');
+const sec = (re) => { const m = page.match(re); assert.ok(m, 'section missing ' + re); return m[1]; };
+
+test('REM01-F1 unread Softpedia page: no "titled" / "Its title" / "we verified" wording anywhere (page incl. JSON-LD, logic strings)', () => {
+  const allText = pageNoStyle + '\n' + jsSrc + '\n' + JSON.stringify(LINKS) + '\n' + allInputsText();
+  assert.doesNotMatch(allText, /\b[Tt]itled\b/);
+  assert.doesNotMatch(allText, /\bIts title\b/);
+  assert.doesNotMatch(allText, /\b[Ww]e (have )?(verified|checked|confirmed) (the|that|this) (Softpedia )?(page|listing)\b|\b[Ww]e verified\b/);
+  assert.doesNotMatch(allText, /file name and version match/);
+  const box = sec(/<section class="dl" aria-labelledby="source-heading">([\s\S]*?)<\/section>/);
+  assert.ok(box.includes('Its web address names the Gigabyte B550I AORUS PRO AX rev 1.0, Fast Boot Utility B20.0420.1 for Windows 10 64-bit.'));
+  assert.ok(box.includes('We could not open the page (Cloudflare 403, checked 2026-10-18), so its title, version, file name and supported OS are not verified by us.'));
+  assert.ok(box.includes('The tested archive’s file name matches the browser’s download record from Softpedia.'));
+  assert.match(LINKS.TESTED_BOARD.label, /per its URL/);
+  assert.match(LINKS.TESTED_BOARD.scope, /Per its URL/);
+  assert.match(sec(/<h2 id="sources">Sources<\/h2>([\s\S]*?)<\/ul>/), /per its URL[\s\S]*could not open the page/);
+  assert.match(diagnose({ ...TESTED, os: 'win10-64' }).steps[0], /Per its URL, that page is for Windows 10 64-bit; we could not open it/);
+});
+function allInputsText() { let t = ''; for (const inp of allInputs()) { const r = diagnose(inp); t += [r.title, r.summary, r.badgeLabel || '', ...r.steps, ...r.cautions, ...r.links.map((l) => l.label + ' ' + (l.scope || ''))].join('\n'); } return t; }
+
+test('REM01-F3 tested board + Windows 11: GIGABYTE page leads, Softpedia secondary, no "Compatible branch" badge', () => {
+  for (const os of ['win11-64']) {
+    for (const signature of ['not-checked', 'valid-gigabyte']) {
+      const r = diagnose({ ...TESTED, os, signature });
+      assert.equal(r.verdict, VERDICTS.TESTED_CONFIG);
+      assert.equal(r.links[0].url, GB_B550I, 'GIGABYTE B550I page must be first');
+      assert.equal(r.links.at(-1).url, SP_B550I, 'Softpedia must be last (secondary)');
+      assert.ok(r.links.some((l) => l.url === GDC));
+      assert.match(r.steps[0], /^Windows 11 on the tested board: start with GIGABYTE/);
+      assert.match(r.steps[0], /check GIGABYTE's page for a Windows 11 version/);
+      assert.doesNotMatch(r.steps[0] + r.cautions.join(' '), /B2[1-9]\.\d{4}\.\d/, 'no unverified Windows 11 version number');
+      assert.ok(r.badgeLabel && r.badgeLabel !== 'Compatible branch');
+      assert.equal(r.badgeTone, 'unknown');
+      assert.doesNotMatch(r.title, /^Matches the tested board/);
+    }
+  }
+  const w10 = diagnose({ ...TESTED, os: 'win10-64' });
+  assert.equal(w10.links[0].url, SP_B550I);
+  assert.equal(w10.badgeLabel, null);
+  assert.match(page, /r\.badgeLabel \|\| GROUP_LABEL\[r\.group\]/);
+  assert.match(page, /'badge g-' \+ \(r\.badgeTone \|\| r\.group\)/);
+  const box = sec(/<section class="dl" aria-labelledby="source-heading">([\s\S]*?)<\/section>/);
+  const iGb = box.indexOf('On Windows 11:'); const iLink = box.indexOf('href="' + GB_B550I + '"');
+  assert.ok(iGb >= 0 && iLink > iGb, 'static page: Windows 11 note links GIGABYTE B550I page');
+  // exhaustive: any non-win10 tested-board result never leads with Softpedia
+  for (const inp of allInputs()) { const r = diagnose(inp); if (r.verdict === VERDICTS.TESTED_CONFIG && inp.os !== 'win10-64') assert.notEqual(r.links[0].url, SP_B550I, JSON.stringify(inp)); }
+});
+
+test('REM01-F4 setup.exe hash/version/signature rows are labelled as static inspection, not a malware scan or SmartScreen evaluation', () => {
+  const t = sec(/<h2 id="file-identity">[\s\S]*?<table><tbody>([\s\S]*?)<\/tbody><\/table>/);
+  const LBL = 'From our static inspection of the owner’s archive (not a malware scan or Windows/SmartScreen evaluation).';
+  for (const row of ['setup.exe SHA-256', 'Version info in setup.exe', 'Digital signature']) {
+    const m = t.match(new RegExp('<th scope="row">' + row.replace(/\./g, '\\.') + '</th><td>([\\s\\S]*?)</td>'));
+    assert.ok(m, row); assert.ok(m[1].includes(LBL), row + ' lacks static-inspection label');
+  }
+  assert.doesNotMatch(t, /signature checked offline/);
+  assert.ok(fs.existsSync(path.join(root, 'tools/inspect-fastboot-archive.py')), 'reproducible inspection script for QA');
+  const tool = fs.readFileSync(path.join(root, 'tools/inspect-fastboot-archive.py'), 'utf8');
+  for (const v of [FILE_IDENTITY.archiveSha256, FILE_IDENTITY.setupExeSha256, FILE_IDENTITY.setupIssSha256, FILE_IDENTITY.fileVersion, String(FILE_IDENTITY.archiveBytes), String(FILE_IDENTITY.setupExeBytes)]) assert.ok(tool.includes(v), 'tool constant drift ' + v);
+});
+
+test('REM01-F5a garbage / missing inputs never give compatible, readyToRun or TESTED_CONFIG', () => {
+  const base = { ...TESTED, signature: 'valid-gigabyte' };
+  const junk = [null, undefined, '', ' ', 0, 1, true, false, NaN, '1.1', 'rev 1.0', 'REV 1.0', '1.0 ', ' 1.0', 'Rev. 1.0', ['1.0'], { value: '1.0' }, { toString() { return '1.0'; } }, 'B550I AORUS PRO AX', 'b550i-aorus-pro-ax ', 'GIGABYTE', 'Gigabyte', 'win11', 'Windows 11', 'WIN11-64', 'win10', 'valid', 'VALID-GIGABYTE'];
+  let n = 0;
+  for (const key of ['vendor', 'model', 'revision', 'os']) {
+    for (const v of junk) {
+      const r = diagnose({ ...base, [key]: v }); n++;
+      assert.notEqual(r.group, 'compatible', key + '=' + String(v));
+      assert.notEqual(r.verdict, VERDICTS.TESTED_CONFIG, key + '=' + String(v));
+      assert.equal(r.readyToRun, false, key + '=' + String(v));
+      assert.ok(!r.links.some((l) => l.url === SP_B550I), key + '=' + String(v));
+      assert.equal(normalize({ [key]: v })[key], 'unknown', 'normalize ' + key + '=' + String(v));
+    }
+  }
+  for (const v of junk) { assert.equal(diagnose({ ...base, signature: v }).readyToRun, false, 'signature=' + String(v)); assert.equal(normalize({ signature: v }).signature, 'not-checked'); }
+  for (const v of junk) assert.equal(normalize({ symptom: v }).symptom, 'win-no-bios');
+  const { os, ...noOs } = base;
+  for (const inp of [noOs, null, undefined, '', 'win-no-bios', 42, [], {}, { ...base, os: undefined }]) {
+    const r = diagnose(inp); n++;
+    assert.notEqual(r.group, 'compatible', JSON.stringify(inp)); assert.equal(r.readyToRun, false); assert.notEqual(r.verdict, VERDICTS.TESTED_CONFIG);
+  }
+  assert.equal(diagnose(noOs).verdict, VERDICTS.UNKNOWN);
+  assert.ok(n > 100);
+});
+
+test('REM01-F5b general safety list keeps SmartScreen/UAC/antivirus "stop" and the BitLocker recovery-key item; no bypass', () => {
+  const list = sec(/<h2 id="safety">[^<]*<\/h2>\s*<ul>([\s\S]*?)<\/ul>/);
+  const items = [...list.matchAll(/<li>([\s\S]*?)<\/li>/g)].map((m) => m[1]);
+  assert.ok(items.some((i) => /Windows SmartScreen/.test(i) && /User Account Control/.test(i) && /antivirus/.test(i) && /\bstop\b/.test(i) && /Do not disable security or click past the warning/.test(i)), 'SmartScreen/UAC/AV stop item');
+  assert.ok(items.some((i) => /BitLocker/.test(i) && /recovery key/.test(i)), 'BitLocker recovery-key item');
+  assert.ok(items.some((i) => /Save your work/.test(i)));
+  assert.doesNotMatch(list, /Run anyway|More info|turn off|disable (SmartScreen|UAC|User Account Control|Defender|antivirus)/i);
+  assert.doesNotMatch(visible, /Run anyway/i);
+});
+
+test('REM01-F5c failed-methods framing sentence stays; no prevalence and no scan/safety claims on the page', () => {
+  assert.ok(visible.includes('The methods that failed here are this user’s history, not proof they fail for everyone.'));
+  const txt = pageNoStyle.replace(/<[^>]+>/g, ' ');
+  assert.doesNotMatch(txt, /\b\d+\s*(out\s+)?of\s+(every\s+)?\d+\b/i);
+  assert.doesNotMatch(txt, /\d\s*%|\bpercent\b/i);
+  assert.doesNotMatch(txt, /\bmost\b|\bmajority\b|\busually\b|\btypically\b|\bmany (PCs|users|people|boards|cases)\b|\bcommon (suspect|cause)\b/i);
+  assert.doesNotMatch(txt, /\bscanned\b|ClamAV|YARA|VirusTotal|virus-free|malware-free|\bis safe\b(?<!does not prove the file is safe)|\bverified safe\b|\bsafe to (run|use|install)\b/i);
+});
+
+test('REM01-F6 softened lead and failed-methods wording; plain-language source note', () => {
+  assert.doesNotMatch(visible, /common suspect/);
+  assert.doesNotMatch(visible, /They work on many PCs/);
+  assert.match(visible, /one possible cause is the board’s firmware Fast Boot setting/);
+  assert.match(visible, /Where the tested archive came from:/);
 });

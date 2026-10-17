@@ -64,10 +64,17 @@
     TESTED_BOARD: Object.freeze({
       id: 'tested-board-softpedia',
       url: 'https://drivers.softpedia.com/get/MOTHERBOARD/GIGABYTE/Gigabyte-B550I-AORUS-PRO-AX-rev-1-0-Fast-Boot-Utility-B20-0420-1-for-Windows-10-64-bit.shtml',
-      label: 'Softpedia: Gigabyte B550I AORUS PRO AX (rev. 1.0) Fast Boot Utility B20.0420.1 for Windows 10 64-bit',
-      scope: 'Tested configuration only: Gigabyte B550I AORUS PRO AX rev 1.0. The Softpedia listing is titled for Windows 10 64-bit; the tested PC\'s Windows version was not recorded.',
+      label: 'Softpedia page the tested archive came from (per its URL: B550I AORUS PRO AX rev 1.0, Fast Boot Utility B20.0420.1, Windows 10 64-bit)',
+      scope: 'Tested configuration only: Gigabyte B550I AORUS PRO AX rev 1.0. Per its URL, the page is for Windows 10 64-bit; we could not open it, so its contents are not verified by us. The tested PC\'s Windows version was not recorded.',
       sourceStatus: 'OWNER_PROVIDED_SOURCE',
       rel: 'nofollow noopener'
+    }),
+    // GIGABYTE's own support page for the tested board and revision (official source).
+    TESTED_BOARD_OFFICIAL: Object.freeze({
+      id: 'tested-board-gigabyte',
+      url: 'https://www.gigabyte.com/Motherboard/B550I-AORUS-PRO-AX-rev-10/support',
+      label: 'GIGABYTE B550I AORUS PRO AX (Rev. 1.0) support page (official): open Utility and look for Fast Boot for your Windows version',
+      rel: 'noopener'
     }),
     ALL_BOARDS: Object.freeze([
       Object.freeze({
@@ -106,7 +113,10 @@
 
   var DOWNLOAD_STEP = 'Find the Fast Boot utility for your exact board and revision (GIGABYTE Download Center → your board → Utility). Do not use a file made for another board. Read any prerequisite note shown there (Gigabyte\'s Fast Boot listings note that APP Center must be installed first).';
 
-  var TESTED_DOWNLOAD_STEP = 'For this exact board (B550I AORUS PRO AX rev 1.0), the tested archive came from the Softpedia page linked below, which the owner of the tested PC identified as the page used. That page is titled for Windows 10 64-bit. Compare your download with the SHA-256 on this page. Read any prerequisite note (Gigabyte\'s Fast Boot listings note that APP Center must be installed first).';
+  var TESTED_DOWNLOAD_STEP = 'For this exact board (B550I AORUS PRO AX rev 1.0), the tested archive came from the Softpedia page linked below, which the owner of the tested PC identified as the page used. Per its URL, that page is for Windows 10 64-bit; we could not open it, so its contents are not verified by us. Compare your download with the SHA-256 on this page. Read any prerequisite note (Gigabyte\'s Fast Boot listings note that APP Center must be installed first).';
+
+  // Tested board on Windows 11 (or any non-Win10 64-bit answer): GIGABYTE's own page leads; the Softpedia page is only the tested reference.
+  var TESTED_DOWNLOAD_STEP_WIN11 = 'Windows 11 on the tested board: start with GIGABYTE\'s own B550I AORUS PRO AX (Rev. 1.0) support page (first link below), open Utility and check GIGABYTE\'s page for a Windows 11 version of Fast Boot. The tested archive (B20.0420.1) came from a Softpedia page whose URL names Windows 10 64-bit, so it is listed last, only as the tested reference. Read any prerequisite note (Gigabyte\'s Fast Boot listings note that APP Center must be installed first).';
 
   function allBoardsLinks() { return LINKS.ALL_BOARDS.slice(); }
 
@@ -124,7 +134,7 @@
 
   function diagnose(input) {
     var s = normalize(input);
-    var r = { input: s, verdict: null, group: null, title: '', summary: '', steps: [], cautions: [], links: [], readyToRun: false };
+    var r = { input: s, verdict: null, group: null, badgeLabel: null, badgeTone: null, title: '', summary: '', steps: [], cautions: [], links: [], readyToRun: false };
 
     function finish(verdict, title, summary, steps, cautions, links) {
       r.verdict = verdict; r.group = GROUP[verdict]; r.title = title; r.summary = summary;
@@ -203,17 +213,25 @@
     }
 
     var exact = verdict === VERDICTS.TESTED_CONFIG;
-    var steps = [exact ? TESTED_DOWNLOAD_STEP : DOWNLOAD_STEP].concat(VERIFY_STEPS, RUN_STEPS);
+    var win10 = s.os === 'win10-64';
+    var steps = [exact ? (win10 ? TESTED_DOWNLOAD_STEP : TESTED_DOWNLOAD_STEP_WIN11) : DOWNLOAD_STEP].concat(VERIFY_STEPS, RUN_STEPS);
     r.readyToRun = s.signature === 'valid-gigabyte';
     if (!r.readyToRun) steps.splice(1, 0, 'Not ready yet: you have not confirmed the digital signature. Do that before running anything.');
 
     if (exact) {
       var cautions = ['Results can differ with other BIOS versions, Windows versions or settings.',
         'The Softpedia link is for the tested configuration only. For any other board or revision, use the all-boards links.'];
-      if (s.os !== 'win10-64') cautions.push('The linked Softpedia page is titled for Windows 10 64-bit. On Windows 11, check your board\'s page in the GIGABYTE Download Center for a Windows 11 listing.');
+      var summary = 'On this configuration, one user\'s only working fix was Gigabyte Fast Boot utility B20.0420.1 → "Enter BIOS Setup Now" (testet på denne konfiguration). This is user testimony, not a guarantee: the Windows and BIOS versions in that test were not recorded.';
+      if (!win10) {
+        cautions.push('Per its URL, the Softpedia page is for Windows 10 64-bit, and the tested PC\'s Windows version was not recorded. On Windows 11, check GIGABYTE\'s page for your board for a Windows 11 version first.');
+        finish(verdict, 'Tested board, but on Windows 11: start with GIGABYTE\'s page for your board',
+          summary, steps, cautions, [LINKS.TESTED_BOARD_OFFICIAL].concat(allBoardsLinks(), [LINKS.TESTED_BOARD]));
+        r.badgeLabel = 'Tested board · Windows 11 not tested';
+        r.badgeTone = 'unknown';
+        return r;
+      }
       return finish(verdict, 'Matches the tested board: Gigabyte B550I AORUS PRO AX rev 1.0',
-        'On this configuration, one user\'s only working fix was Gigabyte Fast Boot utility B20.0420.1 → "Enter BIOS Setup Now" (testet på denne konfiguration). This is user testimony, not a guarantee: the Windows and BIOS versions in that test were not recorded.',
-        steps, cautions, [LINKS.TESTED_BOARD].concat(allBoardsLinks()));
+        summary, steps, cautions, [LINKS.TESTED_BOARD, LINKS.TESTED_BOARD_OFFICIAL].concat(allBoardsLinks()));
     }
     return finish(verdict, 'Listed by Gigabyte for your board, but not tested by ELORUMTECH',
       'Gigabyte lists Fast Boot for your exact board. Use the version Gigabyte lists for your board and Windows version; the tested archive (B20.0420.1) is only confirmed by one user on the B550I AORUS PRO AX rev 1.0.',
