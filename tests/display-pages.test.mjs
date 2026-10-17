@@ -79,6 +79,28 @@ test('every in-page source citation resolves to a listed source', () => {
   }
 });
 
+test('REM01-HIGH-1 every relative href/src in the 4 new pages resolves to a file in the tree', () => {
+  const guidesDir = new URL('../guides/', import.meta.url);
+  const repoRoot = new URL('../', import.meta.url);
+  let checked = 0;
+  for (const p of PAGES) {
+    const h = read('guides/' + p);
+    for (const m of h.matchAll(/\b(?:href|src)="([^"]*)"/g)) {
+      const ref = m[1];
+      if (/^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i.test(ref)) continue; // absolute URL, protocol-relative or in-page anchor
+      const clean = ref.split('#')[0].split('?')[0];
+      assert.ok(clean.length > 0, `empty relative reference in ${p}`);
+      // site-root paths: the site is served under /ELORUMTECH/ (GitHub Pages project site), i.e. the repo root
+      if (clean.startsWith('/')) assert.ok(clean.startsWith('/ELORUMTECH/'), `${p}: root path outside the site base: ${ref}`);
+      const target = clean.startsWith('/') ? new URL(clean.slice('/ELORUMTECH/'.length), repoRoot) : new URL(clean, guidesDir);
+      const file = target.pathname.endsWith('/') ? new URL('index.html', target) : target;
+      assert.ok(existsSync(file), `${p}: ${ref} -> ${file.pathname} does not exist`);
+      checked++;
+    }
+  }
+  assert.ok(checked >= 20, 'expected the related/footer/script links to be checked, got ' + checked);
+});
+
 test('no search-volume or traffic claims, no affiliate patterns', () => {
   for (const p of PAGES) {
     const h = read('guides/' + p).toLowerCase();

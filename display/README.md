@@ -31,8 +31,19 @@ Spec: the REV-passed Issue #10 plan REM-01 (PLAN.md `8c6d3e45…`, EVIDENCE-SCHE
 - NEW-L1, NEW-L4: wording items in plan/matrix text; not code. The pages use the corrected wording. The matrix copy stays byte-exact.
 - INFO-C: `derived_from` pointers are required but not resolved by lint (documented limitation).
 
+## REM-01 notes (REV FAIL TO DEV, comment 6242097510 on Elorum-site #76)
+- HIGH-1: the "Can't see the BIOS screen?" related link is removed from `display-connection-solver.html` and `external-monitor-not-detected.html`, so this branch no longer depends on PR #14. A follow-up adds it back after #14 merges. `tests/display-pages.test.mjs` checks that every relative `href`/`src` in the four pages resolves to a file in the tree (`/ELORUMTECH/…` maps to the repo root).
+- HIGH-2: PLAN §4 makes the cable element mandatory. A path with no `cable` segment gets the non-replaceable unknown `path.cable`, so it can never reach PASS.
+- MEDIUM-1..3: named regression tests (`REM01-*`) kill the mutants E25, E30, E31, E37, E40, E41, E42, E45 and E46.
+- MEDIUM-4: exact-model identity is now required for `source_output`, `sink_input`, `active_converter`, `dock` and `mst_hub`. Excluded by design:
+  - cables (certification, rated link and certified length decide instead);
+  - passive adapters (the source's DP++ and the adapter's HDMI-side link decide);
+  - `usb_c_alt_mode` / `usb4_tunnel` (a mode of a port whose device identity is already checked).
+- LOW-2 (X5): when a verified mode is the basis but a non-VERIFIED item makes the result CONDITIONAL, the reason says so. A DERIVED link rate adds a "confirm the documented link rate and lane count" prerequisite.
+- LOW-3 (sitemap `lastmod`): deferred on purpose. A `lastmod` must be the real ship date, which the owner confirms through `docs/release-date-gate.json`. These pages are not shipped yet and two of them change in REM-01, so `2026-10-17` would be an unconfirmed date claim.
+
 ## Overlaps (OVERLAP.md)
-Shared files touched minimally: `guides/index.html` (one new section after the hero), `sitemap.xml` (four `<url>` entries after `guides/`, no `lastmod`), `tests/engine.test.mjs` (sitemap count 26 → 30). The parallel BIOS job edits the same count line (→ 27); whichever merges second sets the sum.
+Shared files touched minimally: `guides/index.html` (one new section after the hero), `sitemap.xml` (four `<url>` entries after `guides/`, no `lastmod`), `tests/engine.test.mjs` (sitemap count 26 → 30). The parallel BIOS job edits the same count line (→ 27). Whichever of #14/#15 merges second rebases and sets the count to 31 (both merged).
 
 ## Commands
 `npm test` runs everything. There are no build or lint scripts in `package.json`; regenerate with `node display/build-engine.mjs && node display/build-pages.mjs`.

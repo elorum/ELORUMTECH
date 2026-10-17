@@ -539,3 +539,112 @@ test('unit: precedence FAIL > UNKNOWN > CONDITIONAL > PASS', () => {
   assert.equal(E.worstOf(['CONDITIONAL', 'UNKNOWN']), 'UNKNOWN');
   assert.equal(E.worstOf(['UNKNOWN', 'FAIL', 'PASS']), 'FAIL');
 });
+
+// ---------------------------------------------------------------- REM-01 (REV FAIL TO DEV 76/6242097510): named regression tests
+// HIGH-2: PLAN §4 makes the CABLE element mandatory; a path with no cable segment must never reach PASS.
+test('REM01-HIGH-2 all-VERIFIED path without a cable segment does not return PASS (UNKNOWN, PLAN §4)', () => {
+  const withCable = ev(base());
+  assert.equal(withCable.verdict, 'PASS', 'control: same path with the certified cable is PASS');
+  const r = ev(base({ cab: null }));
+  assert.notEqual(r.verdict, 'PASS');
+  assert.equal(r.verdict, 'UNKNOWN');
+  assert.ok(r.unknowns.some((u) => u.field === 'path.cable' && /PLAN §4/.test(u.needed_evidence) && /mandatory/.test(u.needed_evidence)), JSON.stringify(r.unknowns));
+  assert.ok(r.sub_results.every((s) => s.verdict !== 'PASS'), 'no PASS sub-result');
+  assert.equal(r.max_verified_mode, null, 'no verified mode is reported as reachable without a cable');
+});
+// MEDIUM-1: a VERIFIED mode only counts when bit depth, HDR and VRR match the request (kills E30, E46).
+test('REM01-MEDIUM-1a VERIFIED 8-bit mode, request 10-bit → not PASS (E46)', () => {
+  const r = ev(base({ snk: sink(DP(), { modes: [vmode(3440, 1440, 165)] }), request: { mode: mode(3440, 1440, 165, 10) } }));
+  assert.notEqual(r.verdict, 'PASS');
+  assert.equal(r.verdict, 'UNKNOWN');
+  assert.notEqual(sub(r, /^Requested mode$/).verdict, 'PASS');
+});
+test('REM01-MEDIUM-1b VERIFIED SDR mode, request HDR10 with HDR documented on every port → HDR sub-result not PASS (E30)', () => {
+  const r = ev(base({ snk: sink(DP(), { modes: [vmode(3440, 1440, 165)] }), request: { mode: { ...F.UW165(), hdr: 'HDR10' }, require_hdr: true } }));
+  assert.equal(sub(r, /^Base mode/).verdict, 'PASS', 'SDR base mode is the verified mode');
+  assert.notEqual(sub(r, /^HDR/).verdict, 'PASS');
+  assert.notEqual(r.verdict, 'PASS');
+});
+test('REM01-MEDIUM-1c VERIFIED mode without VRR, request VRR with VRR documented on every port → VRR sub-result not PASS', () => {
+  const r = ev(base({ snk: sink(DP(), { modes: [vmode(3440, 1440, 165)] }), request: { mode: { ...F.UW165(), vrr: 'VESA_AdaptiveSync' }, require_vrr: true } }));
+  assert.equal(sub(r, /^Base mode/).verdict, 'PASS');
+  assert.notEqual(sub(r, /^VRR/).verdict, 'PASS');
+  assert.notEqual(r.verdict, 'PASS');
+});
+// MEDIUM-2: DERIVED payloads and DERIVED link rates never support PASS (kills E25, E45).
+const hdmiCableR = () => cable({ cert: V('Ultra High Speed HDMI (FIXTURE)', undefined, 'EV-FIXTURE-CERT'), rated: V(48, 'Gbit/s total', 'EV-FIXTURE-CERT') });
+test('REM01-MEDIUM-2a requirement above the DERIVED FRL payload (42.667) but below the VERIFIED raw 48 → UNKNOWN (E25)', () => {
+  const m = { ...mode(3840, 2160, 165, 10), timing: timing(4000, 2222) }; // 4000×2222×165×30 = 43.99 Gbit/s (synthetic timing)
+  const r = ev(doc({ src: source(FRL(), { port: 'HDMI 1', connector: 'HDMI' }), cab: hdmiCableR(), snk: sink(FRL(), { port: 'HDMI IN', connector: 'HDMI', modes: [vmode(3840, 2160, 165, 10)] }), request: { mode: m } }));
+  assert.ok(r.arithmetic.required_bitrate.value > 42.667 && r.arithmetic.required_bitrate.value < 48, String(r.arithmetic.required_bitrate.value));
+  assert.equal(r.verdict, 'UNKNOWN');
+  assert.ok(r.unknowns.some((u) => /usable_payload/.test(u.field) && /DERIVED payload/.test(u.needed_evidence)), JSON.stringify(r.unknowns));
+});
+test('REM01-MEDIUM-2b DERIVED link rate with otherwise VERIFIED evidence and a verified mode → CONDITIONAL, not PASS (E45); explanation names the verified-mode basis (X5)', () => {
+  const r = ev(base({ src: source(DP(D(8.1, 'FIXTURE: rate inferred from a version label (DERIVED)'), 4)) }));
+  assert.notEqual(r.verdict, 'PASS');
+  assert.equal(r.verdict, 'CONDITIONAL');
+  assert.equal(r.limiting_segment, 'S1');
+  assert.match(r.reason, /manufacturer-verified mode on DP IN \(the basis of this result; the arithmetic is only an active-pixel lower bound\)/);
+  assert.match(r.reason, /CONDITIONAL because S1: link rate\/lanes only DERIVED/);
+  assert.ok(r.prerequisites.some((p) => /confirm the documented link rate and lane count of S1/.test(p)), r.prerequisites.join('|'));
+});
+// MEDIUM-4: exact-model identity for active converters, docks and MST hubs.
+test('REM01-MEDIUM-4a active converter with identity model UNKNOWN blocks PASS', () => {
+  const mk = (id) => mid('FIXTURE-CONV', 'active_adapter', DP(), FRL(), { outConn: 'HDMI', identity: id });
+  const mk2 = (conv) => doc({ src: source(DP()), mids: [{ device: conv, kind: 'active_converter' }], cab2: hdmiCableR(), snk: sink(FRL(), { port: 'HDMI IN', connector: 'HDMI', modes: [vmode(3840, 2160, 60)] }), request: { mode: F.K4_60() } });
+  assert.equal(ev(mk2(mk(ident('FIXTURE-CONV')))).verdict, 'PASS', 'control');
+  const r = ev(mk2(mk(ident(null))));
+  assert.equal(r.verdict, 'UNKNOWN');
+  assert.ok(r.unknowns.some((u) => u.field === 'FIXTURE-CONV.identity.model' && /active adapter\/converter/.test(u.needed_evidence)), JSON.stringify(r.unknowns));
+});
+test('REM01-MEDIUM-4b dock with identity model UNKNOWN blocks PASS', () => {
+  const usbcL = (rate, lanes) => link('USB-C_DP_AltMode', rate, lanes);
+  const mk = (id) => doc({ src: source(usbcL(8.1, 4), { port: 'USB-C (left)', connector: 'USB-C' }), mids: [{ device: mid('FIXTURE-DOCK', 'dock', usbcL(8.1, 4), DP(), { identity: id }), kind: 'dock' }], snk: sink(DP(), { modes: [vmode(3840, 2160, 60)] }), request: { mode: F.K4_60() } });
+  assert.equal(ev(mk(ident('FIXTURE-DOCK'))).verdict, 'PASS', 'control');
+  const r = ev(mk(ident(null)));
+  assert.equal(r.verdict, 'UNKNOWN');
+  assert.ok(r.unknowns.some((u) => u.field === 'FIXTURE-DOCK.identity.model'), JSON.stringify(r.unknowns));
+});
+// LOW-1: chroma acceptance (E31) and L4 on in_port_id (E37).
+test('REM01-LOW-1a verified YCbCr 4:2:0 mode, request does not accept chroma subsampling → FAIL; accepted → PASS (E31)', () => {
+  const m = mode(3440, 1440, 165, 8, 'YCbCr420');
+  const snk = () => sink(DP(), { modes: [vmode(3440, 1440, 165, 8, 'YCbCr420')] });
+  const r = ev(base({ snk: snk(), request: { mode: m, accept_chroma_subsampling: false } }));
+  assert.equal(r.verdict, 'FAIL');
+  assert.match(r.reason, /does not accept chroma subsampling/);
+  assert.equal(ev(base({ snk: snk(), request: { mode: m, accept_chroma_subsampling: true } })).verdict, 'PASS');
+});
+test('REM01-LOW-1b unresolved segment in_port_id → rejected by lint L4 (E37)', () => {
+  const d = base(); d.path.segments.at(-1).in_port_id = 'NOPE';
+  assert.ok(E.lint(d).some((e) => /^L4: .*in_port_id NOPE does not resolve/.test(e)));
+});
+// MEDIUM-3: quickSolve lower bound, CONDITIONAL cap and USB 3 lane halving (kills E40, E41, E42).
+test('REM01-MEDIUM-3a quickSolve without a pixel clock never returns CONDITIONAL, even with a certified cable (E40)', () => {
+  for (const [src, snk] of [['dp-hbr3', 'dp-hbr3'], ['dp-hbr2', 'dp-hbr2'], ['hdmi-48', 'hdmi-48'], ['usbc-dp14', 'dp-hbr3']]) {
+    const r = E.quickSolve({ source: src, sinkInput: snk, cable: 'certified', h_active: 1920, v_active: 1080, refresh_hz: 60, bit_depth_bpc: 8, chroma: 'RGB' });
+    assert.equal(r.verdict, 'UNKNOWN', src);
+    for (const e of r.elements.filter((x) => x.link)) assert.notEqual(e.verdict, 'CONDITIONAL', src + ' ' + e.element);
+  }
+});
+test('REM01-MEDIUM-3b quickSolve with a user pixel clock that fits → exactly CONDITIONAL per link and overall (E41)', () => {
+  const q = { source: 'dp-hbr3', sinkInput: 'dp-hbr3', cable: 'certified', h_active: 1920, v_active: 1080, refresh_hz: 60, bit_depth_bpc: 8, chroma: 'RGB', pixel_clock_mhz: 148.5 };
+  const r = E.quickSolve(q);
+  assert.equal(r.verdict, 'CONDITIONAL');
+  const links = r.elements.filter((x) => x.link);
+  assert.equal(links.length, 2);
+  for (const e of links) assert.equal(e.verdict, 'CONDITIONAL', e.element);
+  const a = E.assessLink(mode(1920, 1080, 60), 'DP-HBR3-x4', { pixel_clock_khz: D(148500), source: 'UNKNOWN' });
+  assert.equal(a.verdict, 'CONDITIONAL');
+  assert.equal(a.assessment, 'FITS_WITH_MARGIN');
+});
+test('REM01-MEDIUM-3c quickSolve USB-C dock with USB 3 data halves the DP lanes and changes the verdict (E42)', () => {
+  const q = { source: 'usbc-dp14', middle: 'usbc-dock', sinkInput: 'dp-hbr3', cable: 'certified', h_active: 3840, v_active: 2160, refresh_hz: 60, bit_depth_bpc: 10, chroma: 'RGB' }; // 14.93 > 12.96 (2 lanes), < 25.92 (4 lanes)
+  const halved = E.quickSolve(q);
+  assert.equal(halved.verdict, 'FAIL');
+  assert.match(halved.limiting_element, /2 DP lanes/);
+  assert.equal(halved.elements[0].carries_gbps, 12.96);
+  const full = E.quickSolve({ ...q, usb3_data: false });
+  assert.notEqual(full.verdict, 'FAIL');
+  assert.equal(full.elements[0].carries_gbps, 25.92);
+});

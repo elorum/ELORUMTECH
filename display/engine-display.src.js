@@ -177,12 +177,26 @@
     var source = path[0], sink = path[path.length - 1];
     var srcPort = source.outPort, sinkPort = sink.inPort;
 
-    // identity (MS-01)
-    [source, sink].forEach(function (r) {
+    // identity (MS-01; REM-01 MEDIUM-4: also active converters, docks and MST hubs, whose own firmware/spec sets limits).
+    // Excluded by design: cables (judged by certification_program + rated_link + certified length below),
+    // passive adapters (no own link logic; judged by the source's DP++ and the adapter's HDMI-side link) and
+    // usb_c_alt_mode / usb4_tunnel segments (a mode of the source/dock port, whose device identity is checked).
+    var IDENTITY_KINDS = ['source_output', 'sink_input', 'active_converter', 'dock', 'mst_hub'];
+    var idSeen = {};
+    path.forEach(function (r) {
+      if (IDENTITY_KINDS.indexOf(r.seg.kind) < 0 || idSeen[r.device.device_id]) return;
+      idSeen[r.device.device_id] = true;
       var id = r.device.identity || {};
-      if (!verified(id.model)) unk(devLabel(r), r.device.device_id + '.identity.model', 'exact ' + (r.device.role === 'sink' ? 'monitor' : 'source') + ' model number / SKU from the manufacturer');
+      var what = r.seg.kind === 'sink_input' ? 'monitor' : r.seg.kind === 'source_output' ? 'source' : r.seg.kind === 'dock' ? 'dock' : r.seg.kind === 'mst_hub' ? 'MST hub' : 'active adapter/converter';
+      if (!verified(id.model)) unk(devLabel(r), r.device.device_id + '.identity.model', 'exact ' + what + ' model number / SKU from the manufacturer');
       else addSrc(id.model);
     });
+
+    // PLAN §4: the CABLE element is mandatory in every path. A path without a cable segment has no cable
+    // evidence at all, so the PLAN §7 rule "every cable segment verified" must not pass vacuously (REM-01 HIGH-2).
+    if (!path.some(function (r) { return r.seg.kind === 'cable'; })) {
+      unk(null, 'path.cable', 'PLAN §4: the cable element is mandatory and its evidence is missing; add the cable segment (certification program, rated link, length) between the devices');
+    }
 
     // structural checks
     var passiveAfterSource = path.length > 2 && path.slice(1, -1).some(function (r) { return r.seg.kind === 'passive_adapter'; });
@@ -387,7 +401,13 @@
         verdict = 'UNKNOWN'; limiting = U[0].seg; reasonParts = ['missing evidence: ' + U.map(function (u) { return u.field; }).join(', ')];
       }
     } else if (vm && !dsc) {
-      if (C.length) { verdict = 'CONDITIONAL'; limiting = C[0].seg; reasonParts = C.map(function (x) { return x.reason; }); }
+      if (C.length) {
+        verdict = 'CONDITIONAL'; limiting = C[0].seg;
+        // REM-01 LOW-2 (X5): the verified mode is the basis; the condition is the named non-VERIFIED item(s).
+        reasonParts = ['requested mode is a manufacturer-verified mode on ' + (sinkPort ? sinkPort.port_id : 'the sink input') + ' (the basis of this result; the arithmetic is only ' + (timingFull ? 'a full-timing check' : 'an active-pixel lower bound') + ')'];
+        reasonParts = reasonParts.concat(C.map(function (x) { return 'CONDITIONAL because ' + x.seg + ': ' + x.reason; }));
+        C.forEach(function (x) { if (x.reason === 'link rate/lanes only DERIVED') prereq.push('confirm the documented link rate and lane count of ' + x.seg + ' (only DERIVED here)'); });
+      }
       else { verdict = 'PASS'; reasonParts.push('requested mode is a manufacturer-verified mode on ' + (sinkPort ? sinkPort.port_id : 'the sink input') + ' and every segment documents the needed capability'); }
     } else if (vm && dsc) {
       verdict = C.length ? 'CONDITIONAL' : 'PASS'; reasonParts.push('requested mode is in the sink input’s documented DSC modes and DSC is documented on every active segment');
