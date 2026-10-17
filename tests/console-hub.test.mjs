@@ -13,6 +13,7 @@ const hub = require(path.join(root, 'console-hub.js'));
 const PAGE = 'guides/console-handheld-display-hub.html';
 const URL_ = 'https://elorum.github.io/ELORUMTECH/' + PAGE;
 const html = fs.readFileSync(path.join(root, PAGE), 'utf8');
+const xml = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
 
 const ALLOWED_HOSTS = [
   'www.playstation.com', 'support.xbox.com', 'en-americas-support.nintendo.com', 'www.nintendo.com',
@@ -33,19 +34,18 @@ test('CH-1 hub page meta: canonical, title, description, robots, og, analytics',
   assert.equal((html.match(/<h1>/g) || []).length, 1);
 });
 
-test('CH-2 JSON-LD + dates: no unconfirmed release date (no dateModified, no Updated label, no hub lastmod); sources-checked date shown; Breadcrumb ends at page', () => {
-  const blocks = ldBlocks();
+test('CH-2 JSON-LD + dates: dateModified, Updated, lastmod = 2026-10-18; sources-checked date shown; Breadcrumb ends at page', () => {
+  const blocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1]));
   const art = blocks.find((b) => b['@type'] === 'TechArticle');
-  const bc = blocks.find((b) => b['@type'] === 'BreadcrumbList');
-  assert.ok(art && bc);
+  assert.ok(art);
   assert.equal(art.mainEntityOfPage, URL_);
-  assert.ok(!('dateModified' in art), 'dateModified is set at release');
-  assert.ok(!/Updated:/.test(html), 'Updated label is set at release');
+  assert.equal(art.dateModified, '2026-10-18');
+  assert.ok(/Updated:\s*2026-10-18/.test(html));
   assert.ok(html.includes('Sources checked: 2026-10-18'));
-  const xml = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
   const entry = xml.match(new RegExp('<url>\\s*<loc>' + URL_.replace(/[.]/g, '\\.') + '</loc>([\\s\\S]*?)</url>'));
   assert.ok(entry, 'hub in sitemap');
-  assert.ok(!/<lastmod>/.test(entry[1]), 'hub lastmod is set at release');
+  assert.ok(/<lastmod>2026-10-18<\/lastmod>/.test(entry[1]), 'hub lastmod 2026-10-18');
+  const bc = blocks.find((b) => b['@type'] === 'BreadcrumbList');
   const last = bc.itemListElement[bc.itemListElement.length - 1];
   assert.equal(last.item, URL_);
   assert.equal(bc.itemListElement[1].item, 'https://elorum.github.io/ELORUMTECH/guides/');

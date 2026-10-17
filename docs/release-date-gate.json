@@ -3,7 +3,7 @@
   "intendedReleaseDate": "2026-10-18",
   "status": "CONFIRMED",
   "confirmedBy": "Nicki",
-  "note": "intendedReleaseDate is the default / current ship date for release mode. Each page may set its own intendedReleaseDate; omitted pages use the top-level value. Consistency checks dateModified, visible 'Updated:' (where visibleUpdated) and sitemap lastmod against that page's declared date. Nicki confirms release dates. Before release set status to CONFIRMED and confirmedBy, then run: npm run release-gate (uses today Europe/Copenhagen) or npm run release-gate -- --ship-date=YYYY-MM-DD. Unrelated historical dates are out of scope.",
+  "note": "intendedReleaseDate is the default / current ship date for release mode. Each page may set its own intendedReleaseDate; omitted pages use the top-level value. A page intendedReleaseDate set to null fails (does not fall back). In release mode each per-page date must be <= the ship date. Consistency checks dateModified, visible 'Updated:' (where visibleUpdated) and sitemap lastmod against that page's declared date. Nicki confirms release dates. Before release set status to CONFIRMED and confirmedBy, then run: npm run release-gate (uses today Europe/Copenhagen) or npm run release-gate -- --ship-date=YYYY-MM-DD. Unrelated historical dates are out of scope.",
   "pages": [
     {
       "file": "guides/ps5-to-1440p-monitor.html",
@@ -26,6 +26,36 @@
     {
       "file": "guides/bios-fast-boot-troubleshooter.html",
       "url": "https://elorum.github.io/ELORUMTECH/guides/bios-fast-boot-troubleshooter.html",
+      "visibleUpdated": true,
+      "intendedReleaseDate": "2026-10-18"
+    },
+    {
+      "file": "guides/display-connection-solver.html",
+      "url": "https://elorum.github.io/ELORUMTECH/guides/display-connection-solver.html",
+      "visibleUpdated": true,
+      "intendedReleaseDate": "2026-10-18"
+    },
+    {
+      "file": "guides/external-monitor-not-detected.html",
+      "url": "https://elorum.github.io/ELORUMTECH/guides/external-monitor-not-detected.html",
+      "visibleUpdated": true,
+      "intendedReleaseDate": "2026-10-18"
+    },
+    {
+      "file": "guides/monitor-stuck-at-60hz.html",
+      "url": "https://elorum.github.io/ELORUMTECH/guides/monitor-stuck-at-60hz.html",
+      "visibleUpdated": true,
+      "intendedReleaseDate": "2026-10-18"
+    },
+    {
+      "file": "guides/usb-c-dock-display-limits.html",
+      "url": "https://elorum.github.io/ELORUMTECH/guides/usb-c-dock-display-limits.html",
+      "visibleUpdated": true,
+      "intendedReleaseDate": "2026-10-18"
+    },
+    {
+      "file": "guides/console-handheld-display-hub.html",
+      "url": "https://elorum.github.io/ELORUMTECH/guides/console-handheld-display-hub.html",
       "visibleUpdated": true,
       "intendedReleaseDate": "2026-10-18"
     }

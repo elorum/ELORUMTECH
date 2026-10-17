@@ -1,7 +1,7 @@
 // Release-date gate for pages edited by a release candidate.
 // Checks that each declared page's JSON-LD dateModified, visible "Updated:" date
 // (where declared) and sitemap.xml lastmod all equal that page's declared date
-// (page.intendedReleaseDate, else the top-level intendedReleaseDate).
+// (page.intendedReleaseDate if present — including null, which fails — else the top-level intendedReleaseDate).
 // Release mode (--release) additionally requires owner confirmation and that the
 // top-level declared date equals the actual ship date.
 import fs from 'node:fs';
@@ -21,7 +21,9 @@ export function isRealIsoDate(value) {
 }
 
 export function pageDeclaredDate(decl, page) {
-  if (page && page.intendedReleaseDate !== undefined && page.intendedReleaseDate !== null) {
+  // Explicit null must fail (QA F2): do not fall back to the top-level date.
+  // Omitted intendedReleaseDate still falls back to the top-level value (#17 model).
+  if (page && Object.prototype.hasOwnProperty.call(page, 'intendedReleaseDate')) {
     return page.intendedReleaseDate;
   }
   return decl && decl.intendedReleaseDate;
@@ -94,6 +96,15 @@ export function checkRelease(decl, shipDate) {
   if (!decl || typeof decl.confirmedBy !== 'string' || decl.confirmedBy.trim() === '') problems.push('confirmedBy is empty');
   if (!isRealIsoDate(shipDate)) problems.push(`ship date is not a real YYYY-MM-DD date: ${JSON.stringify(shipDate)}`);
   else if (decl && decl.intendedReleaseDate !== shipDate) problems.push(`declared date ${decl.intendedReleaseDate} != actual ship date ${shipDate}`);
+  // QA F1 (#17 follow-up): each per-page intendedReleaseDate must be <= the ship date.
+  if (isRealIsoDate(shipDate) && decl && Array.isArray(decl.pages)) {
+    for (const p of decl.pages) {
+      const d = pageDeclaredDate(decl, p);
+      if (isRealIsoDate(d) && d > shipDate) {
+        problems.push(`${p.file}: page intendedReleaseDate ${d} is after ship date ${shipDate}`);
+      }
+    }
+  }
   return problems;
 }
 

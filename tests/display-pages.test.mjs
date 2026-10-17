@@ -29,13 +29,13 @@ test('pages exist with matching canonical, title, description and lang', () => {
   }
 });
 
-test('pages are in sitemap.xml (no lastmod) and linked from the guides hub', () => {
+test('pages are in sitemap.xml (with lastmod 2026-10-18) and linked from the guides hub', () => {
   const sm = read('sitemap.xml');
   const hub = read('guides/index.html');
   for (const p of PAGES) {
     const block = sm.match(new RegExp(`<url>\\s*<loc>${BASE.replace(/\./g, '\\.')}${p.replace(/\./g, '\\.')}</loc>[\\s\\S]*?</url>`));
     assert.ok(block, 'sitemap ' + p);
-    assert.ok(!block[0].includes('<lastmod>'), 'no lastmod claimed for ' + p);
+    assert.ok(block[0].includes('<lastmod>2026-10-18</lastmod>'), 'lastmod 2026-10-18 for ' + p);
     assert.ok(hub.includes(`href="${p}"`), 'hub link ' + p);
   }
 });
@@ -48,7 +48,10 @@ test('JSON-LD parses; FAQPage questions/answers equal the visible FAQ', () => {
     const crumbs = docs.find((d) => d['@type'] === 'BreadcrumbList');
     assert.ok(crumbs, 'breadcrumbs ' + p);
     assert.equal(crumbs.itemListElement.at(-1).item, BASE + p);
-    for (const d of docs) assert.ok(!('dateModified' in d) && !('datePublished' in d), 'no unconfirmed dates in ' + p);
+    for (const d of docs) {
+      if (d['@type'] === 'TechArticle' || d['@type'] === 'WebApplication') assert.equal(d.dateModified, '2026-10-18', p);
+      assert.ok(!('datePublished' in d), 'no datePublished in ' + p);
+    }
     const faq = docs.find((d) => d['@type'] === 'FAQPage');
     const visible = [...h.matchAll(/<details><summary>([\s\S]*?)<\/summary>([\s\S]*?)<\/details>/g)].map((m) => ({ q: text(m[1]), a: text(m[2]) }));
     if (p === 'display-connection-solver.html') {

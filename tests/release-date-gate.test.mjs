@@ -71,3 +71,39 @@ test('release-date gate: release mode blocks until owner-confirmed and date = sh
   assert.ok(checkRelease(confirmed, '2026-10-20').some((m) => m.includes('ship date')));
   assert.ok(checkRelease({ ...confirmed, confirmedBy: '' }, decl.intendedReleaseDate).some((m) => m.includes('confirmedBy')));
 });
+
+test('release-date gate: null page intendedReleaseDate fails (no top-level fallback) — QA F2', () => {
+  const p = decl.pages[0];
+  const withNull = {
+    ...decl,
+    pages: decl.pages.map((x) => x === p ? { ...x, intendedReleaseDate: null } : x),
+  };
+  // pageDeclaredDate must return null, not the top-level date
+  assert.equal(pageDeclaredDate(withNull, withNull.pages.find((x) => x.file === p.file)), null);
+  const problems = checkConsistency(withNull, readRepoFile);
+  assert.ok(
+    problems.some((m) => m.includes(p.file) && m.includes('intendedReleaseDate')),
+    JSON.stringify(problems),
+  );
+});
+
+test('release-date gate: per-page date after ship date fails release mode — QA F1', () => {
+  const p = decl.pages[0];
+  const future = '2099-01-01';
+  const withFuture = {
+    ...decl,
+    status: 'CONFIRMED',
+    confirmedBy: 'Nicki',
+    pages: decl.pages.map((x) => x === p ? { ...x, intendedReleaseDate: future } : x),
+  };
+  const problems = checkRelease(withFuture, decl.intendedReleaseDate);
+  assert.ok(
+    problems.some((m) => m.includes(p.file) && m.includes('after ship date')),
+    JSON.stringify(problems),
+  );
+  // equal-to-ship and earlier still OK
+  assert.deepEqual(
+    checkRelease({ ...decl, status: 'CONFIRMED', confirmedBy: 'Nicki' }, decl.intendedReleaseDate).filter((m) => m.includes('after ship date')),
+    [],
+  );
+});
