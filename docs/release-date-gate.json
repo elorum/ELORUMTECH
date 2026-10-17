@@ -31,31 +31,37 @@
     },
     {
       "file": "guides/display-connection-solver.html",
-      "url": "https://elorum.github.io/ELORUMTECH/guides/display-connection-solver.html",
+      "url": "https://elorumtech.elorum.world/guides/display-connection-solver.html",
       "visibleUpdated": true,
       "intendedReleaseDate": "2026-10-18"
     },
     {
       "file": "guides/external-monitor-not-detected.html",
-      "url": "https://elorum.github.io/ELORUMTECH/guides/external-monitor-not-detected.html",
+      "url": "https://elorumtech.elorum.world/guides/external-monitor-not-detected.html",
       "visibleUpdated": true,
       "intendedReleaseDate": "2026-10-18"
     },
     {
       "file": "guides/monitor-stuck-at-60hz.html",
-      "url": "https://elorum.github.io/ELORUMTECH/guides/monitor-stuck-at-60hz.html",
+      "url": "https://elorumtech.elorum.world/guides/monitor-stuck-at-60hz.html",
       "visibleUpdated": true,
       "intendedReleaseDate": "2026-10-18"
     },
     {
       "file": "guides/usb-c-dock-display-limits.html",
-      "url": "https://elorum.github.io/ELORUMTECH/guides/usb-c-dock-display-limits.html",
+      "url": "https://elorumtech.elorum.world/guides/usb-c-dock-display-limits.html",
       "visibleUpdated": true,
       "intendedReleaseDate": "2026-10-18"
     },
     {
       "file": "guides/console-handheld-display-hub.html",
-      "url": "https://elorum.github.io/ELORUMTECH/guides/console-handheld-display-hub.html",
+      "url": "https://elorumtech.elorum.world/guides/console-handheld-display-hub.html",
+      "visibleUpdated": true,
+      "intendedReleaseDate": "2026-10-18"
+    },
+    {
+      "file": "guides/index.html",
+      "url": "https://elorumtech.elorum.world/guides/",
       "visibleUpdated": true,
       "intendedReleaseDate": "2026-10-18"
     }
