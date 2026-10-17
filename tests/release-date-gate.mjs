@@ -1,8 +1,9 @@
 // Release-date gate for pages edited by a release candidate.
 // Checks that each declared page's JSON-LD dateModified, visible "Updated:" date
-// (where declared) and sitemap.xml lastmod all equal one declared date.
+// (where declared) and sitemap.xml lastmod all equal that page's declared date
+// (page.intendedReleaseDate, else the top-level intendedReleaseDate).
 // Release mode (--release) additionally requires owner confirmation and that the
-// declared date equals the actual ship date.
+// top-level declared date equals the actual ship date.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -17,6 +18,13 @@ export function isRealIsoDate(value) {
   if (!m) return false;
   const d = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
   return d.getUTCFullYear() === +m[1] && d.getUTCMonth() === +m[2] - 1 && d.getUTCDate() === +m[3];
+}
+
+export function pageDeclaredDate(decl, page) {
+  if (page && page.intendedReleaseDate !== undefined && page.intendedReleaseDate !== null) {
+    return page.intendedReleaseDate;
+  }
+  return decl && decl.intendedReleaseDate;
 }
 
 export function dateModifiedValues(html) {
@@ -48,14 +56,20 @@ export function sitemapLastmod(xml, url) {
 // Pure check: returns a list of problems (empty = pass).
 export function checkConsistency(decl, readFile) {
   const problems = [];
-  const date = decl && decl.intendedReleaseDate;
-  if (!isRealIsoDate(date)) problems.push(`intendedReleaseDate is unset, a placeholder or not a real YYYY-MM-DD date: ${JSON.stringify(date)}`);
+  if (!isRealIsoDate(decl && decl.intendedReleaseDate)) {
+    problems.push(`intendedReleaseDate is unset, a placeholder or not a real YYYY-MM-DD date: ${JSON.stringify(decl && decl.intendedReleaseDate)}`);
+  }
   if (!decl || !Array.isArray(decl.pages) || decl.pages.length === 0) {
     problems.push('no pages declared');
     return problems;
   }
   const sitemap = readFile('sitemap.xml');
   for (const p of decl.pages) {
+    const date = pageDeclaredDate(decl, p);
+    if (!isRealIsoDate(date)) {
+      problems.push(`${p.file}: page intendedReleaseDate is unset, a placeholder or not a real YYYY-MM-DD date: ${JSON.stringify(date)}`);
+      continue;
+    }
     const html = readFile(p.file);
     const dm = dateModifiedValues(html);
     if (dm.length !== 1) problems.push(`${p.file}: expected exactly 1 JSON-LD dateModified, found ${dm.length}`);
