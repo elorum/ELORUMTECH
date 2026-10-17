@@ -223,7 +223,7 @@ test('port capability warn appears for USB-C laptop paths in buildResult spec', 
 test('sitemap loc count updated and all files exist', () => {
   const xml = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
   const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
-  assert.equal(locs.length, 27, 'expected 27 locs, got ' + locs.length);
+  assert.equal(locs.length, 31, 'expected 31 locs, got ' + locs.length);
   for (const loc of locs) {
     const rel = loc.replace('https://elorum.github.io/ELORUMTECH/', '').replace(/\/$/, '');
     const file = rel === '' ? path.join(root, 'index.html')

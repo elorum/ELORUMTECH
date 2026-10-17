@@ -1,0 +1,1121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "elorumtech/display/evidence.schema.json",
+  "title": "ELORUMTECH Display & Video Connectivity — exact-port evidence and path evaluation schema",
+  "description": "Implementation revision 0.2.0-impl of the REV-PASSED REM-01 plan schema (EVIDENCE-SCHEMA.json sha256 2ee68bf0807e060db151b7b37ede32347a5c6cee55471b9f488c78e5b36681f1) for job ELORUMTECH-DISPLAY-SOLVER-20261017-01. Changes, all from REV REM-02 non-blocking findings (Elorum-site #76 comment 6241707273): NEW-L3 VERIFIED/MARKETING Field value must be non-null; NEW-M3 VerifiedMode.status restricted to VERIFIED/UNKNOWN and PASS requires max_verified_mode.status VERIFIED; NEW-M1 PASS allows LOWER_BOUND_ONLY only with a VERIFIED max_verified_mode and EXCEEDS only for a documented DSC mode (dsc_required true), never UNKNOWN; Result gains optional explanations and arithmetic.path_payload_limiting_segment. Every device capability is a Field whose value is backed by evidence ids or is explicitly UNKNOWN. Raw bitrate, usable payload, arithmetic feasibility and manufacturer-verified operating modes are kept separate.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "evidence",
+    "devices",
+    "request",
+    "path"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "enum": [
+        "0.1.0-plan",
+        "0.2.0-impl"
+      ]
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Evidence"
+      }
+    },
+    "devices": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Device"
+      }
+    },
+    "request": {
+      "$ref": "#/$defs/Request"
+    },
+    "environment": {
+      "$ref": "#/$defs/Environment"
+    },
+    "path": {
+      "$ref": "#/$defs/Path"
+    },
+    "result": {
+      "$ref": "#/$defs/Result"
+    }
+  },
+  "$defs": {
+    "Confidence": {
+      "description": "VERIFIED: manufacturer/certification source states it for this exact model and port. DERIVED: computed from VERIFIED inputs or a named standard formula. MARKETING: retailer/listing claim only, never sufficient for PASS. UNKNOWN: no usable evidence.",
+      "enum": [
+        "VERIFIED",
+        "DERIVED",
+        "MARKETING",
+        "UNKNOWN"
+      ]
+    },
+    "Evidence": {
+      "type": "object",
+      "required": [
+        "id",
+        "source_url",
+        "source_title",
+        "source_kind",
+        "relevant_evidence",
+        "checked_at",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^EV-[A-Za-z0-9._-]+$"
+        },
+        "source_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "source_title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_kind": {
+          "enum": [
+            "manufacturer_spec",
+            "manufacturer_manual",
+            "manufacturer_support",
+            "certification_database",
+            "standard_body",
+            "edid_dump",
+            "independent_measurement",
+            "retailer_listing",
+            "other"
+          ]
+        },
+        "relevant_evidence": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Exact quoted text or table row relied on."
+        },
+        "checked_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "(Z|[+-][0-9]{2}:[0-9]{2})$",
+          "description": "Check time with explicit time zone offset."
+        },
+        "page_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Published/updated date shown on the source, or null if not shown."
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "Field": {
+      "description": "A single capability value. value must be null when status is UNKNOWN; VERIFIED and MARKETING require at least one evidence id; DERIVED requires a non-empty derived_from (evidence ids optional).",
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {},
+        "unit": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^EV-"
+          }
+        },
+        "derived_from": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "JSON pointers to inputs and the formula/standard name used."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "UNKNOWN"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "const": null
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "VERIFIED",
+                  "MARKETING"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "value",
+              "evidence_ids"
+            ],
+            "properties": {
+              "evidence_ids": {
+                "type": "array",
+                "minItems": 1
+              },
+              "value": {
+                "not": {
+                  "type": "null"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "DERIVED"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "value",
+              "derived_from"
+            ],
+            "properties": {
+              "derived_from": {
+                "type": "array",
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Identity": {
+      "type": "object",
+      "required": [
+        "manufacturer",
+        "model",
+        "revision"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "manufacturer": {
+          "$ref": "#/$defs/Field"
+        },
+        "model": {
+          "$ref": "#/$defs/Field",
+          "description": "Exact model number / SKU, not a family name."
+        },
+        "revision": {
+          "$ref": "#/$defs/Field",
+          "description": "Hardware/firmware revision where specs differ by revision."
+        },
+        "user_owned": {
+          "type": "boolean"
+        }
+      }
+    },
+    "LinkCapability": {
+      "type": "object",
+      "required": [
+        "protocol",
+        "version_label",
+        "max_link_rate_per_lane",
+        "lane_count",
+        "encoding",
+        "raw_bitrate",
+        "usable_payload",
+        "dsc"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "protocol": {
+          "enum": [
+            "DisplayPort",
+            "HDMI_TMDS",
+            "HDMI_FRL",
+            "USB-C_DP_AltMode",
+            "USB4_DP_Tunnel",
+            "Thunderbolt_DP_Tunnel",
+            "DVI",
+            "Other",
+            "UNKNOWN"
+          ]
+        },
+        "version_label": {
+          "$ref": "#/$defs/Field",
+          "description": "Marketing/version label such as 'DP 1.4a' or 'HDMI 2.1'. Never used alone to infer rate."
+        },
+        "max_link_rate_per_lane": {
+          "$ref": "#/$defs/Field",
+          "description": "Gbit/s per lane, e.g. HBR3 8.1, FRL 12."
+        },
+        "lane_count": {
+          "$ref": "#/$defs/Field",
+          "description": "Lanes/channels available on THIS path. USB-C DP Alt Mode (VESA standard): 4 DP lanes, or 2 DP lanes when SuperSpeed USB 3.x data shares the connector; USB 2.0 is always available (VESA DP Alt Mode: https://vesa.org/featured-articles/vesa-brings-displayport-to-new-usb-type-c-connector/ ; https://www.vesa.org/wp-content/uploads/2014/09/DP-Alt-Mode-Overview-for-VESA-v1.pdf)."
+        },
+        "encoding": {
+          "$ref": "#/$defs/Field",
+          "description": "8b/10b, 128b/132b, 16b/18b."
+        },
+        "raw_bitrate": {
+          "$ref": "#/$defs/Field",
+          "description": "Gbit/s = rate x lanes. RAW, not usable."
+        },
+        "usable_payload": {
+          "$ref": "#/$defs/Field",
+          "description": "Gbit/s after encoding and documented protocol overhead. Kept separate from raw_bitrate."
+        },
+        "dsc": {
+          "$ref": "#/$defs/Field",
+          "description": "DSC support as documented for this exact port (true/false/null). Never inferred from version label."
+        },
+        "frl_support": {
+          "$ref": "#/$defs/Field",
+          "description": "HDMI FRL support as documented for this exact port (true/false/null). An 'HDMI 2.1' label does not prove FRL."
+        },
+        "dsc_documented_modes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/VerifiedMode"
+          }
+        },
+        "shared_bandwidth_group": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Id of a group (MST hub, dock uplink, USB4 tunnel) whose payload is shared across displays/functions."
+        }
+      }
+    },
+    "Mode": {
+      "type": "object",
+      "required": [
+        "h_active",
+        "v_active",
+        "refresh_hz",
+        "bit_depth_bpc",
+        "chroma",
+        "hdr",
+        "vrr",
+        "dsc_required"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "h_active": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "v_active": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "refresh_hz": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "bit_depth_bpc": {
+          "enum": [
+            6,
+            8,
+            10,
+            12,
+            null
+          ]
+        },
+        "chroma": {
+          "enum": [
+            "RGB",
+            "YCbCr444",
+            "YCbCr422",
+            "YCbCr420",
+            null
+          ]
+        },
+        "hdr": {
+          "enum": [
+            "SDR",
+            "HDR10",
+            "HLG",
+            "DolbyVision",
+            "Other",
+            null
+          ]
+        },
+        "vrr": {
+          "enum": [
+            "none",
+            "VESA_AdaptiveSync",
+            "HDMI_VRR",
+            "FreeSync",
+            "G-SYNC",
+            "G-SYNC_Compatible",
+            "Other",
+            null
+          ]
+        },
+        "dsc_required": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "timing": {
+          "$ref": "#/$defs/Timing"
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^EV-"
+          }
+        },
+        "status": {
+          "$ref": "#/$defs/Confidence"
+        }
+      }
+    },
+    "VerifiedMode": {
+      "description": "A documented operating mode of an exact port (verified_operating_modes, dsc_documented_modes, max_verified_mode). status is required; evidence_ids (at least one) are required unless status is UNKNOWN.",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/Mode"
+        }
+      ],
+      "required": [
+        "status"
+      ],
+      "if": {
+        "properties": {
+          "status": {
+            "const": "UNKNOWN"
+          }
+        }
+      },
+      "else": {
+        "required": [
+          "evidence_ids"
+        ],
+        "properties": {
+          "evidence_ids": {
+            "type": "array",
+            "minItems": 1
+          }
+        }
+      },
+      "properties": {
+        "status": {
+          "enum": [
+            "VERIFIED",
+            "UNKNOWN"
+          ]
+        }
+      }
+    },
+    "Timing": {
+      "type": "object",
+      "required": [
+        "h_total",
+        "v_total",
+        "pixel_clock_khz",
+        "source"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "h_total": {
+          "$ref": "#/$defs/Field",
+          "description": "Active + horizontal blanking, pixels."
+        },
+        "v_total": {
+          "$ref": "#/$defs/Field",
+          "description": "Active + vertical blanking, lines."
+        },
+        "h_blank": {
+          "$ref": "#/$defs/Field"
+        },
+        "v_blank": {
+          "$ref": "#/$defs/Field"
+        },
+        "pixel_clock_khz": {
+          "$ref": "#/$defs/Field"
+        },
+        "source": {
+          "enum": [
+            "EDID_DTD",
+            "EDID_DisplayID",
+            "manufacturer_timing_table",
+            "CVT_RB",
+            "CVT_RBv2",
+            "CVT_RBv3",
+            "CTA-861",
+            "UNKNOWN"
+          ],
+          "description": "CVT/CTA-derived timings are DERIVED, not the monitor's documented timing."
+        }
+      }
+    },
+    "Port": {
+      "type": "object",
+      "required": [
+        "port_id",
+        "physical_connector",
+        "link"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "port_id": {
+          "type": "string",
+          "description": "Exact port label, e.g. 'DP 1', 'HDMI 2', 'USB-C (left)'."
+        },
+        "physical_connector": {
+          "enum": [
+            "DP",
+            "miniDP",
+            "HDMI",
+            "miniHDMI",
+            "USB-C",
+            "DVI",
+            "Other",
+            "UNKNOWN"
+          ]
+        },
+        "direction": {
+          "enum": [
+            "output",
+            "input",
+            "both"
+          ]
+        },
+        "link": {
+          "$ref": "#/$defs/LinkCapability"
+        },
+        "dual_mode_dp_plus_plus": {
+          "$ref": "#/$defs/Field",
+          "description": "Source DP port supports DP++ (needed for passive DP-to-HDMI)."
+        },
+        "verified_operating_modes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/VerifiedMode"
+          },
+          "description": "Manufacturer-verified modes for THIS port only. The sole basis for PASS."
+        },
+        "features": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "hdr": {
+              "$ref": "#/$defs/Field"
+            },
+            "max_bit_depth_bpc": {
+              "$ref": "#/$defs/Field"
+            },
+            "chroma_formats": {
+              "$ref": "#/$defs/Field"
+            },
+            "vrr": {
+              "$ref": "#/$defs/Field"
+            }
+          }
+        }
+      }
+    },
+    "Device": {
+      "type": "object",
+      "required": [
+        "device_id",
+        "role",
+        "identity",
+        "ports"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "device_id": {
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "source",
+            "sink",
+            "cable",
+            "passive_adapter",
+            "active_adapter",
+            "dock",
+            "mst_hub",
+            "other"
+          ]
+        },
+        "identity": {
+          "$ref": "#/$defs/Identity"
+        },
+        "ports": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Port"
+          }
+        },
+        "max_displays": {
+          "$ref": "#/$defs/Field",
+          "description": "Only for role=source: documented maximum number of simultaneous displays."
+        },
+        "cable": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Only for role=cable.",
+          "properties": {
+            "certification_program": {
+              "$ref": "#/$defs/Field",
+              "description": "e.g. VESA DP8K/DP40/DP80, HDMI Premium High Speed, HDMI Ultra High Speed. Certification must be verifiable, not a printed label."
+            },
+            "certification_id": {
+              "$ref": "#/$defs/Field"
+            },
+            "rated_link": {
+              "$ref": "#/$defs/Field",
+              "description": "Rated maximum link rate/class from certification or manufacturer."
+            },
+            "length_m": {
+              "$ref": "#/$defs/Field"
+            },
+            "certified_length_m": {
+              "$ref": "#/$defs/Field",
+              "description": "Maximum length covered by the certification. A cable longer than this is not covered by its certification."
+            },
+            "active_or_passive": {
+              "$ref": "#/$defs/Field"
+            },
+            "directional": {
+              "$ref": "#/$defs/Field"
+            },
+            "marketing_claims": {
+              "type": "array",
+              "description": "Label claims like '8K 60Hz'. Stored for explanation only; never a cap and never proof.",
+              "items": {
+                "type": "object",
+                "required": [
+                  "text",
+                  "evidence_ids"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "evidence_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Request": {
+      "type": "object",
+      "required": [
+        "mode",
+        "display_count"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "$ref": "#/$defs/Mode"
+        },
+        "display_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "require_hdr": {
+          "type": "boolean"
+        },
+        "require_vrr": {
+          "type": "boolean"
+        },
+        "accept_dsc": {
+          "type": "boolean",
+          "default": true
+        },
+        "accept_chroma_subsampling": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "Environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "os": {
+          "$ref": "#/$defs/Field"
+        },
+        "os_version": {
+          "$ref": "#/$defs/Field"
+        },
+        "gpu_driver": {
+          "$ref": "#/$defs/Field"
+        },
+        "os_mst_support": {
+          "$ref": "#/$defs/Field",
+          "description": "Documented OS support for DisplayPort MST (true/false/null)."
+        },
+        "firmware_constraints": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Field"
+          }
+        }
+      }
+    },
+    "Segment": {
+      "type": "object",
+      "required": [
+        "segment_id",
+        "device_id",
+        "in_port_id",
+        "out_port_id",
+        "kind"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "segment_id": {
+          "type": "string"
+        },
+        "device_id": {
+          "type": "string"
+        },
+        "in_port_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "out_port_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "kind": {
+          "enum": [
+            "source_output",
+            "cable",
+            "passive_adapter",
+            "active_converter",
+            "dock",
+            "usb_c_alt_mode",
+            "usb4_tunnel",
+            "mst_hub",
+            "sink_input"
+          ]
+        },
+        "protocol_in": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "protocol_out": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "Path": {
+      "type": "object",
+      "required": [
+        "segments"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "segments": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "$ref": "#/$defs/Segment"
+          }
+        },
+        "shared_bandwidth_groups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "group_id",
+              "payload",
+              "members"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "group_id": {
+                "type": "string"
+              },
+              "payload": {
+                "$ref": "#/$defs/Field"
+              },
+              "members": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "SegmentResult": {
+      "type": "object",
+      "required": [
+        "segment_id",
+        "raw_bitrate",
+        "usable_payload",
+        "status"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "segment_id": {
+          "type": "string"
+        },
+        "raw_bitrate": {
+          "$ref": "#/$defs/Field"
+        },
+        "usable_payload": {
+          "$ref": "#/$defs/Field"
+        },
+        "dsc_available": {
+          "$ref": "#/$defs/Field"
+        },
+        "feature_support": {
+          "type": "object"
+        },
+        "status": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "unknown_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Result": {
+      "type": "object",
+      "required": [
+        "verdict",
+        "limiting_segment",
+        "prerequisites",
+        "max_verified_mode",
+        "arithmetic",
+        "reason",
+        "sources",
+        "unknowns",
+        "sub_results"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "verdict": {
+          "enum": [
+            "PASS",
+            "CONDITIONAL",
+            "FAIL",
+            "UNKNOWN"
+          ]
+        },
+        "limiting_segment": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "prerequisites": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "max_verified_mode": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/VerifiedMode"
+            },
+            {
+              "const": null
+            }
+          ],
+          "description": "Highest manufacturer-verified mode on the whole path; null when none verified."
+        },
+        "arithmetic": {
+          "type": "object",
+          "required": [
+            "required_bitrate",
+            "path_usable_payload",
+            "assessment"
+          ],
+          "additionalProperties": false,
+          "description": "Arithmetic feasibility only. Never presented as verification.",
+          "properties": {
+            "required_bitrate": {
+              "$ref": "#/$defs/Field"
+            },
+            "path_usable_payload": {
+              "$ref": "#/$defs/Field"
+            },
+            "assessment": {
+              "enum": [
+                "FITS_WITH_MARGIN",
+                "FITS_TIGHT",
+                "EXCEEDS",
+                "LOWER_BOUND_ONLY",
+                "UNKNOWN"
+              ]
+            },
+            "max_arithmetic_mode": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/Mode"
+                },
+                {
+                  "const": null
+                }
+              ],
+              "description": "Labelled 'calculated, not verified' in UI."
+            },
+            "path_payload_limiting_segment": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Segment whose usable payload is lowest (bandwidth limit), reported even when the verdict is PASS."
+            }
+          }
+        },
+        "reason": {
+          "type": "string"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^EV-"
+          }
+        },
+        "unknowns": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "field",
+              "needed_evidence"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "field": {
+                "type": "string"
+              },
+              "needed_evidence": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "sub_results": {
+          "type": "array",
+          "description": "Joint and separate verdicts for feature combinations (e.g. 8-bit SDR vs HDR 10-bit RGB vs VRR).",
+          "items": {
+            "type": "object",
+            "required": [
+              "label",
+              "mode",
+              "verdict"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "mode": {
+                "$ref": "#/$defs/Mode"
+              },
+              "verdict": {
+                "enum": [
+                  "PASS",
+                  "CONDITIONAL",
+                  "FAIL",
+                  "UNKNOWN"
+                ]
+              },
+              "limiting_segment": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "reason": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "purchase_needed": {
+          "enum": [
+            "NO",
+            "YES",
+            "UNKNOWN"
+          ]
+        },
+        "recommendation": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Cheapest verified-adequate class/item; price and affiliate data attached after verdict, never reorders adequacy."
+        },
+        "explanations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Plain-language explanations (marketing labels, version labels). Never change the verdict."
+        }
+      },
+      "allOf": [
+        {
+          "description": "PASS invariant (L6 + REM-02 NEW-M1/NEW-M3): max_verified_mode non-null with status VERIFIED, sources non-empty (resolution checked by lint), assessment never UNKNOWN; EXCEEDS only when max_verified_mode is a documented DSC mode (dsc_required true).",
+          "if": {
+            "properties": {
+              "verdict": {
+                "const": "PASS"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "max_verified_mode": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/VerifiedMode"
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "status"
+                    ],
+                    "properties": {
+                      "status": {
+                        "const": "VERIFIED"
+                      }
+                    }
+                  }
+                ]
+              },
+              "sources": {
+                "type": "array",
+                "minItems": 1
+              },
+              "arithmetic": {
+                "type": "object",
+                "properties": {
+                  "assessment": {
+                    "not": {
+                      "const": "UNKNOWN"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "description": "NEW-M1: PASS with arithmetic EXCEEDS only for a documented DSC mode.",
+          "if": {
+            "properties": {
+              "verdict": {
+                "const": "PASS"
+              },
+              "arithmetic": {
+                "type": "object",
+                "properties": {
+                  "assessment": {
+                    "const": "EXCEEDS"
+                  }
+                }
+              }
+            },
+            "required": [
+              "verdict",
+              "arithmetic"
+            ]
+          },
+          "then": {
+            "properties": {
+              "max_verified_mode": {
+                "type": "object",
+                "required": [
+                  "dsc_required"
+                ],
+                "properties": {
+                  "dsc_required": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "description": "UNKNOWN invariant: unknowns non-empty.",
+          "if": {
+            "properties": {
+              "verdict": {
+                "const": "UNKNOWN"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "unknowns": {
+                "type": "array",
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
