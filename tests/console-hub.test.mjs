@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
+import vm from 'node:vm';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
@@ -32,18 +33,19 @@ test('CH-1 hub page meta: canonical, title, description, robots, og, analytics',
   assert.equal((html.match(/<h1>/g) || []).length, 1);
 });
 
-test('CH-2 JSON-LD: TechArticle date = visible Updated = sitemap lastmod; Breadcrumb ends at page', () => {
+test('CH-2 JSON-LD + dates: no unconfirmed release date (no dateModified, no Updated label, no hub lastmod); sources-checked date shown; Breadcrumb ends at page', () => {
   const blocks = ldBlocks();
   const art = blocks.find((b) => b['@type'] === 'TechArticle');
   const bc = blocks.find((b) => b['@type'] === 'BreadcrumbList');
   assert.ok(art && bc);
   assert.equal(art.mainEntityOfPage, URL_);
-  const visible = html.match(/Updated: (\d{4}-\d{2}-\d{2})/)[1];
-  assert.equal(art.dateModified, visible);
+  assert.ok(!('dateModified' in art), 'dateModified is set at release');
+  assert.ok(!/Updated:/.test(html), 'Updated label is set at release');
+  assert.ok(html.includes('Sources checked: 2026-10-18'));
   const xml = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
-  const m = xml.match(new RegExp('<loc>' + URL_.replace(/[.]/g, '\\.') + '</loc>\\s*<lastmod>([^<]+)</lastmod>'));
-  assert.ok(m, 'hub in sitemap');
-  assert.equal(m[1], visible);
+  const entry = xml.match(new RegExp('<url>\\s*<loc>' + URL_.replace(/[.]/g, '\\.') + '</loc>([\\s\\S]*?)</url>'));
+  assert.ok(entry, 'hub in sitemap');
+  assert.ok(!/<lastmod>/.test(entry[1]), 'hub lastmod is set at release');
   const last = bc.itemListElement[bc.itemListElement.length - 1];
   assert.equal(last.item, URL_);
   assert.equal(bc.itemListElement[1].item, 'https://elorum.github.io/ELORUMTECH/guides/');
@@ -150,4 +152,81 @@ test('CH-12 Engine CTAs use exact Engine source/destination labels', () => {
     assert.ok(index.includes('<option>' + decodeURIComponent(m[1]) + '</option>'), m[1]);
     assert.ok(index.includes('<option>' + decodeURIComponent(m[2]) + '</option>'), m[2]);
   }
+});
+
+test('CH-13 HIGH-1: Microsoft disagreement on 120 Hz shown, each statement with its own article', () => {
+  const tv = 'https://support.xbox.com/en-US/help/hardware-network/display-sound/change-tv-display-resolution';
+  const k4 = 'https://support.xbox.com/en-US/help/hardware-network/display-sound/4k-gaming-at-120hz';
+  const refresh = decode(html.match(/<h2 id="refresh">[\s\S]*?<\/table>/)[0]);
+  for (const hay of [html, refresh]) {
+    assert.ok(decode(hay).includes('120Hz is only available for 1080p and 1440p'));
+    assert.ok(/If you own an Xbox Series S and wish to game in 4K@120Hz, you.ll need to acquire a certified Ultra High Speed HDMI cable/.test(decode(hay)));
+    assert.ok(hay.includes(tv) && hay.includes(k4));
+  }
+  assert.ok(!/4K (at )?120 Hz needs (a |an )?(Xbox )?Series X/i.test(html), 'Series X requirement not stated as settled');
+  for (const d of ['xbox-x', 'xbox-s']) {
+    assert.ok(/120Hz is only available for 1080p and 1440p/.test(hub.PORT_FACTS[d].maxMode), d);
+    assert.deepEqual(hub.PORT_FACTS[d].src, ['xb-120', 'xb-tv']);
+    const steps = hub.plan(d, 'no-120').steps;
+    const tvStep = steps.find((x) => x.sources.some((s) => s.url === tv) && /120Hz is only available for 1080p and 1440p/.test(x.text));
+    const k4Step = steps.find((x) => x.sources.some((s) => s.url === k4) && /4K/.test(x.text));
+    assert.ok(tvStep && k4Step, d);
+    assert.ok(!/4K at 120 Hz needs/.test(steps.map((x) => x.text).join(' ')));
+  }
+  assert.match(hub.plan('xbox-s', 'no-120').steps.map((x) => x.text).join(' '), /If you own an Xbox Series S and wish to game in 4K@120Hz/);
+  const faq = ldBlocks().find((b) => b['@type'] === 'FAQPage').mainEntity.find((q) => q.name === 'Can Xbox run 120 Hz without HDMI 2.1?');
+  assert.match(faq.acceptedAnswer.text, /120Hz is only available for 1080p and 1440p/);
+  assert.match(faq.acceptedAnswer.text, /certified Ultra High Speed HDMI cable/);
+});
+
+test('CH-14 M2: exactly these 7 cells are PARTIAL (sourced + UNKNOWN steps)', () => {
+  const partial = [];
+  for (const d of Object.keys(hub.DEVICES)) for (const s of Object.keys(hub.SYMPTOMS)) {
+    const p = hub.plan(d, s);
+    if (p.verdict === 'PARTIAL') {
+      partial.push(d + '/' + s);
+      assert.ok(p.steps.some((x) => x.status === 'SOURCED') && p.steps.some((x) => x.status === 'UNKNOWN'), d + '/' + s);
+    }
+  }
+  assert.deepEqual(partial.sort(), ['ally-x/no-120', 'ally-x/no-signal', 'ally/no-signal', 'legion-go/no-120', 'legion-go/no-signal', 'switch2/chain', 'switch2/no-signal'].sort());
+});
+
+function renderPicker(device, symptom) {
+  const script = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => m[1]).find((s) => s.includes('ElorumConsoleHub'));
+  assert.ok(script, 'inline picker script');
+  const listeners = {};
+  const el = (v) => ({ value: v, innerHTML: '', addEventListener: (ev, fn) => { (listeners[ev] = listeners[ev] || []).push(fn); } });
+  const els = { hubDevice: el(device), hubSymptom: el(symptom), hubResult: el('') };
+  const esc = (t) => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const document = {
+    getElementById: (id) => els[id] || null,
+    createElement: () => { const o = { textContent: '' }; Object.defineProperty(o, 'innerHTML', { get() { return esc(o.textContent); } }); return o; }
+  };
+  const window = { ElorumConsoleHub: hub };
+  vm.runInNewContext(script, { window, document, location: { href: 'https://elorum.github.io/ELORUMTECH/' + PAGE, search: '' }, URL, URLSearchParams, history: { replaceState() {} } });
+  return els.hubResult.innerHTML;
+}
+
+test('CH-15 M2: inline picker renders UNKNOWN badge for UNKNOWN steps and for null maxMode', () => {
+  const out = renderPicker('ally-x', 'wrong-res');
+  assert.ok(out.includes('<li><span class="unk">UNKNOWN</span> '), 'UNKNOWN step badge');
+  assert.ok(out.includes('Stated modes: <span class="unk">UNKNOWN</span>'), 'null maxMode renders UNKNOWN');
+  assert.ok(out.includes('<span class="pill">UNKNOWN</span>'));
+  const ok = renderPicker('ps5', 'no-signal');
+  assert.ok(ok.includes('<span class="pill">SOURCED</span>') && !ok.includes('class="unk"'));
+  assert.ok(!/\bPASS\b/.test(out + ok));
+});
+
+test('CH-16 L1: plan() rejects prototype keys', () => {
+  for (const [d, s] of [['__proto__', 'no-signal'], ['constructor', 'no-signal'], ['ps5', '__proto__'], ['ps5', 'constructor'], ['toString', 'hasOwnProperty']]) {
+    assert.deepEqual(hub.plan(d, s), { ok: false, error: 'UNKNOWN_INPUT', steps: [] }, d + '/' + s);
+  }
+});
+
+test('CH-17 L2-L4 wording: reset myth, HDMI-only scope, Legion Go controller ports', () => {
+  assert.ok(html.includes('It is not the first step.'));
+  assert.ok(!/PS5, Xbox and the Switch 2 dock output HDMI only/.test(html));
+  assert.ok(!/Consoles send video over HDMI/.test(html));
+  assert.match(hub.PORT_FACTS['legion-go'].output, /on the controllers/);
+  assert.ok(html.includes('charging only are on the controllers'));
 });

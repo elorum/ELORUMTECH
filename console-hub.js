@@ -57,13 +57,13 @@
   // Port facts per device: what the OEM page states. null = not stated on the page we opened (UNKNOWN).
   var PORT_FACTS = {
     ps5: { output: 'HDMI (PS5 supports the HDMI 2.1 specification and 4K 120 Hz output)', maxMode: '4K 120 Hz (PlayStation); 8K 60 Hz needs a CFI-7000 model and a DSC-capable 8K display', src: ['ps-res'] },
-    'xbox-x': { output: 'HDMI', maxMode: '4K 120 Hz needs Series X + Ultra High Speed HDMI cable + HDMI 2.1 TV (Xbox Support)', src: ['xb-120'] },
-    'xbox-s': { output: 'HDMI', maxMode: '120 Hz at a lower resolution than 4K (Xbox Support, "Enable 120 Hz without 4K")', src: ['xb-120', 'xb-tv'] },
+    'xbox-x': { output: 'HDMI', maxMode: 'Microsoft articles disagree. "Set up 4K gaming at 120 Hz": 4K at 120 fps with an Xbox Series X, an Ultra High Speed HDMI cable that supports HDMI 2.1 and an HDMI 2.1 TV. "How to change the TV display settings": "120Hz is only available for 1080p and 1440p". Which applies to your setup is UNKNOWN until the console offers it', src: ['xb-120', 'xb-tv'] },
+    'xbox-s': { output: 'HDMI', maxMode: 'Microsoft articles disagree. "Set up 4K gaming at 120 Hz": Series S can use 120 Hz at a lower resolution, and "If you own an Xbox Series S and wish to game in 4K@120Hz, you\u2019ll need to acquire a certified Ultra High Speed HDMI cable". "How to change the TV display settings": "120Hz is only available for 1080p and 1440p". 4K 120 Hz on Series S is UNKNOWN', src: ['xb-120', 'xb-tv'] },
     switch2: { output: 'HDMI connector on the Switch 2 dock (TV mode)', maxMode: '3840x2160 at 60 fps; 120 fps when 1920x1080 or 2560x1440 is selected; HDR10; VRR up to 120 Hz', src: ['ns2-specs'] },
     deck: { output: 'USB-C; official Docking Station: DisplayPort 1.4 + HDMI 2.0', maxMode: 'Official dock: up to 4K 60 Hz or 1440p 120 Hz', src: ['valve-dockspec'] },
     'ally-x': { output: '1x USB4 Type-C (Thunderbolt 4 compliance, DisplayPort 1.4 with FreeSync, PD 3.0) + 1x USB 3.2 Gen 2 Type-C with DisplayPort', maxMode: null, src: ['asus-allyx'] },
     ally: { output: '2x USB 3.2 Gen 2 Type-C with DisplayPort and power delivery (DisplayPort version not stated)', maxMode: null, src: ['asus-ally'] },
-    'legion-go': { output: '2x USB-C (USB4 40Gbps) with DisplayPort 1.4 on 8AHP2 and DisplayPort 2.1 on 8ASP2; the 2x charge-only USB-C ports carry no video', maxMode: null, src: ['lenovo-8ahp2', 'lenovo-8asp2'] }
+    'legion-go': { output: '2x USB-C (USB4 40Gbps) with DisplayPort 1.4 on 8AHP2 and DisplayPort 2.1 on 8ASP2 (the 2x "support charging only" USB-C ports PSREF also lists are on the controllers)', maxMode: null, src: ['lenovo-8ahp2', 'lenovo-8asp2'] }
   };
 
   function s(text, src, extra) {
@@ -108,7 +108,8 @@
         s('With an AVR: power on TV, then AVR, then console; switch the AVR input away and back; restart the AVR; set Video fidelity & overscan > Display to HDMI.', ['xb-blank'])
       ],
       'no-120': [
-        s('4K at 120 Hz needs all three: Xbox Series X, an Ultra High Speed HDMI cable that supports HDMI 2.1, and a TV that supports HDMI 2.1. Then set Resolution 4K UHD and Refresh rate 120 Hz.', ['xb-120']),
+        s('Microsoft\u2019s "Set up 4K gaming at 120 Hz" article says 4K at 120 fps is available with an Xbox Series X, an Ultra High Speed HDMI cable that supports HDMI 2.1 and a TV that supports HDMI 2.1 (Resolution 4K UHD, Refresh rate 120 Hz).', ['xb-120']),
+        s('Microsoft\u2019s "How to change the TV display settings" article disagrees: "120Hz is only available for 1080p and 1440p"; 4K UHD sets 60Hz by default. Treat 4K 120 Hz as unconfirmed until your console offers it.', ['xb-tv']),
         s('No HDMI 2.1? You can still set Refresh rate to 120 Hz at a lower resolution; from 4K the console drops to the highest resolution your display supports at 120 Hz.', ['xb-120', 'xb-tv']),
         s('Your display must support 120 Hz over HDMI. Some monitors support 120 Hz over DisplayPort but not over HDMI.', ['xb-tv']),
         s('If a resolution both devices support is not listed, set Video fidelity & overscan > Overrides > TV connection to HDMI. If you pick an unsupported mode, wait 20 s and it reverts.', ['xb-tv'])
@@ -132,7 +133,8 @@
         s('Recovery: Series S has no Eject button. Hold the Xbox button + Pair button until the second beep to start at 640 \u00d7 480, then choose a resolution.', ['xb-blank'], { recovery: true })
       ],
       'no-120': [
-        s('On Series S, set Refresh rate to 120 Hz; the console uses a lower resolution than 4K to reach 120 Hz.', ['xb-120']),
+        s('Microsoft\u2019s "Set up 4K gaming at 120 Hz" article: on Series S set Refresh rate to 120 Hz and the console lowers the resolution. The same article also says: "If you own an Xbox Series S and wish to game in 4K@120Hz, you\u2019ll need to acquire a certified Ultra High Speed HDMI cable."', ['xb-120']),
+        s('Microsoft\u2019s "How to change the TV display settings" article disagrees: "120Hz is only available for 1080p and 1440p". Treat 4K 120 Hz on Series S as unconfirmed.', ['xb-tv']),
         s('Your display must support 120 Hz over HDMI, not only over DisplayPort.', ['xb-tv'])
       ],
       'wrong-res': [
@@ -218,7 +220,7 @@
     },
     'legion-go': {
       'no-signal': [
-        s('Use one of the two USB4 40Gbps USB-C ports. Lenovo PSREF lists 2 further USB-C ports as "support charging only": no video there.', ['lenovo-8ahp2', 'lenovo-8asp2']),
+        s('Use one of the two USB4 40Gbps USB-C ports on the console. The 2 further USB-C ports PSREF lists as "support charging only" are on the controllers.', ['lenovo-8ahp2', 'lenovo-8asp2']),
         unknown(COMMON_HANDHELD_UNKNOWN)
       ],
       'no-120': [
@@ -232,8 +234,9 @@
   };
 
   function plan(deviceId, symptomId) {
-    var dev = DEVICES[deviceId];
-    var sym = SYMPTOMS[symptomId];
+    var own = Object.prototype.hasOwnProperty;
+    var dev = own.call(DEVICES, deviceId) ? DEVICES[deviceId] : null;
+    var sym = own.call(SYMPTOMS, symptomId) ? SYMPTOMS[symptomId] : null;
     if (!dev || !sym) return { ok: false, error: 'UNKNOWN_INPUT', steps: [] };
     var steps = (PLAYBOOK[deviceId] && PLAYBOOK[deviceId][symptomId]) || [unknown('UNKNOWN: no sourced steps for this combination yet.')];
     var sourced = steps.filter(function (x) { return x.status === 'SOURCED'; }).length;
