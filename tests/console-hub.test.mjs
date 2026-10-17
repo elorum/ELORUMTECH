@@ -11,7 +11,7 @@ const root = path.resolve(__dirname, '..');
 const require = createRequire(import.meta.url);
 const hub = require(path.join(root, 'console-hub.js'));
 const PAGE = 'guides/console-handheld-display-hub.html';
-const URL_ = 'https://elorum.github.io/ELORUMTECH/' + PAGE;
+const URL_ = 'https://elorumtech.elorum.world/' + PAGE;
 const html = fs.readFileSync(path.join(root, PAGE), 'utf8');
 const xml = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
 
@@ -30,7 +30,7 @@ test('CH-1 hub page meta: canonical, title, description, robots, og, analytics',
   const desc = decode(html.match(/<meta name="description" content="([^"]+)">/)[1]);
   assert.ok(desc.length >= 120 && desc.length <= 170, 'description length ' + desc.length);
   assert.ok(html.includes('<meta name="robots" content="index,follow,max-image-preview:large">'));
-  assert.ok(html.includes('/ELORUMTECH/analytics.js'));
+  assert.ok(html.includes('/analytics.js'));
   assert.equal((html.match(/<h1>/g) || []).length, 1);
 });
 
@@ -48,7 +48,7 @@ test('CH-2 JSON-LD + dates: dateModified, Updated, lastmod = 2026-10-18; sources
   const bc = blocks.find((b) => b['@type'] === 'BreadcrumbList');
   const last = bc.itemListElement[bc.itemListElement.length - 1];
   assert.equal(last.item, URL_);
-  assert.equal(bc.itemListElement[1].item, 'https://elorum.github.io/ELORUMTECH/guides/');
+  assert.equal(bc.itemListElement[1].item, 'https://elorumtech.elorum.world/guides/');
 });
 
 test('CH-3 FAQPage JSON-LD equals the visible FAQ exactly', () => {
@@ -75,7 +75,7 @@ test('CH-4 every relative link on the hub resolves to a file on this branch', ()
 
 test('CH-5 external links on the hub are OEM / standards bodies only', () => {
   const ext = [...html.matchAll(/href="(https?:\/\/[^"]+)"/g)].map((m) => new URL(decode(m[1])));
-  const offsite = ext.filter((u) => u.host !== 'elorum.github.io');
+  const offsite = ext.filter((u) => u.host !== 'elorumtech.elorum.world');
   assert.ok(offsite.length >= 10);
   for (const u of offsite) assert.ok(ALLOWED_HOSTS.includes(u.host), 'non-primary source ' + u.href);
 });
@@ -203,7 +203,7 @@ function renderPicker(device, symptom) {
     createElement: () => { const o = { textContent: '' }; Object.defineProperty(o, 'innerHTML', { get() { return esc(o.textContent); } }); return o; }
   };
   const window = { ElorumConsoleHub: hub };
-  vm.runInNewContext(script, { window, document, location: { href: 'https://elorum.github.io/ELORUMTECH/' + PAGE, search: '' }, URL, URLSearchParams, history: { replaceState() {} } });
+  vm.runInNewContext(script, { window, document, location: { href: 'https://elorumtech.elorum.world/' + PAGE, search: '' }, URL, URLSearchParams, history: { replaceState() {} } });
   return els.hubResult.innerHTML;
 }
 

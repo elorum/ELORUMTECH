@@ -188,7 +188,10 @@
   </url>
   <url>
     <loc>https://elorumtech.elorum.world/guides/console-handheld-display-hub.html</loc>
+<<<<<<< HEAD
     <lastmod>2026-10-18</lastmod>
+=======
+>>>>>>> 01f402f (ELORUMTECH-SUBDOMAIN-20261018-01-REBASE01: cover console hub origin + analytics)
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
