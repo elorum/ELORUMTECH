@@ -727,6 +727,16 @@ test('REM02-P7 cable rated_link with an unknown unit ("Gbps") or a missing unit 
   notPass(ev(base({ cab: cable({ rated: V(1, undefined, 'EV-FIXTURE-CERT') }) })), 'cable.rated_link.unit');
   assert.equal(ev(base({ cab: cable({ rated: V(1, 'Gbit/s per lane', 'EV-FIXTURE-CERT') }) })).verdict, 'FAIL');
 });
+// REBASE01 / QA F1: mutant G18 — non-numeric / non-finite rated_link.value must be UNKNOWN, never PASS
+// (null/undefined are schema-rejected NEW-L3 before evaluate; head returns UNKNOWN for the values below.)
+test('REBASE01-G18 cable rated_link.value that is non-numeric, NaN or Infinity → UNKNOWN, never PASS', () => {
+  for (const bad of ['32.4', NaN, Infinity, -Infinity, -1, 0]) {
+    const r = ev(base({ cab: cable({ rated: V(bad, 'Gbit/s per lane', 'EV-FIXTURE-CERT') }) }));
+    assert.equal(r.verdict, 'UNKNOWN', 'rated_link.value=' + String(bad));
+    assert.notEqual(r.verdict, 'PASS');
+    notPass(r, 'cable.rated_link.unit');
+  }
+});
 test('REM02-M15 cable certification UNKNOWN (rated link VERIFIED) → not PASS', () => {
   notPass(ev(base({ cab: cable({ cert: U() }) })), /cable\.certification_program/);
 });
