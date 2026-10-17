@@ -19,6 +19,11 @@
       "file": "compatibility/macbook-air-m5-dell-u2725qe.html",
       "url": "https://elorum.github.io/ELORUMTECH/compatibility/macbook-air-m5-dell-u2725qe.html",
       "visibleUpdated": false
+    },
+    {
+      "file": "guides/bios-fast-boot-troubleshooter.html",
+      "url": "https://elorum.github.io/ELORUMTECH/guides/bios-fast-boot-troubleshooter.html",
+      "visibleUpdated": true
     }
   ]
 }
