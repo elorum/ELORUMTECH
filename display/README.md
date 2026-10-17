@@ -32,7 +32,7 @@ Spec: the REV-passed Issue #10 plan REM-01 (PLAN.md `8c6d3e45…`, EVIDENCE-SCHE
 - INFO-C: `derived_from` pointers are required but not resolved by lint (documented limitation).
 
 ## REM-01 notes (REV FAIL TO DEV, comment 6242097510 on Elorum-site #76)
-- HIGH-1: the "Can't see the BIOS screen?" related link is removed from `display-connection-solver.html` and `external-monitor-not-detected.html`, so this branch no longer depends on PR #14. A follow-up adds it back after #14 merges. `tests/display-pages.test.mjs` checks that every relative `href`/`src` in the four pages resolves to a file in the tree (`/ELORUMTECH/…` maps to the repo root).
+- HIGH-1: the "Can't see the BIOS screen?" related link is removed from `display-connection-solver.html` and `external-monitor-not-detected.html`, so this branch no longer depends on PR #14. A follow-up adds it back after #14 merges. `tests/display-pages.test.mjs` checks that every relative `href`/`src` in the four pages resolves to a file in the tree (`/` maps to the repo root (custom domain; no /ELORUMTECH/ prefix)).
 - HIGH-2: PLAN §4 makes the cable element mandatory. A path with no `cable` segment gets the non-replaceable unknown `path.cable`, so it can never reach PASS.
 - MEDIUM-1..3: named regression tests (`REM01-*`) kill the mutants E25, E30, E31, E37, E40, E41, E42, E45 and E46.
 - MEDIUM-4 (superseded by REM-02, which extends identity to every non-cable segment): exact-model identity was required for `source_output`, `sink_input`, `active_converter`, `dock` and `mst_hub`. REM-01 excluded:

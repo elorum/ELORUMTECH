@@ -1,0 +1,6 @@
+{
+  "schema": "elorumtech-site-origin/1",
+  "origin": "https://elorumtech.elorum.world",
+  "previous_origin": "https://elorum.github.io/ELORUMTECH",
+  "note": "Change `origin` here when moving to elorumtech.com (or another host). Absolute URLs in HTML, sitemap.xml, robots.txt, docs/release-date-gate.json and tests must equal this origin. The site is served at the host root (no /ELORUMTECH/ path prefix)."
+}
