@@ -9,7 +9,10 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
 const require = createRequire(import.meta.url);
 const bios = require(path.join(root, 'bios-fastboot.js'));
-const { diagnose, VERDICTS, GROUP, ALLOWED, FILE_IDENTITY, TESTED_CASE } = bios;
+const { diagnose, VERDICTS, GROUP, ALLOWED, FILE_IDENTITY, TESTED_CASE, LINKS } = bios;
+const SP_B550I = 'https://drivers.softpedia.com/get/MOTHERBOARD/GIGABYTE/Gigabyte-B550I-AORUS-PRO-AX-rev-1-0-Fast-Boot-Utility-B20-0420-1-for-Windows-10-64-bit.shtml';
+const GDC = 'https://www.gigabyte.com/Support/Consumer/Download';
+const SP_LIST = 'https://drivers.softpedia.com/get/MOTHERBOARD/GIGABYTE';
 
 const PAGE_REL = 'guides/bios-fast-boot-troubleshooter.html';
 const PAGE_URL = 'https://elorum.github.io/ELORUMTECH/' + PAGE_REL;
@@ -171,15 +174,82 @@ test('BF-16 page: required testimony wording, unknown versions and no universal 
   assert.doesNotMatch(visible, /Windows (10|11) (version )?\d{2}H\d/);
 });
 
-test('BF-17 page: SOURCE_UNVERIFIED gate — no Softpedia link, no download CTA, no executable/archive hosting', () => {
-  assert.match(visible, /SOURCE_UNVERIFIED/);
-  assert.doesNotMatch(page, /href="[^"]*softpedia[^"]*"/i);
+test('BF-17 page: OWNER_PROVIDED_SOURCE — one exact-board Softpedia link, scoped, nofollow; no hosting, no SOURCE_UNVERIFIED', () => {
+  assert.doesNotMatch(visible, /SOURCE_UNVERIFIED/);
+  assert.match(visible, /OWNER_PROVIDED_SOURCE/);
+  const spLinks = [...page.matchAll(/<a [^>]*href="(https:\/\/drivers\.softpedia\.com[^"]*)"[^>]*>/g)];
+  for (const m of spLinks) {
+    assert.ok(m[1] === SP_B550I || m[1] === SP_LIST, 'unexpected softpedia url ' + m[1]);
+    assert.match(m[0], /rel="nofollow noopener"/);
+  }
+  assert.ok(spLinks.some((m) => m[1] === SP_B550I));
+  const box = page.match(/<p class="dlbox">([\s\S]*?)<\/p>/)[1];
+  assert.ok(box.includes('href="' + SP_B550I + '"'));
+  assert.match(box, /class="ext" aria-hidden="true">↗/);
+  assert.match(box, /Only for: Gigabyte B550I AORUS PRO AX rev 1\.0, Windows 10 64-bit \(per the page title\)/);
+  assert.match(box, /testet på denne konfiguration/i);
+  const section = page.match(/<section class="dl" aria-labelledby="source-heading">([\s\S]*?)<\/section>/)[1];
+  for (const re of [/Digital Signatures/, /GIGA-BYTE TECHNOLOGY CO\., LTD\./, /antivirus/, /Stop on any warning/, /Do not disable security or click past the warning/, /do not claim[^.]*byte-for-byte/]) assert.match(section, re);
   assert.doesNotMatch(page, /href="[^"]*\.(zip|exe)"/i);
-  assert.doesNotMatch(page, /\bdownload=|>\s*Download (now|here|the utility)/i);
+  assert.doesNotMatch(page, /\bdownload=/i);
   const offenders = [];
   const walk = (d) => { for (const f of fs.readdirSync(d, { withFileTypes: true })) { if (f.name === '.git' || f.name === 'node_modules') continue; const p = path.join(d, f.name); if (f.isDirectory()) walk(p); else if (/\.(zip|exe|iss|msi)$/i.test(f.name)) offenders.push(p); } };
   walk(root);
   assert.deepEqual(offenders, []);
+});
+
+test('BF-17b page: all-boards section links GIGABYTE Download Center and warns against other boards\' files', () => {
+  const section = page.match(/<section class="dl" aria-labelledby="allboards-heading">([\s\S]*?)<\/section>/)[1];
+  assert.ok(section.includes('href="' + GDC + '"'));
+  assert.match(section, /exact board and revision/);
+  assert.match(section, /Don’t use another board’s file/);
+  assert.match(section, /Utility/);
+  assert.ok(!section.includes(SP_B550I), 'board-specific link must not be in the all-boards section');
+});
+
+test('BF-17c logic: LINKS constants match the page, owner-provided status, nofollow on third-party', () => {
+  assert.equal(LINKS.TESTED_BOARD.url, SP_B550I);
+  assert.equal(LINKS.TESTED_BOARD.sourceStatus, 'OWNER_PROVIDED_SOURCE');
+  assert.equal(LINKS.TESTED_BOARD.rel, 'nofollow noopener');
+  assert.deepEqual(LINKS.ALL_BOARDS.map((l) => l.url), [GDC, SP_LIST]);
+  for (const l of [LINKS.TESTED_BOARD, ...LINKS.ALL_BOARDS]) {
+    assert.ok(page.includes('href="' + l.url + '"'), 'page lacks ' + l.url);
+    if (/softpedia/.test(l.url)) assert.equal(l.rel, 'nofollow noopener');
+  }
+});
+
+test('BF-17d logic: only the exact tested-board branch shows the B550I link; unknown/other-board branches show all-boards link', () => {
+  const t = diagnose(TESTED);
+  assert.equal(t.links[0].url, SP_B550I);
+  assert.ok(t.links.some((l) => l.url === GDC));
+  assert.match(t.steps[0], /owner of the tested PC/);
+  assert.ok(t.cautions.some((c) => /titled for Windows 10 64-bit/.test(c)), 'win11 input gets the Win10-title caution');
+  assert.ok(!diagnose({ ...TESTED, os: 'win10-64' }).cautions.some((c) => /titled for Windows 10 64-bit/.test(c)));
+  for (const inp of [{ ...OTHER_GB, listing: 'listed' }, { ...OTHER_GB, listing: 'not-checked' }, { ...TESTED, revision: 'other' }, { ...TESTED, revision: 'unknown' }, { ...TESTED, model: 'unknown' }, { ...TESTED, vendor: 'unknown' }, { ...TESTED, os: 'unknown' }, {}]) {
+    const r = diagnose(inp);
+    assert.ok(r.links.some((l) => l.url === GDC), 'all-boards link missing for ' + JSON.stringify(inp));
+    assert.ok(!r.links.some((l) => l.url === SP_B550I), 'B550I link leaked for ' + JSON.stringify(inp));
+    assert.match(r.steps.concat(r.cautions).join(' ') + ' ' + r.summary, /exact board|another board|other models or revisions|exact model|tested board's file|unidentified board/);
+  }
+  let n = 0;
+  for (const inp of allInputs()) {
+    const r = diagnose(inp);
+    const hasB550I = r.links.some((l) => l.url === SP_B550I);
+    assert.equal(hasB550I, r.verdict === VERDICTS.TESTED_CONFIG, JSON.stringify(inp));
+    if (hasB550I) { n++; assert.equal(inp.model, 'b550i-aorus-pro-ax'); assert.equal(inp.revision, '1.0'); assert.equal(inp.vendor, 'gigabyte'); }
+    if (r.group === 'different-problem') assert.equal(r.links.length, 0);
+  }
+  assert.ok(n > 0);
+});
+
+test('BF-17e default form state shows no B550I link (default stays Unknown)', () => {
+  const form = page.match(/<form id="bios-form"[\s\S]*?<\/form>/)[0];
+  const defaults = {};
+  for (const m of form.matchAll(/name="([a-z]+)" value="([^"]+)" checked/g)) defaults[m[1]] = m[2];
+  const r = diagnose(defaults);
+  assert.equal(r.verdict, VERDICTS.UNKNOWN);
+  assert.ok(!r.links.some((l) => l.url === SP_B550I));
+  assert.match(page, /r\.links && r\.links\.length/);
 });
 
 test('BF-18 page: safety guidance present and no security bypass advice', () => {
@@ -242,6 +312,6 @@ test('BF-23 sitemap entry, guides hub link and internal links resolve', () => {
     assert.ok(fs.existsSync(target), 'broken internal link ' + href);
   }
   for (const m of page.matchAll(/href="(https?:[^"]+)"/g)) {
-    assert.match(m[1], /^https:\/\/(elorum\.github\.io|support\.microsoft\.com|learn\.microsoft\.com|www\.gigabyte\.com)\//, 'unexpected external host ' + m[1]);
+    assert.match(m[1], /^https:\/\/(elorum\.github\.io|support\.microsoft\.com|learn\.microsoft\.com|www\.gigabyte\.com|drivers\.softpedia\.com)\//, 'unexpected external host ' + m[1]);
   }
 });
