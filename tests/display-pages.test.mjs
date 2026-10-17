@@ -79,14 +79,14 @@ test('every in-page source citation resolves to a listed source', () => {
   }
 });
 
-test('REM01-HIGH-1 every relative href/src in the 4 new pages resolves to a file in the tree', () => {
+test('REM01-HIGH-1 / REM02-NEW-L3 every relative href/src (any quoting) in the 4 new pages and guides/index.html resolves to a file in the tree', () => {
   const guidesDir = new URL('../guides/', import.meta.url);
   const repoRoot = new URL('../', import.meta.url);
   let checked = 0;
-  for (const p of PAGES) {
+  for (const p of [...PAGES, 'index.html']) {
     const h = read('guides/' + p);
-    for (const m of h.matchAll(/\b(?:href|src)="([^"]*)"/g)) {
-      const ref = m[1];
+    for (const m of h.matchAll(/\s(?:href|src)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'>]+))/gi)) {
+      const ref = (m[1] ?? m[2] ?? m[3]).replace(/&amp;/g, '&');
       if (/^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i.test(ref)) continue; // absolute URL, protocol-relative or in-page anchor
       const clean = ref.split('#')[0].split('?')[0];
       assert.ok(clean.length > 0, `empty relative reference in ${p}`);

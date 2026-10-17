@@ -648,3 +648,177 @@ test('REM01-MEDIUM-3c quickSolve USB-C dock with USB 3 data halves the DP lanes 
   assert.notEqual(full.verdict, 'FAIL');
   assert.equal(full.elements[0].carries_gbps, 25.92);
 });
+
+// ---------------------------------------------------------------- REM-02 (QA FAIL 76/6242365621): fail-closed regression tests
+// Raw evaluate (no validity assertion) for documents that are invalid on purpose.
+const raw = (d) => E.evaluate(d);
+const notPass = (r, field) => {
+  assert.notEqual(r.verdict, 'PASS');
+  assert.ok(r.sub_results.every((s) => s.verdict !== 'PASS'), 'no PASS sub-result');
+  if (field) assert.ok(r.unknowns.some((u) => (field instanceof RegExp ? field.test(u.field) : u.field === field)), JSON.stringify(r.unknowns));
+};
+const seg = (d, kind) => d.path.segments.find((s) => s.kind === kind);
+test('REM02-P0 control: source_output → certified cable → sink_input, all VERIFIED + verified mode → PASS', () => {
+  assert.equal(ev(base()).verdict, 'PASS');
+});
+// B1: chain order and identity of every referenced device
+test('REM02-B1-P14 path [cable, sink_input] with no source device → UNKNOWN', () => {
+  const d = base(); d.devices = d.devices.slice(1); d.path.segments = d.path.segments.slice(1);
+  const r = ev(d); assert.equal(r.verdict, 'UNKNOWN'); notPass(r, 'path.segments[0].kind');
+  assert.notEqual(r.purchase_needed, 'NO');
+});
+for (const kind of ['usb_c_alt_mode', 'usb4_tunnel', 'passive_adapter', 'cable']) {
+  test(`REM02-B1-P2 first segment kind=${kind} (not source_output) → UNKNOWN even with a VERIFIED source model`, () => {
+    const d = base(); d.path.segments[0].kind = kind;
+    notPass(raw(d), 'path.segments[0].kind');
+  });
+}
+test('REM02-B1-P2c last segment kind=usb_c_alt_mode (not sink_input) → UNKNOWN', () => {
+  const d = base(); d.path.segments.at(-1).kind = 'usb_c_alt_mode';
+  notPass(raw(d), 'path.segments[2].kind');
+});
+test('REM02-B1 source_output / sink_input in the middle of the path → UNKNOWN', () => {
+  const m = mid('FIXTURE-MID', 'other', DP(), DP());
+  for (const kind of ['source_output', 'sink_input']) {
+    const d = doc({ src: source(DP()), mids: [{ device: m, kind }], snk: sink(DP(), { modes: [vmode(3440, 1440, 165)] }), request: { mode: F.UW165() } });
+    notPass(raw(d), /^path\.segments\[\d\]\.kind$/);
+  }
+});
+for (const kind of ['usb_c_alt_mode', 'usb4_tunnel', 'passive_adapter', 'mst_hub']) {
+  test(`REM02-B1-P1 ${kind} segment pointing at a separate device with model UNKNOWN → UNKNOWN (REV NEW-M1${kind === 'mst_hub' ? ', NEW-L2' : ''})`, () => {
+    const mk = (id) => { const m = mid('FIXTURE-MID', 'other', DP(), DP(), { identity: id }); return doc({ src: source(DP(), { dpp: V(true) }), mids: [{ device: m, kind }], snk: sink(DP(), { modes: [vmode(2560, 1440, 60)] }), request: { mode: q60(), display_count: kind === 'mst_hub' ? 2 : 1 }, env: { os_mst_support: V(true) }, groups: kind === 'mst_hub' ? [{ group_id: 'G-MST', payload: V(25.92, 'Gbit/s'), members: ['D1', 'D2'] }] : undefined }); };
+    const ctl = ev(mk(ident('FIXTURE-MID')));
+    assert.ok(!ctl.unknowns.some((u) => u.field === 'FIXTURE-MID.identity.model'), 'control has no identity unknown');
+    const r = ev(mk(ident(null)));
+    notPass(r, 'FIXTURE-MID.identity.model');
+    if (kind === 'mst_hub') assert.equal(ctl.verdict, 'PASS', 'NEW-L2 control: same MST path with a VERIFIED hub model is PASS');
+    const r2 = mk(ident('FIXTURE-MID')); r2.devices.find((x) => x.device_id === 'FIXTURE-MID').identity = {};
+    notPass(ev(r2), 'FIXTURE-MID.identity.model');
+  });
+}
+test('REM02-M24 a DERIVED identity model is not VERIFIED → UNKNOWN', () => {
+  const r = ev(base({ src: source(DP(), { identity: { ...ident('x'), model: D('FIXTURE-GPU-1', 'FIXTURE: inferred from a box photo') } }) }));
+  notPass(r, 'FIXTURE-SRC.identity.model');
+});
+// B2: intermediate segments with missing ports are never skipped
+test('REM02-B2-P3 dock segment with in/out port ids null → UNKNOWN', () => {
+  const d = doc({ src: source(DP()), mids: [{ device: mid('FIXTURE-DOCK', 'dock', DP(), DP()), kind: 'dock' }], snk: sink(DP(), { modes: [vmode(3440, 1440, 165)] }), request: { mode: F.UW165() } });
+  assert.equal(ev(d).verdict, 'PASS', 'control with ports set');
+  const s = seg(d, 'dock'); s.in_port_id = null; s.out_port_id = null;
+  const r = ev(d); notPass(r, 'S3.in_port_id'); notPass(r, 'S3.out_port_id');
+});
+test('REM02-B2-P3b converter out_port_id null does not drop its HBR (1.62×4) output limit → UNKNOWN; control FAIL', () => {
+  const d = doc({ src: source(DP()), mids: [{ device: mid('FIXTURE-CONV', 'active_adapter', DP(), DP(1.62, 4)), kind: 'active_converter' }], snk: sink(DP(), { modes: [vmode(3440, 1440, 165)] }), request: { mode: F.UW165() } });
+  assert.equal(ev(d).verdict, 'FAIL', 'control');
+  seg(d, 'active_converter').out_port_id = null;
+  notPass(ev(d), 'S3.out_port_id');
+});
+// High: cable family and rated_link unit
+test('REM02-P6 HDMI Ultra High Speed cable (48 Gbit/s total) on a DisplayPort path → UNKNOWN; DP cable on an HDMI path → UNKNOWN', () => {
+  const r = ev(base({ cab: cable({ cert: V('HDMI Ultra High Speed (FIXTURE)', undefined, 'EV-FIXTURE-CERT'), rated: V(48, 'Gbit/s total', 'EV-FIXTURE-CERT') }) }));
+  notPass(r, 'cable family');
+  const h = ev(doc({ src: source(FRL(), { port: 'HDMI 1', connector: 'HDMI' }), cab: cable({ rated: V(12, 'Gbit/s per lane', 'EV-FIXTURE-CERT') }), snk: sink(FRL(), { port: 'HDMI IN', connector: 'HDMI', modes: [vmode(3840, 2160, 120)] }), request: { mode: F.K4_120() } }));
+  notPass(h, 'cable family');
+  const t = ev(base({ cab: cable({ cert: V('HDMI Premium High Speed (FIXTURE)', undefined, 'EV-FIXTURE-CERT'), rated: V(8.1, 'Gbit/s per lane', 'EV-FIXTURE-CERT') }) }));
+  notPass(t, 'cable family');
+});
+test('REM02-P7 cable rated_link with an unknown unit ("Gbps") or a missing unit → UNKNOWN, never uncapped; control per-lane → FAIL', () => {
+  notPass(ev(base({ cab: cable({ rated: V(1, 'Gbps', 'EV-FIXTURE-CERT') }) })), 'cable.rated_link.unit');
+  notPass(ev(base({ cab: cable({ rated: V(1, undefined, 'EV-FIXTURE-CERT') }) })), 'cable.rated_link.unit');
+  assert.equal(ev(base({ cab: cable({ rated: V(1, 'Gbit/s per lane', 'EV-FIXTURE-CERT') }) })).verdict, 'FAIL');
+});
+test('REM02-M15 cable certification UNKNOWN (rated link VERIFIED) → not PASS', () => {
+  notPass(ev(base({ cab: cable({ cert: U() }) })), /cable\.certification_program/);
+});
+// High: evaluate() enforces validateDocument() and lint(); duplicates are linted
+test('REM02-P4 VERIFIED fields with evidence_ids [] (validateDocument errors) → UNKNOWN', () => {
+  const d = base(); d.devices[0].ports[0].link.lane_count.evidence_ids = [];
+  assert.ok(E.validateDocument(d).length > 0);
+  notPass(raw(d), 'document');
+});
+test('REM02-P4b VERIFIED fields citing a retailer listing (lint L3 errors) → UNKNOWN', () => {
+  const d = base(); d.devices[0].ports[0].link.max_link_rate_per_lane.evidence_ids = ['EV-FIXTURE-RETAIL'];
+  assert.ok(E.lint(d).some((e) => /^L3/.test(e)));
+  notPass(raw(d), 'document');
+});
+test('REM02-P11b duplicate device_id (first copy model UNKNOWN, last VERIFIED) → linted and UNKNOWN', () => {
+  const d = base(); const dupe = JSON.parse(JSON.stringify(d.devices[0])); d.devices[0].identity = ident(null); d.devices.splice(1, 0, dupe);
+  assert.ok(E.lint(d).some((e) => e === 'L4: duplicate device_id FIXTURE-SRC'));
+  notPass(raw(d), 'devices.FIXTURE-SRC (duplicate device_id)');
+  const d2 = base(); d2.path.segments[1].segment_id = 'S1';
+  assert.ok(E.lint(d2).some((e) => e === 'L4: duplicate segment_id S1'));
+});
+test('REM02-P10 documented usable_payload above the standard for its rate × lanes → UNKNOWN (conflict), not a capability', () => {
+  const d = base(); d.devices.at(-1).ports[0].link.usable_payload = V(1e9);
+  notPass(ev(d), /conflicts with the standard/);
+});
+// Fail-open mutants that QA found surviving
+test('REM02-NEW-L1 (M03) no cable, full VERIFIED timing that fits, no verified mode → UNKNOWN, not rule-3 CONDITIONAL', () => {
+  const r = ev(base({ cab: null, snk: sink(DP()), request: { mode: F.UW165_T() } }));
+  assert.equal(r.verdict, 'UNKNOWN');
+  assert.ok(r.unknowns.some((u) => u.field === 'path.cable'));
+  assert.equal(ev(base({ snk: sink(DP()), request: { mode: F.UW165_T() } })).verdict, 'CONDITIONAL', 'control with the cable');
+});
+test('REM02-M34 two displays exceed a VERIFIED shared tunnel payload while every per-port link fits → FAIL (shared group limit)', () => {
+  const tun = () => link('USB4_DP_Tunnel', 20, 4);
+  const m = { ...mode(3840, 2160, 60, 10), timing: timing(4400, 2250) }; // 17.82 per display, 35.64 for two
+  const mk = (payload) => doc({ src: source(tun(), { connector: 'USB-C' }), cab: cable({ rated: V(20, 'Gbit/s per lane', 'EV-FIXTURE-CERT') }), mids: [{ device: mid('FIXTURE-DOCK', 'dock', tun(), DP()), kind: 'dock' }], snk: sink(DP(), { modes: [vmode(3840, 2160, 60, 10)] }), request: { mode: m, display_count: 2 }, groups: [{ group_id: 'G-USB4', payload: V(payload, 'Gbit/s'), members: ['D1', 'D2'] }] });
+  const r = ev(mk(30));
+  assert.equal(r.verdict, 'FAIL');
+  assert.equal(r.limiting_segment, 'G-USB4');
+  assert.equal(ev(mk(40)).verdict, 'PASS', 'control: the same path with a 40 Gbit/s shared payload');
+});
+test('REM02-M08 final PASS safety net: PASS with arithmetic UNKNOWN, or EXCEEDS outside a documented DSC mode, is refused', () => {
+  const g = E._internal.passGuard;
+  assert.equal(g('PASS', 'UNKNOWN', null, false), true);
+  assert.equal(g('PASS', 'EXCEEDS', null, false), true);
+  assert.equal(g('PASS', 'EXCEEDS', { dsc_required: false }, false), true);
+  assert.equal(g('PASS', 'EXCEEDS', { dsc_required: true }, false), false);
+  assert.equal(g('PASS', 'EXCEEDS', null, true), false);
+  assert.equal(g('PASS', 'FITS_WITH_MARGIN', {}, false), false);
+  assert.equal(g('CONDITIONAL', 'UNKNOWN', null, false), false);
+});
+test('REM02-M27 quickSolve cap: an overall PASS is reported as CONDITIONAL; other verdicts unchanged', () => {
+  const c = E._internal.quickCap;
+  assert.equal(c('PASS'), 'CONDITIONAL');
+  for (const v of ['CONDITIONAL', 'UNKNOWN', 'FAIL']) assert.equal(c(v), v);
+});
+// Further fail-open / label mutants (QA M22, M26, M28, M32; REV E12, E13)
+test('REM02-E13 verified_operating_modes entry with status UNKNOWN (manufacturer-cited) is not a verified mode → not PASS', () => {
+  const r = ev(base({ snk: sink(DP(), { modes: [{ ...vmode(3440, 1440, 165), status: 'UNKNOWN' }] }) }));
+  assert.notEqual(r.verdict, 'PASS');
+  assert.equal(r.max_verified_mode, null);
+});
+test('REM02-M22 passive DP→HDMI adapter with source DP++ UNKNOWN → UNKNOWN (not PASS)', () => {
+  const r = ev(adDoc(U()));
+  assert.equal(r.verdict, 'UNKNOWN');
+  assert.ok(r.unknowns.some((u) => u.field === 'source.dual_mode_dp_plus_plus'));
+  assert.equal(ev(adDoc(V(true))).verdict, 'PASS', 'control: DP++ VERIFIED');
+});
+test('REM02-E12 two displays over one HBR2 source link without a shared group: the per-display sum exceeds the source → FAIL', () => {
+  const m = { ...mode(3840, 2160, 60), timing: timing(4400, 2250) }; // 14.26 per display, 28.51 for two > 17.28
+  const r = ev(doc({ src: source(DP(5.4)), mids: [{ device: mst(), kind: 'mst_hub' }], snk: sink(DP(), { modes: [vmode(3840, 2160, 60)] }), request: { mode: m, display_count: 2 }, env: { os_mst_support: V(true) } }));
+  assert.equal(r.verdict, 'FAIL');
+  assert.equal(r.limiting_segment, 'S1');
+});
+test('REM02-M26 timing labelled CVT/CTA counts as DERIVED even when its fields say VERIFIED (prerequisite names the timing)', () => {
+  const t = { ...timing(3520, 1500), source: 'CVT-RBv2 table' };
+  const r = ev(base({ snk: sink(DP()), request: { mode: { ...F.UW165(), timing: t } } }));
+  assert.equal(r.verdict, 'CONDITIONAL');
+  assert.ok(r.prerequisites.some((p) => /supports this timing/.test(p)), r.prerequisites.join('|'));
+});
+test('REM02-M28 quickSolve: a Thunderbolt 3 class (DERIVED) that the mode exceeds is UNKNOWN, not FAIL', () => {
+  const r = E.quickSolve({ source: 'tb3', sinkInput: 'dp-hbr3', h_active: 3840, v_active: 2160, refresh_hz: 120, bit_depth_bpc: 8 });
+  assert.equal(r.elements[0].verdict, 'UNKNOWN');
+  assert.match(r.elements[0].why, /DERIVED per-stream class/);
+});
+test('REM02-M32 fits_tight label: required/payload above 0.95 is FITS_TIGHT, below is FITS_WITH_MARGIN', () => {
+  assert.equal(E.assessLink(mode(3840, 2160, 120), 'DP-HBR3-x4', { pixel_clock_khz: D(1041667), source: 'UNKNOWN' }).assessment, 'FITS_TIGHT');
+  assert.equal(E.assessLink(mode(3840, 2160, 60), 'DP-HBR3-x4', { pixel_clock_khz: D(594000), source: 'UNKNOWN' }).assessment, 'FITS_WITH_MARGIN');
+});
+test('REM02-M32 evaluate(): required/payload above 0.95 is labelled FITS_TIGHT (label only; verdict unchanged)', () => {
+  const tight = ev(base({ snk: sink(DP()), request: { mode: { ...F.UW165(), timing: timing(4300, 1452) } } })); // 24.72 / 25.92 = 0.954
+  assert.equal(tight.arithmetic.assessment, 'FITS_TIGHT');
+  assert.equal(tight.verdict, 'CONDITIONAL');
+  assert.equal(ev(base({ snk: sink(DP()), request: { mode: F.UW165_T() } })).arithmetic.assessment, 'FITS_WITH_MARGIN');
+});

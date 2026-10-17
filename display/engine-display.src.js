@@ -103,6 +103,9 @@
       var row = linkRow(out.family, rate.value, lanes.value);
       if (row) {
         out.rowId = row.id;
+        // REM-02 (fail-closed): a documented payload/raw above what the standard allows for this rate × lanes is a conflict, not a capability.
+        if (known(link.usable_payload) && link.usable_payload.value > row.payload_gbps + 1e-9) out.conflict = 'usable_payload ' + link.usable_payload.value + ' Gbit/s exceeds the standard payload ' + row.payload_gbps + ' Gbit/s for ' + row.id;
+        else if (known(link.raw_bitrate) && link.raw_bitrate.value > row.raw_gbps + 1e-9) out.conflict = 'raw_bitrate ' + link.raw_bitrate.value + ' Gbit/s exceeds the standard raw rate ' + row.raw_gbps + ' Gbit/s for ' + row.id;
         if (out.payload.value === null) out.payload = { value: row.payload_gbps, status: confWorst(out.inputStatus, row.status) };
         if (out.raw.value === null) out.raw = { value: row.raw_gbps, status: confWorst(out.inputStatus, rowRawStatus(row)) };
       } else if (out.raw.value === null) {
@@ -117,10 +120,16 @@
 
   // ---------------------------------------------------------------- document helpers
   function index(doc) {
-    var ev = {}, dev = {};
+    var ev = {}, dev = {}, dupDevices = [], dupPorts = [];
     (doc.evidence || []).forEach(function (e) { ev[e.id] = e; });
-    (doc.devices || []).forEach(function (d) { dev[d.device_id] = d; });
-    return { ev: ev, dev: dev };
+    // REM-02 P11b: a duplicate device_id must not silently override; it is reported and blocks PASS.
+    (doc.devices || []).forEach(function (d) {
+      if (dev[d.device_id]) { if (dupDevices.indexOf(d.device_id) < 0) dupDevices.push(d.device_id); }
+      else dev[d.device_id] = d;
+      var seenP = {};
+      (d.ports || []).forEach(function (p) { if (seenP[p.port_id]) dupPorts.push(d.device_id + '.' + p.port_id); seenP[p.port_id] = true; });
+    });
+    return { ev: ev, dev: dev, dupDevices: dupDevices, dupPorts: dupPorts, docErrors: [] };
   }
   function portOf(device, id) {
     if (!device || id == null) return null;
@@ -177,17 +186,36 @@
     var source = path[0], sink = path[path.length - 1];
     var srcPort = source.outPort, sinkPort = sink.inPort;
 
-    // identity (MS-01; REM-01 MEDIUM-4: also active converters, docks and MST hubs, whose own firmware/spec sets limits).
-    // Excluded by design: cables (judged by certification_program + rated_link + certified length below),
-    // passive adapters (no own link logic; judged by the source's DP++ and the adapter's HDMI-side link) and
-    // usb_c_alt_mode / usb4_tunnel segments (a mode of the source/dock port, whose device identity is checked).
-    var IDENTITY_KINDS = ['source_output', 'sink_input', 'active_converter', 'dock', 'mst_hub'];
+    // REM-02 fail-closed gates: anything the document does not prove is UNKNOWN, never PASS.
+    // (a) the evidence document itself must pass validateDocument() and lint() (QA P4/P4b).
+    if (idx.docErrors.length) unk(null, 'document', 'an evidence document without validateDocument/lint errors (' + idx.docErrors.length + ' found; first: ' + idx.docErrors[0] + ')');
+    // (b) device ids and port ids are unique (QA P11b).
+    idx.dupDevices.forEach(function (id) { unk(null, 'devices.' + id + ' (duplicate device_id)', 'one definition per device_id'); });
+    idx.dupPorts.forEach(function (id) { unk(null, 'devices.' + id + ' (duplicate port_id)', 'one definition per port_id'); });
+    // (c) PLAN §4 chain order: source_output first, sink_input last, and nowhere else (QA B1: P14, P2, P2c).
+    var lastI = path.length - 1;
+    path.forEach(function (r, i) {
+      var k = r.seg.kind;
+      if (i === 0 && k !== 'source_output') unk(devLabel(r), 'path.segments[0].kind', 'PLAN §4: the first segment must be the source output (kind source_output), found ' + k);
+      if (i === lastI && k !== 'sink_input') unk(devLabel(r), 'path.segments[' + i + '].kind', 'PLAN §4: the last segment must be the sink input (kind sink_input), found ' + k);
+      if (i > 0 && k === 'source_output') unk(devLabel(r), 'path.segments[' + i + '].kind', 'PLAN §4: source_output only as the first segment');
+      if (i < lastI && k === 'sink_input') unk(devLabel(r), 'path.segments[' + i + '].kind', 'PLAN §4: sink_input only as the last segment');
+      // (d) every non-cable element is judged on its ports; a missing port is never skipped (QA B2: P3, P3b).
+      if (k === 'cable') return;
+      var needIn = k !== 'source_output', needOut = k !== 'sink_input';
+      if (needIn && !r.inPort) unk(devLabel(r), devLabel(r) + '.in_port_id', 'the input port of ' + devLabel(r) + ' (' + k + ') and its documented link');
+      if (needOut && !r.outPort) unk(devLabel(r), devLabel(r) + '.out_port_id', 'the output port of ' + devLabel(r) + ' (' + k + ') and its documented link');
+    });
+    // (e) identity (MS-01): the exact model of EVERY device a non-cable segment refers to (QA B1 / REV NEW-M1:
+    // source, sink, usb_c_alt_mode, usb4_tunnel, passive_adapter, active_converter, dock, mst_hub).
+    // Only cables are exempt: their identity is the verifiable certification + rated link + certified length below.
+    var IDENTITY_EXEMPT_KINDS = ['cable'];
     var idSeen = {};
     path.forEach(function (r) {
-      if (IDENTITY_KINDS.indexOf(r.seg.kind) < 0 || idSeen[r.device.device_id]) return;
+      if (IDENTITY_EXEMPT_KINDS.indexOf(r.seg.kind) >= 0 || idSeen[r.device.device_id]) return;
       idSeen[r.device.device_id] = true;
       var id = r.device.identity || {};
-      var what = r.seg.kind === 'sink_input' ? 'monitor' : r.seg.kind === 'source_output' ? 'source' : r.seg.kind === 'dock' ? 'dock' : r.seg.kind === 'mst_hub' ? 'MST hub' : 'active adapter/converter';
+      var what = r.seg.kind === 'sink_input' ? 'monitor' : r.seg.kind === 'source_output' ? 'source' : r.seg.kind === 'dock' ? 'dock' : r.seg.kind === 'mst_hub' ? 'MST hub' : r.seg.kind === 'active_converter' ? 'active adapter/converter' : r.seg.kind === 'passive_adapter' ? 'passive adapter' : r.seg.kind + ' device';
       if (!verified(id.model)) unk(devLabel(r), r.device.device_id + '.identity.model', 'exact ' + what + ' model number / SKU from the manufacturer');
       else addSrc(id.model);
     });
@@ -276,7 +304,23 @@
         return;
       }
       addSrc(c.certification_program); addSrc(c.rated_link);
-      var rated = c.rated_link.value, unit = c.rated_link.unit || 'Gbit/s per lane';
+      var rated = c.rated_link.value, unit = c.rated_link.unit;
+      // REM-02 (QA P6/P7): rated_link.unit is a closed set. 'Gbit/s per lane' = DisplayPort-family cable (DP, USB-C
+      // DP Alt Mode, USB4/Thunderbolt tunnel); 'Gbit/s total' = HDMI cable. Any other unit, a non-numeric rating or a
+      // cable family that does not match the link it carries is UNKNOWN, never an uncapped PASS.
+      var cabFam = unit === 'Gbit/s per lane' ? 'DP' : unit === 'Gbit/s total' ? 'HDMI' : null;
+      var certText = String(c.certification_program.value);
+      var certFam = /HDMI/i.test(certText) ? 'HDMI' : /VESA|DisplayPort|\bDP\d|USB|Thunderbolt/i.test(certText) ? 'DP' : null;
+      if (!cabFam || typeof rated !== 'number' || !isFinite(rated) || rated <= 0) {
+        cableUnknown = true;
+        unk(devLabel(r), 'cable.rated_link.unit', 'a rated link in Gbit/s per lane (DisplayPort family) or Gbit/s total (HDMI); found ' + JSON.stringify(unit === undefined ? null : unit) + ' / ' + JSON.stringify(rated));
+        return;
+      }
+      if (!fam || cabFam !== fam || (certFam && certFam !== cabFam)) {
+        cableUnknown = true;
+        unk(devLabel(r), 'cable family', 'a ' + (fam === 'HDMI' ? 'certified HDMI' : 'certified DisplayPort-family') + ' cable for this ' + (fam || 'unknown') + ' link; the documented cable is ' + (cabFam === 'HDMI' ? 'an HDMI' : 'a DisplayPort-family') + ' rating' + (certFam && certFam !== cabFam ? ' with a ' + certFam + ' certification' : ''));
+        return;
+      }
       var lanes = Math.min.apply(null, prevCaps.map(function (x) { return x.lanes || 4; }).concat([4]));
       if (fam && /per lane/.test(unit)) {
         var minRate = Math.min.apply(null, prevCaps.map(function (x) { return x.rate || Infinity; }));
@@ -300,6 +344,7 @@
     var minEv = [], exceedsVerified = null, exceedsDerived = null, minPayload = null, minSeg = null, minStatus = 'VERIFIED', margin = null, hdmi422 = false;
     caps.forEach(function (c) {
       if (!c.family) { unk(c.seg, c.seg + '.' + (c.missing[0] || 'link'), 'documented video protocol/link capability of this port (a connector shape does not prove video)'); return; }
+      if (c.conflict) { unk(c.seg, c.seg + '.link (conflicts with the standard)', c.conflict + '; needs a documented link consistent with the standard'); return; }
       var rq = reqBy[c.family];
       if (rq.value === null) { hdmi422 = true; return; }
       var need = rq.value * (c.mult || 1);
@@ -423,7 +468,7 @@
       verdict = 'UNKNOWN'; U.push({ seg: null, field: 'arithmetic', needed_evidence: 'documented link capacities and timing' }); reasonParts.push('arithmetic UNKNOWN');
     }
     if (verdict === 'CONDITIONAL' && (mode.chroma === 'YCbCr422' || mode.chroma === 'YCbCr420')) prereq.push('select ' + (mode.chroma === 'YCbCr422' ? 'YCbCr 4:2:2' : 'YCbCr 4:2:0') + ' output in the graphics driver');
-    if (verdict === 'PASS' && (assessment === 'UNKNOWN' || (assessment === 'EXCEEDS' && !(vm && vm.dsc_required === true) && !dsc))) { verdict = 'UNKNOWN'; U.push({ seg: null, field: 'arithmetic', needed_evidence: 'verified mode conflicts with arithmetic; needs documented timing' }); }
+    if (passGuard(verdict, assessment, vm, dsc)) { verdict = 'UNKNOWN'; U.push({ seg: null, field: 'arithmetic', needed_evidence: 'verified mode conflicts with arithmetic; needs documented timing' }); }
 
     return {
       verdict: verdict, limiting_segment: verdict === 'PASS' ? null : limiting, prerequisites: verdict === 'CONDITIONAL' ? uniq(prereq) : [],
@@ -439,6 +484,11 @@
     };
   }
 
+  // Final PASS safety net (defence in depth; unit-tested through _internal because the paths above already stop it).
+  function passGuard(verdict, assessment, vm, dsc) {
+    if (verdict === 'PASS' && (assessment === 'UNKNOWN' || (assessment === 'EXCEEDS' && !(vm && vm.dsc_required === true) && !dsc))) return true;
+    return false;
+  }
   function uniq(a) { return a.filter(function (x, i) { return a.indexOf(x) === i; }); }
   function fmt(x) { return (Math.round(x * 100) / 100).toFixed(2); }
   function modeLabel(m) { return m.h_active + '×' + m.v_active + ' @ ' + m.refresh_hz + ' Hz ' + m.bit_depth_bpc + '-bit ' + m.chroma + (m.hdr && m.hdr !== 'SDR' ? ' ' + m.hdr : ''); }
@@ -449,6 +499,9 @@
     opts = opts || {};
     validateRequest(doc.request);
     var idx = index(doc);
+    // REM-02 (QA P4/P4b): evaluate() never trusts a document that its own validator or lint rejects.
+    var bare = Object.assign({}, doc); delete bare.result;
+    idx.docErrors = validateDocument(bare).concat(lint(bare));
     var path = resolvePath(doc, idx);
     if (path.length < 2) throw InvalidRequest('path needs at least a source output and a sink input');
     var req = doc.request, m = req.mode;
@@ -658,6 +711,10 @@
       if (m.status === 'VERIFIED') (m.evidence_ids || []).forEach(function (id) { var e = idx.ev[id]; if (e && (MANUFACTURER_KINDS.indexOf(e.source_kind) < 0 || e.confidence !== 'VERIFIED')) errs.push('L3: VERIFIED mode ' + w + ' cites non-manufacturer/non-certification source ' + id); });
     });
     (doc.devices || []).forEach(function (d) { if (d.cable && d.cable.marketing_claims) d.cable.marketing_claims.forEach(function (mc, i) { resolve(mc.evidence_ids, 'devices[' + d.device_id + '].cable.marketing_claims[' + i + ']'); }); });
+    (idx.dupDevices || []).forEach(function (id) { errs.push('L4: duplicate device_id ' + id); });
+    (idx.dupPorts || []).forEach(function (id) { errs.push('L4: duplicate port_id ' + id); });
+    var segSeen = {};
+    (doc.path && doc.path.segments || []).forEach(function (s) { if (segSeen[s.segment_id]) errs.push('L4: duplicate segment_id ' + s.segment_id); segSeen[s.segment_id] = true; });
     (doc.path && doc.path.segments || []).forEach(function (s) {
       var d = idx.dev[s.device_id];
       if (!d) { errs.push('L4: segment ' + s.segment_id + ' device_id ' + s.device_id + ' does not resolve'); return; }
@@ -777,6 +834,10 @@
   };
   var MIDDLES = ['none', 'usbc-adapter', 'usbc-dock', 'displaylink-dock', 'tb-dock', 'mst-hub', 'passive-dp-hdmi', 'splitter'];
 
+  function quickCap(overall) {
+    if (overall === 'PASS') overall = 'CONDITIONAL'; // the quick check never verifies exact models
+    return overall;
+  }
   function lanesHalved(rowId) { return rowId === 'DP-HBR2-x4' ? 'DP-HBR2-x2' : rowId === 'DP-HBR3-x4' ? 'DP-HBR3-x2' : null; }
 
   function quickSolve(q) {
@@ -839,7 +900,7 @@
     el('Monitor input', snk, snk.row, 1);
 
     var overall = worstOf(els.map(function (e) { return e.verdict; }));
-    if (overall === 'PASS') overall = 'CONDITIONAL'; // the quick check never verifies exact models
+    overall = quickCap(overall);
     var limiting = els.filter(function (e) { return e.verdict === overall; })[0] || null;
     var withMax = els.filter(function (e) { return e.max_refresh_upper_bound_hz !== null; }).sort(function (a, b) { return a.max_refresh_upper_bound_hz - b.max_refresh_upper_bound_hz; })[0] || null;
     var limits = chainLimits({ source: src.usbc ? 'usbc' : q.source, middle: middle, sinkInput: q.sinkInput, cable: cab });
@@ -868,6 +929,7 @@
     validateRequest: validateRequest, bitsPerPixel: bitsPerPixel, requiredBitrate: requiredBitrate, linkRow: linkRow, portCapacity: portCapacity,
     evaluate: evaluate, validateDocument: validateDocument, lint: lint,
     assessLink: assessLink, assessAllLinks: assessAllLinks, CLASS_ROWS: CLASS_ROWS, chainLimits: chainLimits, diagnoseNoSignal: diagnoseNoSignal,
+    _internal: { passGuard: passGuard, quickCap: quickCap },
     source: SRC, modeLabel: modeLabel, quickSolve: quickSolve, PORT_CLASSES: PORT_CLASSES, SINK_CLASSES: SINK_CLASSES, MIDDLES: MIDDLES
   };
 });

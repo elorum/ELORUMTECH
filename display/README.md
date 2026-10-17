@@ -35,12 +35,41 @@ Spec: the REV-passed Issue #10 plan REM-01 (PLAN.md `8c6d3e45…`, EVIDENCE-SCHE
 - HIGH-1: the "Can't see the BIOS screen?" related link is removed from `display-connection-solver.html` and `external-monitor-not-detected.html`, so this branch no longer depends on PR #14. A follow-up adds it back after #14 merges. `tests/display-pages.test.mjs` checks that every relative `href`/`src` in the four pages resolves to a file in the tree (`/ELORUMTECH/…` maps to the repo root).
 - HIGH-2: PLAN §4 makes the cable element mandatory. A path with no `cable` segment gets the non-replaceable unknown `path.cable`, so it can never reach PASS.
 - MEDIUM-1..3: named regression tests (`REM01-*`) kill the mutants E25, E30, E31, E37, E40, E41, E42, E45 and E46.
-- MEDIUM-4: exact-model identity is now required for `source_output`, `sink_input`, `active_converter`, `dock` and `mst_hub`. Excluded by design:
+- MEDIUM-4 (superseded by REM-02, which extends identity to every non-cable segment): exact-model identity was required for `source_output`, `sink_input`, `active_converter`, `dock` and `mst_hub`. REM-01 excluded:
   - cables (certification, rated link and certified length decide instead);
   - passive adapters (the source's DP++ and the adapter's HDMI-side link decide);
   - `usb_c_alt_mode` / `usb4_tunnel` (a mode of a port whose device identity is already checked).
 - LOW-2 (X5): when a verified mode is the basis but a non-VERIFIED item makes the result CONDITIONAL, the reason says so. A DERIVED link rate adds a "confirm the documented link rate and lane count" prerequisite.
 - LOW-3 (sitemap `lastmod`): deferred on purpose. A `lastmod` must be the real ship date, which the owner confirms through `docs/release-date-gate.json`. These pages are not shipped yet and two of them change in REM-01, so `2026-10-17` would be an unconfirmed date claim.
+
+## REM-02 notes: fail-closed (QA FAIL comment 6242365621, REV NEW-M1/NEW-L1..L3 comment 6242281663 on Elorum-site #76)
+Anything the document does not prove is UNKNOWN, never PASS. `evaluate()` now applies these gates:
+- **Document validity (P4/P4b):** it runs `validateDocument()` and `lint()` on the input. Any error adds the unknown `document`.
+- **Unique ids (P11b):**
+  - A duplicate `device_id` or `port_id` adds an unknown, and lint reports `L4: duplicate device_id|port_id|segment_id`.
+  - The first definition is kept; a duplicate never overrides it.
+- **PLAN §4 chain order (B1: P14/P2/P2c):** `source_output` must be the first segment and `sink_input` the last, and neither may appear anywhere else.
+- **Ports (B2: P3/P3b):**
+  - Every non-cable element must resolve its ports: source → out, sink → in, intermediates → in and out.
+  - A missing port is an unknown, never skipped.
+- **Identity (B1 / REV NEW-M1):** the exact model of every device that a non-cable segment refers to must be VERIFIED. That covers source, sink, `usb_c_alt_mode`, `usb4_tunnel`, `passive_adapter`, `active_converter`, `dock` and `mst_hub`. This replaces the REM-01 exclusions. Only cables are exempt: certification, rated link and certified length are their identity.
+- **Cable (P6/P7):**
+  - `rated_link.unit` must be one of a closed set:
+    - `Gbit/s per lane`: DisplayPort-family cable (DP, USB-C DP Alt Mode, USB4/Thunderbolt);
+    - `Gbit/s total`: HDMI cable.
+  - Any other or missing unit, or a non-numeric rating, gives UNKNOWN.
+  - A cable whose family (from the unit, and from certification text naming HDMI or VESA/DisplayPort) does not match the link it carries gives UNKNOWN.
+- **Standards conflict (QA P10):** a documented `usable_payload` or `raw_bitrate` above the standards row for its rate × lanes is a conflict, which gives UNKNOWN rather than a capability.
+- **Unit-tested safety nets:** `_internal.passGuard` (the final PASS net) and `_internal.quickCap` (the quickSolve PASS cap) are exported only so tests can reach them (M08, M27); the paths before them already stop those cases.
+
+Equivalent mutants (documented, not killable through the public API):
+- E14 / M09 (manufacturer-citation check in `findVerifiedMode`): lint L3/L2 and validateDocument L5 reject the same documents, and the document gate turns them UNKNOWN.
+- M18: DSC FALSE already pushes a FAIL in the DSC sub-result.
+- M21: `fits` already implies full timing.
+- R2-DUP (last-wins): duplicates are UNKNOWN anyway.
+- QA M04–M06 target the removed `IDENTITY_KINDS` list. The R2-ID mutants replace them, one per segment kind, and all are killed.
+
+Tooling: `tests/release-date-gate.mjs` now also accepts `--ship-date YYYY-MM-DD` (space form). A bare `--ship-date` fails closed.
 
 ## Overlaps (OVERLAP.md)
 Shared files touched minimally: `guides/index.html` (one new section after the hero), `sitemap.xml` (four `<url>` entries after `guides/`, no `lastmod`), `tests/engine.test.mjs` (sitemap count 26 → 30). The parallel BIOS job edits the same count line (→ 27). Whichever of #14/#15 merges second rebases and sets the count to 31 (both merged).

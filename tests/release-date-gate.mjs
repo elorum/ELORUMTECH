@@ -98,7 +98,9 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const problems = checkConsistency(decl, readRepoFile);
   if (process.argv.includes('--release')) {
     const arg = process.argv.find((a) => a.startsWith('--ship-date='));
-    problems.push(...checkRelease(decl, arg ? arg.slice('--ship-date='.length) : todayCopenhagen()));
+    const i = process.argv.indexOf('--ship-date'); // also accept the space form: --ship-date YYYY-MM-DD
+    const ship = arg ? arg.slice('--ship-date='.length) : i >= 0 ? process.argv[i + 1] : todayCopenhagen();
+    problems.push(...checkRelease(decl, ship));
   }
   if (problems.length) {
     console.error('RELEASE-DATE GATE: FAIL\n- ' + problems.join('\n- '));

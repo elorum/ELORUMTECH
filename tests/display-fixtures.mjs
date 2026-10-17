@@ -57,6 +57,8 @@ export function mid(id, role, inLk, outLk, o = {}) {
 
 // Assemble a document. mids: [{device, kind}]
 export function doc({ src, cab = cable(), mids = [], snk, request, env, groups, sinkPort, cab2 }) {
+  // REM-02: device ids are unique (lint L4 duplicate device_id); a second cable gets its own id.
+  if (cab && cab2 && cab2.device_id === cab.device_id) cab2 = { ...cab2, device_id: cab.device_id + '-2' };
   const devices = [src, ...(cab ? [cab] : []), ...mids.map((m) => m.device), ...(cab2 ? [cab2] : []), snk];
   const segments = [{ segment_id: 'S1', device_id: src.device_id, in_port_id: null, out_port_id: src.ports[0].port_id, kind: 'source_output' }];
   let n = 2;
