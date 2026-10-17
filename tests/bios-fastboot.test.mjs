@@ -188,14 +188,15 @@ test('BF-16 page: required testimony wording, unknown versions and no universal 
 test('BF-17 page: owner-provided source — one exact-board Softpedia link, scoped, nofollow; no hosting, no internal status jargon (REM01 F6)', () => {
   assert.doesNotMatch(visible, /SOURCE_UNVERIFIED/);
   assert.doesNotMatch(visible, /OWNER_PROVIDED_SOURCE|Status:/);
-  assert.match(visible, /the owner of the tested PC identified the Softpedia page below/);
+  assert.match(visible, /The owner of the tested PC confirmed on 2026-10-18 that this Softpedia page has the same program version for her board\./);
+  assert.doesNotMatch(page, /identified[^.]*Softpedia|Softpedia page the owner of the tested PC used|identified as the page used/);
   const spLinks = [...page.matchAll(/<a [^>]*href="(https:\/\/drivers\.softpedia\.com[^"]*)"[^>]*>/g)];
   for (const m of spLinks) {
     assert.equal(m[1], SP_B550I, 'unexpected softpedia url ' + m[1]);
     assert.match(m[0], /rel="nofollow noopener"/);
   }
   assert.ok(spLinks.some((m) => m[1] === SP_B550I));
-  const box = page.match(/<p class="dlbox">([\s\S]*?)<\/p>/)[1];
+  const box = page.match(/<p class="dlbox">(<a href="https:\/\/drivers\.softpedia\.com[\s\S]*?)<\/p>/)[1];
   assert.ok(box.includes('href="' + SP_B550I + '"'));
   assert.match(box, /class="ext" aria-hidden="true">↗/);
   assert.ok(box.includes('Only for: Gigabyte B550I AORUS PRO AX rev 1.0. ' + WV));
@@ -221,7 +222,8 @@ test('BF-17b page: all-boards section links GIGABYTE Download Center and warns a
 
 test('BF-17c logic: LINKS constants match the page, owner-provided status, nofollow on third-party', () => {
   assert.equal(LINKS.TESTED_BOARD.url, SP_B550I);
-  assert.equal(LINKS.TESTED_BOARD.sourceStatus, 'OWNER_PROVIDED_SOURCE');
+  assert.equal(LINKS.TESTED_BOARD.sourceStatus, 'OWNER_CONFIRMED');
+  assert.doesNotMatch(visible, /OWNER_CONFIRMED/);
   assert.equal(LINKS.TESTED_BOARD.rel, 'nofollow noopener');
   assert.deepEqual(LINKS.ALL_BOARDS.map((l) => l.url), [GDC]);
   assert.ok(!page.includes('href="' + SP_LIST + '"'), 'generic Softpedia listing removed (B11)');
@@ -235,9 +237,8 @@ test('BF-17c logic: LINKS constants match the page, owner-provided status, nofol
 
 test('BF-17d logic: only the exact tested-board branch shows the B550I link; unknown/other-board branches show all-boards link', () => {
   const t = diagnose({ ...TESTED, os: 'win10-64' });
-  assert.equal(t.links[0].url, SP_B550I);
-  assert.ok(t.links.some((l) => l.url === GDC));
-  assert.match(t.steps[0], /owner of the tested PC/);
+  assert.deepEqual(t.links.map((l) => l.url), [GDC, GB_B550I, SP_B550I]);
+  assert.match(t.steps[0], /owner of the tested PC confirmed on 2026-10-18/);
   const w11 = diagnose(TESTED);
   assert.ok(w11.cautions.some((c) => /Per its URL, the Softpedia page is for Windows 10 64-bit/.test(c)), 'win11 input gets the Win10-URL caution');
   assert.ok(!t.cautions.some((c) => /Per its URL/.test(c)));
@@ -355,13 +356,13 @@ test('REM01-F1 unread Softpedia page: no "titled" / "Its title" / "we verified" 
   assert.doesNotMatch(allText, /\b[Ww]e (have )?(verified|checked|confirmed) (the|that|this) (Softpedia )?(page|listing)\b|\b[Ww]e verified\b/);
   assert.doesNotMatch(allText, /file name and version match/);
   const box = sec(/<section class="dl" aria-labelledby="source-heading">([\s\S]*?)<\/section>/);
-  assert.ok(box.includes('Its web address names the Gigabyte B550I AORUS PRO AX rev 1.0, Fast Boot Utility B20.0420.1 for Windows 10 64-bit.'));
-  assert.ok(box.includes('We could not open the page (Cloudflare 403, checked 2026-10-18), so its title, version, file name and supported OS are not verified by us.'));
+  assert.ok(box.includes('Its web address names the Gigabyte B550I AORUS PRO AX rev 1.0, Fast Boot Utility B20.0420.1 for Windows 10 64-bit'));
+  assert.ok(box.includes('We could not open the page, so its title, version, file name and supported OS are not verified by us.'));
   assert.ok(box.includes('The tested archive’s file name matches the browser’s download record from Softpedia.'));
   assert.match(LINKS.TESTED_BOARD.label, /per its URL/);
   assert.match(LINKS.TESTED_BOARD.scope, /Per its URL/);
   assert.match(sec(/<h2 id="sources">Sources<\/h2>([\s\S]*?)<\/ul>/), /per its URL[\s\S]*could not open the page/);
-  assert.match(diagnose({ ...TESTED, os: 'win10-64' }).steps[0], /Per its URL, that page is for Windows 10 64-bit; we could not open it/);
+  assert.match(diagnose({ ...TESTED, os: 'win10-64' }).steps[0], /We could not open the page, so its title, version, file name and supported OS are not verified by us\. Per its URL, that page is for Windows 10 64-bit\./);
 });
 function allInputsText() { let t = ''; for (const inp of allInputs()) { const r = diagnose(inp); t += [r.title, r.summary, r.badgeLabel || '', ...r.steps, ...r.cautions, ...r.links.map((l) => l.label + ' ' + (l.scope || ''))].join('\n'); } return t; }
 
@@ -370,10 +371,10 @@ test('REM01-F3 tested board + Windows 11: GIGABYTE page leads, Softpedia seconda
     for (const signature of ['not-checked', 'valid-gigabyte']) {
       const r = diagnose({ ...TESTED, os, signature });
       assert.equal(r.verdict, VERDICTS.TESTED_CONFIG);
-      assert.equal(r.links[0].url, GB_B550I, 'GIGABYTE B550I page must be first');
+      assert.deepEqual(r.links.map((l) => l.url), [GDC, GB_B550I, SP_B550I], 'Download Center, GIGABYTE B550I page, Softpedia reference');
       assert.equal(r.links.at(-1).url, SP_B550I, 'Softpedia must be last (secondary)');
       assert.ok(r.links.some((l) => l.url === GDC));
-      assert.match(r.steps[0], /^Windows 11 on the tested board: start with GIGABYTE/);
+      assert.match(r.steps[0], /^Windows 11 on the tested board: start with GIGABYTE: search your exact motherboard and revision in the GIGABYTE Download Center \(first link below\)/);
       assert.match(r.steps[0], /check GIGABYTE's page for a Windows 11 version/);
       assert.doesNotMatch(r.steps[0] + r.cautions.join(' '), /B2[1-9]\.\d{4}\.\d/, 'no unverified Windows 11 version number');
       assert.ok(r.badgeLabel && r.badgeLabel !== 'Compatible branch');
@@ -382,7 +383,7 @@ test('REM01-F3 tested board + Windows 11: GIGABYTE page leads, Softpedia seconda
     }
   }
   const w10 = diagnose({ ...TESTED, os: 'win10-64' });
-  assert.equal(w10.links[0].url, SP_B550I);
+  assert.equal(w10.links[0].url, GDC);
   assert.equal(w10.badgeLabel, null);
   assert.match(page, /r\.badgeLabel \|\| GROUP_LABEL\[r\.group\]/);
   assert.match(page, /'badge g-' \+ \(r\.badgeTone \|\| r\.group\)/);
@@ -454,5 +455,78 @@ test('REM01-F6 softened lead and failed-methods wording; plain-language source n
   assert.doesNotMatch(visible, /common suspect/);
   assert.doesNotMatch(visible, /They work on many PCs/);
   assert.match(visible, /one possible cause is the board’s firmware Fast Boot setting/);
-  assert.match(visible, /Where the tested archive came from:/);
+  assert.match(visible, /Tested-case reference:/);
+});
+
+// ---- REM02 (REV FAIL round 2, 76/6242260091) ----
+const OC = 'The owner of the tested PC confirmed on 2026-10-18 that this Softpedia page has the same program version for her board. We could not open the page, so its title, version, file name and supported OS are not verified by us.';
+const SEARCH_LABEL = 'Search for your exact motherboard and revision (GIGABYTE Download Center)';
+
+test('REM02-R1a page: first button CTA is the GIGABYTE Download Center search, before the tested-board section; Softpedia is a plain reference link', () => {
+  const body = page.slice(page.indexOf('<main>'));
+  const dlinks = [...body.matchAll(/<a class="dlink" href="([^"]+)"([^>]*)>([\s\S]*?)<\/a>/g)];
+  assert.equal(dlinks.length, 1, 'exactly one button-styled CTA');
+  assert.equal(dlinks[0][1], GDC);
+  assert.match(dlinks[0][2], /rel="noopener"/);
+  assert.ok(dlinks[0][3].startsWith(SEARCH_LABEL), 'CTA label');
+  assert.match(dlinks[0][3], /<span class="ext" aria-hidden="true">↗<\/span><span class="sr-only"> \(external site\)<\/span>/);
+  const iCta = body.indexOf('<a class="dlink" href="' + GDC + '"'); const iTested = body.indexOf('Download for the tested board only');
+  assert.ok(iCta > 0 && iCta < iTested, 'search CTA precedes the tested-board section');
+  const search = sec(/<section class="dl" aria-labelledby="search-heading">([\s\S]*?)<\/section>/);
+  for (const re of [/Enter your model/, /revision printed on the board/, /Utility<\/em> → Fast Boot for your Windows version/]) assert.match(search, re);
+  assert.doesNotMatch(search, /softpedia/i);
+  const spAnchors = [...page.matchAll(/<a [^>]*href="https:\/\/drivers\.softpedia\.com[^"]*"[^>]*>/g)].map((m) => m[0]);
+  assert.ok(spAnchors.length >= 1);
+  for (const a of spAnchors) { assert.doesNotMatch(a, /class="[^"]*dlink/); assert.match(a, /rel="nofollow noopener"/); }
+  const box = sec(/<p class="dlbox"><a href="https:\/\/drivers\.softpedia\.com[^"]*" rel="nofollow noopener">([\s\S]*?)<\/a>/);
+  assert.ok(box.startsWith('Tested-case reference (B550I AORUS PRO AX rev 1.0 only): Softpedia page, B20.0420.1 per its URL'));
+  // no Softpedia search/listing URL anywhere
+  for (const m of (page + jsSrc).matchAll(/https:\/\/[a-z.]*softpedia\.com[^"'\s)<]*/g)) assert.equal(m[0], SP_B550I, 'only the owner-confirmed Softpedia URL is allowed: ' + m[0]);
+});
+
+test('REM02-R1b logic: Download Center search is links[0] for every input with links (exhaustive); Softpedia TESTED_CONFIG-only and last', () => {
+  assert.ok(LINKS.ALL_BOARDS[0].label.startsWith('Search for your exact motherboard and revision (GIGABYTE Download Center)'));
+  assert.equal(LINKS.ALL_BOARDS[0].url, GDC);
+  let withLinks = 0, tested = 0;
+  for (const inp of allInputs()) {
+    const r = diagnose(inp);
+    if (r.links.length) { withLinks++; assert.equal(r.links[0].url, GDC, JSON.stringify(inp)); }
+    const iSp = r.links.findIndex((l) => l.url === SP_B550I);
+    assert.equal(iSp >= 0, r.verdict === VERDICTS.TESTED_CONFIG, JSON.stringify(inp));
+    if (iSp >= 0) { tested++; assert.equal(iSp, r.links.length - 1, 'Softpedia reference last'); assert.deepEqual(r.links.map((l) => l.url), [GDC, GB_B550I, SP_B550I]); }
+    assert.ok(!r.links.some((l) => /softpedia/.test(l.url) && l.url !== SP_B550I));
+  }
+  assert.ok(withLinks > 0 && tested > 0);
+  for (const v of [null, undefined, {}, { ...TESTED, revision: 'rev 1.0' }]) { const r = diagnose(v); if (r.links.length) assert.equal(r.links[0].url, GDC); }
+});
+
+test('REM02-R2 owner-confirmed source wording in download box, FAQ (visible = JSON-LD), TESTED_DOWNLOAD_STEP and Sources; sourceStatus OWNER_CONFIRMED', () => {
+  const box = sec(/<section class="dl" aria-labelledby="source-heading">([\s\S]*?)<\/section>/);
+  assert.ok(box.includes(OC));
+  const faqVis = page.match(/<summary>Where should I download the Fast Boot utility\?<\/summary><p>([\s\S]*?)<\/p>/)[1];
+  assert.ok(faqVis.includes(OC));
+  const faq = [...page.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1])).find((b) => b['@type'] === 'FAQPage');
+  const q = faq.mainEntity.find((e) => e.name === 'Where should I download the Fast Boot utility?');
+  assert.equal(q.acceptedAnswer.text, faqVis);
+  assert.ok(diagnose({ ...TESTED, os: 'win10-64' }).steps[0].includes(OC.replace(/’/g, "'")));
+  for (const os of ['win10-64', 'win11-64']) { const st = diagnose({ ...TESTED, os }).steps[0]; assert.match(st, /tested-case reference/); assert.doesNotMatch(st, /\bidentified\b|came from the Softpedia page/); }
+  assert.doesNotMatch(page.replace(/unidentified board/g, ''), /\bidentified\b/);
+  assert.ok(sec(/<h2 id="sources">Sources<\/h2>([\s\S]*?)<\/ul>/).includes(OC));
+  assert.equal(LINKS.TESTED_BOARD.sourceStatus, 'OWNER_CONFIRMED');
+  assert.doesNotMatch(page + jsSrc, /identified as the page used|as the page the tested archive was downloaded from|identified the Softpedia page/);
+});
+
+test('REM02-R3 failed-methods sentence: sources cover only setup keys and the Windows UEFI Firmware Settings restart, not CMOS reset', () => {
+  const t = sec(/<section class="testimony"[\s\S]*?<\/table>\s*<p>([\s\S]*?)<\/p>/);
+  assert.ok(t.includes('Microsoft and Dell document the setup keys and the Windows restart to UEFI Firmware Settings as standard ways into firmware setup (see Sources).'));
+  assert.doesNotMatch(t, /document them\b/);
+  assert.doesNotMatch(t.slice(t.indexOf('Microsoft and Dell')), /CMOS/);
+});
+
+test('REM02-R4 inspection tool runs osslsigncode offline (-ignore-crl) and keeps its scope disclaimers', () => {
+  const tool = fs.readFileSync(path.join(root, 'tools/inspect-fastboot-archive.py'), 'utf8');
+  assert.match(tool, /\[tool, 'verify', '-ignore-crl', '-in', p\]/);
+  assert.match(tool, /Not a malware scan or Windows\/SmartScreen evaluation/);
+  assert.match(tool, /certificate chain: not evaluated/);
+  assert.doesNotMatch(tool, /\bimport (urllib|requests|http|socket)\b|from (urllib|http|socket)/);
 });

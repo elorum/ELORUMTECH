@@ -6,7 +6,7 @@ Usage:  python3 tools/inspect-fastboot-archive.py /path/to/mb_utility_fast_boot_
 What it does (static only; nothing is executed):
   * SHA-256 and size of the archive, setup.exe and setup.iss
   * Version-info strings read from setup.exe (UTF-16LE VS_VERSIONINFO keys)
-  * Authenticode via `osslsigncode verify` if installed: signer subject, issuer, timestamp, and whether the
+  * Authenticode via `osslsigncode verify -ignore-crl` (offline; no CRL fetch) if installed: signer subject, issuer, timestamp, and whether the
     signed message digest equals the digest calculated from the file
 
 What it is NOT: a malware scan, or a Windows / SmartScreen / certificate-chain evaluation. A box without the
@@ -85,7 +85,8 @@ def main():
         try:
             p = os.path.join(tmp, 'setup.exe')
             open(p, 'wb').write(exe)
-            r = subprocess.run([tool, 'verify', '-in', p], capture_output=True, text=True)
+            # -ignore-crl: osslsigncode 2.9 otherwise fetches CRL distribution points over the network; keep it offline.
+            r = subprocess.run([tool, 'verify', '-ignore-crl', '-in', p], capture_output=True, text=True)
             txt = r.stdout + r.stderr
         finally:
             shutil.rmtree(tmp)
