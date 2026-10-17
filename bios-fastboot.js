@@ -65,7 +65,7 @@
       id: 'tested-board-softpedia',
       url: 'https://drivers.softpedia.com/get/MOTHERBOARD/GIGABYTE/Gigabyte-B550I-AORUS-PRO-AX-rev-1-0-Fast-Boot-Utility-B20-0420-1-for-Windows-10-64-bit.shtml',
       label: 'Softpedia: Gigabyte B550I AORUS PRO AX (rev. 1.0) Fast Boot Utility B20.0420.1 for Windows 10 64-bit',
-      scope: 'Tested configuration only: Gigabyte B550I AORUS PRO AX rev 1.0, Windows 10 64-bit (per the page title)',
+      scope: 'Tested configuration only: Gigabyte B550I AORUS PRO AX rev 1.0. The Softpedia listing is titled for Windows 10 64-bit; the tested PC\'s Windows version was not recorded.',
       sourceStatus: 'OWNER_PROVIDED_SOURCE',
       rel: 'nofollow noopener'
     }),
@@ -75,12 +75,6 @@
         url: 'https://www.gigabyte.com/Support/Consumer/Download',
         label: 'GIGABYTE Download Center (official): search your exact board and revision, then look under Utility for Fast Boot',
         rel: 'noopener'
-      }),
-      Object.freeze({
-        id: 'softpedia-gigabyte-motherboard',
-        url: 'https://drivers.softpedia.com/get/MOTHERBOARD/GIGABYTE',
-        label: 'Softpedia: GIGABYTE motherboard drivers listing (third-party index)',
-        rel: 'nofollow noopener'
       })
     ])
   });

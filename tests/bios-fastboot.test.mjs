@@ -13,6 +13,7 @@ const { diagnose, VERDICTS, GROUP, ALLOWED, FILE_IDENTITY, TESTED_CASE, LINKS } 
 const SP_B550I = 'https://drivers.softpedia.com/get/MOTHERBOARD/GIGABYTE/Gigabyte-B550I-AORUS-PRO-AX-rev-1-0-Fast-Boot-Utility-B20-0420-1-for-Windows-10-64-bit.shtml';
 const GDC = 'https://www.gigabyte.com/Support/Consumer/Download';
 const SP_LIST = 'https://drivers.softpedia.com/get/MOTHERBOARD/GIGABYTE';
+const WV = 'The Softpedia listing is titled for Windows 10 64-bit; the tested PC’s Windows version was not recorded.';
 
 const PAGE_REL = 'guides/bios-fast-boot-troubleshooter.html';
 const PAGE_URL = 'https://elorum.github.io/ELORUMTECH/' + PAGE_REL;
@@ -142,8 +143,13 @@ test('BF-13 compatible steps: download-verify-scan before run; save work, recove
 });
 
 test('BF-14 page: crawlable SEO basics (title, description, canonical, single H1, og)', () => {
-  assert.match(page, /<title>[^<]*BIOS[^<]*Fast Boot[^<]*\| ELORUMTECH<\/title>/);
-  assert.match(page, /<meta name="description" content="[^"]{80,}">/);
+  const T = 'Can’t Enter BIOS but Windows Starts? Fast Boot Troubleshooter';
+  const D = 'Windows boots but Delete/F2 won’t open BIOS? Tell firmware Fast Boot from Windows Fast Startup and no-POST, then follow safe manual steps. One Gigabyte case.';
+  assert.ok(page.includes('<title>' + T + '</title>'));
+  assert.ok(page.includes('<meta property="og:title" content="' + T + '">'));
+  assert.ok(page.includes('<meta name="description" content="' + D + '">'));
+  assert.ok(page.includes('<meta property="og:description" content="' + D + '">'));
+  assert.ok(T.length <= 65 && D.length <= 160);
   assert.match(page, new RegExp('<link rel="canonical" href="' + PAGE_URL.replace(/\./g, '\\.') + '">'));
   assert.equal((page.match(/<h1[\s>]/g) || []).length, 1);
   assert.match(page, /og:image.*assets\/og-default\.png/);
@@ -166,7 +172,11 @@ test('BF-15 page: FAQPage JSON-LD questions/answers equal the visible FAQ exactl
 test('BF-16 page: required testimony wording, unknown versions and no universal claims', () => {
   assert.match(visible, /testet på denne konfiguration/);
   assert.match(visible, /User testimony/);
-  assert.match(visible, /Windows version<\/th><td>Not recorded/);
+  assert.ok(visible.includes('Windows version</th><td>' + WV + '</td>'));
+  const faqDl = page.match(/<summary>Where should I download the Fast Boot utility\?<\/summary><p>([\s\S]*?)<\/p>/)[1];
+  assert.ok(faqDl.includes(WV));
+  assert.doesNotMatch(faqDl, /rev 1\.0 on Windows 10 64-bit/);
+  assert.doesNotMatch(visible, /utility version and Windows edition as the tested case/);
   assert.match(visible, /BIOS version<\/th><td>Not recorded/);
   assert.match(visible, /not a universal fix/i);
   assert.doesNotMatch(visible, /guarantee(d|s)? to work|always works|works on all|100%|fixes every/i);
@@ -179,14 +189,14 @@ test('BF-17 page: OWNER_PROVIDED_SOURCE — one exact-board Softpedia link, scop
   assert.match(visible, /OWNER_PROVIDED_SOURCE/);
   const spLinks = [...page.matchAll(/<a [^>]*href="(https:\/\/drivers\.softpedia\.com[^"]*)"[^>]*>/g)];
   for (const m of spLinks) {
-    assert.ok(m[1] === SP_B550I || m[1] === SP_LIST, 'unexpected softpedia url ' + m[1]);
+    assert.equal(m[1], SP_B550I, 'unexpected softpedia url ' + m[1]);
     assert.match(m[0], /rel="nofollow noopener"/);
   }
   assert.ok(spLinks.some((m) => m[1] === SP_B550I));
   const box = page.match(/<p class="dlbox">([\s\S]*?)<\/p>/)[1];
   assert.ok(box.includes('href="' + SP_B550I + '"'));
   assert.match(box, /class="ext" aria-hidden="true">↗/);
-  assert.match(box, /Only for: Gigabyte B550I AORUS PRO AX rev 1\.0, Windows 10 64-bit \(per the page title\)/);
+  assert.ok(box.includes('Only for: Gigabyte B550I AORUS PRO AX rev 1.0. ' + WV));
   assert.match(box, /testet på denne konfiguration/i);
   const section = page.match(/<section class="dl" aria-labelledby="source-heading">([\s\S]*?)<\/section>/)[1];
   for (const re of [/Digital Signatures/, /GIGA-BYTE TECHNOLOGY CO\., LTD\./, /antivirus/, /Stop on any warning/, /Do not disable security or click past the warning/, /do not claim[^.]*byte-for-byte/]) assert.match(section, re);
@@ -211,7 +221,9 @@ test('BF-17c logic: LINKS constants match the page, owner-provided status, nofol
   assert.equal(LINKS.TESTED_BOARD.url, SP_B550I);
   assert.equal(LINKS.TESTED_BOARD.sourceStatus, 'OWNER_PROVIDED_SOURCE');
   assert.equal(LINKS.TESTED_BOARD.rel, 'nofollow noopener');
-  assert.deepEqual(LINKS.ALL_BOARDS.map((l) => l.url), [GDC, SP_LIST]);
+  assert.deepEqual(LINKS.ALL_BOARDS.map((l) => l.url), [GDC]);
+  assert.ok(!page.includes('href="' + SP_LIST + '"'), 'generic Softpedia listing removed (B11)');
+  assert.ok(LINKS.TESTED_BOARD.scope.includes('Windows version was not recorded'));
   for (const l of [LINKS.TESTED_BOARD, ...LINKS.ALL_BOARDS]) {
     assert.ok(page.includes('href="' + l.url + '"'), 'page lacks ' + l.url);
     if (/softpedia/.test(l.url)) assert.equal(l.rel, 'nofollow noopener');
@@ -312,6 +324,17 @@ test('BF-23 sitemap entry, guides hub link and internal links resolve', () => {
     assert.ok(fs.existsSync(target), 'broken internal link ' + href);
   }
   for (const m of page.matchAll(/href="(https?:[^"]+)"/g)) {
-    assert.match(m[1], /^https:\/\/(elorum\.github\.io|support\.microsoft\.com|learn\.microsoft\.com|www\.gigabyte\.com|drivers\.softpedia\.com)\//, 'unexpected external host ' + m[1]);
+    assert.match(m[1], /^https:\/\/(elorum\.github\.io|support\.microsoft\.com|learn\.microsoft\.com|www\.gigabyte\.com|www\.dell\.com|drivers\.softpedia\.com)\//, 'unexpected external host ' + m[1]);
   }
+});
+
+test('BF-24 page: UEFI Firmware Settings missing/restarts section cites Dell KB and Microsoft Learn (B14); Fast Startup wording matches source (B15)', () => {
+  const i = page.indexOf('id="uefi-firmware-settings-missing"');
+  assert.ok(i > 0);
+  const sec = page.slice(i, page.indexOf('<section', i));
+  for (const re of [/legacy boot mode/, /msinfo32/, /MBR partition style/, /GPT/, /Windows Recovery Environment is turned off or damaged/, /Restart rather than Shut down/, /Esc, Delete, F1, F2, F10, F11 and F12/, /neither source documents a specific cause/]) assert.match(sec, re);
+  assert.ok(page.includes('href="https://www.dell.com/support/kbdoc/en-us/000126121"'));
+  assert.ok(page.includes('href="https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/boot-to-uefi-mode-or-legacy-bios-mode"'));
+  assert.doesNotMatch(visible, /Microsoft does not recommend disabling Fast Startup/);
+  assert.match(visible, /Fast Startup is enabled by default and that disabling it is not recommended/);
 });
