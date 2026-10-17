@@ -1,0 +1,24 @@
+{
+  "schema": "elorumtech-release-date-gate/1",
+  "intendedReleaseDate": "2026-10-17",
+  "status": "CONFIRMED",
+  "confirmedBy": "Nicki",
+  "note": "intendedReleaseDate is the candidate's declared intended release date, not a statement that the change has shipped. Nicki (owner) confirms the real release date. If it differs, change intendedReleaseDate here AND the dates listed under pages (JSON-LD dateModified, visible 'Updated:' where visibleUpdated is true, sitemap.xml lastmod for the url) to that date; that date-only change is a new patch hash and needs re-validation. Before release set status to CONFIRMED and confirmedBy, then run: npm run release-gate -- --ship-date=YYYY-MM-DD. Unrelated historical dates are out of scope.",
+  "pages": [
+    {
+      "file": "guides/ps5-to-1440p-monitor.html",
+      "url": "https://elorum.github.io/ELORUMTECH/guides/ps5-to-1440p-monitor.html",
+      "visibleUpdated": true
+    },
+    {
+      "file": "compatibility/ps5-dell-u2725qe.html",
+      "url": "https://elorum.github.io/ELORUMTECH/compatibility/ps5-dell-u2725qe.html",
+      "visibleUpdated": false
+    },
+    {
+      "file": "compatibility/macbook-air-m5-dell-u2725qe.html",
+      "url": "https://elorum.github.io/ELORUMTECH/compatibility/macbook-air-m5-dell-u2725qe.html",
+      "visibleUpdated": false
+    }
+  ]
+}
