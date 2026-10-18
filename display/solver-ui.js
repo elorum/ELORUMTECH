@@ -87,7 +87,8 @@
     var badge = el('p', { class: 'verdict v-' + r.verdict.toLowerCase() }, VERDICT_TEXT[r.verdict]);
     out.appendChild(badge);
     if (r.limiting_element) out.appendChild(el('p', null, 'Deciding part: ' + r.limiting_element + '.'));
-    if (r.lowest_max_refresh) out.appendChild(el('p', null, 'Calculated ceiling: the ' + r.lowest_max_refresh.element.toLowerCase() + ' can carry at most about ' + r.lowest_max_refresh.hz + ' Hz at this resolution and bit depth, before blanking (the real maximum is lower). This is arithmetic, not a verified mode.'));
+    var ceil = r.lowest_max_refresh;
+    if (ceil && typeof ceil.hz === 'number' && isFinite(ceil.hz) && ceil.hz > 0) out.appendChild(el('p', null, 'Calculated ceiling: the ' + ceil.element.toLowerCase() + ' can carry at most about ' + ceil.hz + ' Hz at this resolution and bit depth, before blanking (the real maximum is lower). This is arithmetic, not a verified mode.'));
 
     if (r.diagnosis.length) { out.appendChild(el('h3', null, 'Fix “no signal / not detected” in this order')); out.appendChild(list(r.diagnosis, true)); }
     if (r.refresh_steps.length) { out.appendChild(el('h3', null, 'Set the refresh rate')); out.appendChild(list(r.refresh_steps, true)); }

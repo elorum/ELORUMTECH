@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -15,8 +16,10 @@ test('site-origin.json declares a https origin without a trailing slash', () => 
   assert.equal(ORIGIN.endsWith('/'), false);
 });
 
-test('no tracked source still uses the previous github.io origin (except site-origin.json)', () => {
-  const skip = new Set(['docs/site-origin.json', 'tests/site-origin.test.mjs']);
+// Repo-relative path with POSIX separators, so the skip set matches on Windows too (CQ-TECH-02).
+const posixRel = (from, to, p = path) => p.relative(from, to).split(p.sep).join('/');
+const SKIP = new Set(['docs/site-origin.json', 'tests/site-origin.test.mjs']);
+function staleOriginHits(base) {
   const hits = [];
   const walk = (dir) => {
     for (const name of fs.readdirSync(dir)) {
@@ -25,15 +28,40 @@ test('no tracked source still uses the previous github.io origin (except site-or
       const st = fs.statSync(p);
       if (st.isDirectory()) walk(p);
       else if (/\.(html|xml|txt|md|json|mjs|js|css)$/.test(name)) {
-        const rel = path.relative(root, p);
-        if (skip.has(rel)) continue;
+        const rel = posixRel(base, p);
+        if (SKIP.has(rel)) continue;
         const body = fs.readFileSync(p, 'utf8');
         if (body.includes(OLD)) hits.push(rel);
       }
     }
   };
-  walk(root);
+  walk(base);
+  return hits;
+}
+
+test('no tracked source still uses the previous github.io origin (except site-origin.json)', () => {
+  const hits = staleOriginHits(root);
   assert.deepEqual(hits, [], 'stale github.io origin in: ' + hits.join(', '));
+});
+
+test('CQ-TECH-02 skip-set paths are separator-independent (Windows backslashes normalize to /)', () => {
+  assert.equal(posixRel('C:\\repo', 'C:\\repo\\docs\\site-origin.json', path.win32), 'docs/site-origin.json');
+  assert.equal(posixRel('C:\\repo', 'C:\\repo\\tests\\site-origin.test.mjs', path.win32), 'tests/site-origin.test.mjs');
+  assert.ok(SKIP.has(posixRel('C:\\repo', 'C:\\repo\\docs\\site-origin.json', path.win32)));
+  assert.equal(posixRel('/repo', '/repo/docs/site-origin.json', path.posix), 'docs/site-origin.json');
+});
+
+test('CQ-TECH-02 a retired origin in a runtime file is still detected; skipped files are not', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'elorumtech-origin-'));
+  try {
+    fs.mkdirSync(path.join(tmp, 'docs')); fs.mkdirSync(path.join(tmp, 'display'));
+    fs.writeFileSync(path.join(tmp, 'docs', 'site-origin.json'), JSON.stringify({ previous: OLD }));
+    fs.writeFileSync(path.join(tmp, 'display', 'runtime.js'), 'var u = "' + OLD + '/guides/";');
+    fs.writeFileSync(path.join(tmp, 'clean.html'), '<a href="/guides/">ok</a>');
+    assert.deepEqual(staleOriginHits(tmp), ['display/runtime.js']);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
 });
 
 test('no hard-coded project-pages base path remains in HTML', () => {

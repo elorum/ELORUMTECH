@@ -840,6 +840,9 @@
   }
   function lanesHalved(rowId) { return rowId === 'DP-HBR2-x4' ? 'DP-HBR2-x2' : rowId === 'DP-HBR3-x4' ? 'DP-HBR3-x2' : null; }
 
+  // A calculated refresh ceiling is meaningful only as a finite number above zero.
+  function isFiniteCeiling(v) { return typeof v === 'number' && isFinite(v) && v > 0; }
+
   function quickSolve(q) {
     q = q || {};
     var m = { h_active: q.h_active, v_active: q.v_active, refresh_hz: q.refresh_hz, bit_depth_bpc: q.bit_depth_bpc || 8, chroma: q.chroma || 'RGB' };
@@ -865,7 +868,8 @@
       var mm = Object.assign({}, m, { refresh_hz: m.refresh_hz * (mult || 1) });
       var a = assessLink(mm, rowId, timing ? { pixel_clock_khz: { value: timing.pixel_clock_khz.value * (mult || 1), status: 'DERIVED', derived_from: timing.pixel_clock_khz.derived_from }, source: 'UNKNOWN' } : null);
       e.link = a.label; e.required_gbps = a.required_gbps; e.carries_gbps = a.payload_gbps; e.payload_status = a.payload_status;
-      e.max_refresh_upper_bound_hz = a.max_refresh_upper_bound_hz !== null ? Math.floor(a.max_refresh_upper_bound_hz / (mult || 1) * 10) / 10 : null;
+      e.max_refresh_upper_bound_hz = isFiniteCeiling(a.max_refresh_upper_bound_hz) ? Math.floor(a.max_refresh_upper_bound_hz / (mult || 1) * 10) / 10 : null;
+      if (!isFiniteCeiling(e.max_refresh_upper_bound_hz)) e.max_refresh_upper_bound_hz = null;
       e.sources = uniq(e.sources.concat(a.sources));
       e.verdict = a.verdict; e.why = a.why + (mult > 1 ? ' (' + mult + ' displays share this link)' : '');
       if ((cls && cls.derived) || extra.derived) {
@@ -894,15 +898,16 @@
     if (middle === 'passive-dp-hdmi') el('Passive DisplayPort → HDMI adapter', null, null, 1, { label: 'Passive DP → HDMI', why: 'Works only if the computer’s DisplayPort output supports dual-mode (DP++); the HDMI side then sets the limit.', sources: [] });
     // cable
     var cab = q.cable || 'unknown';
-    if (cab === 'certified') els.push({ element: 'Cable', class_label: 'Certified cable (VESA DP40/DP80 or similar, Ultra High Speed HDMI)', verdict: 'CONDITIONAL', why: 'Certified for its rated link within its certified length; confirm the rating covers the link above.', sources: ['V4', 'H2'] });
-    else els.push({ element: 'Cable', class_label: cab === 'marketing' ? 'Label only (e.g. “8K 60Hz”)' : 'Not sure', verdict: 'UNKNOWN', why: 'A label like “8K 60Hz” describes one mode on one standard; it is neither a 60 Hz ceiling nor proof of your mode. A certified cable is the checkable option.', sources: ['V4', 'H2'] });
+    if (cab === 'certified') els.push({ element: 'Cable', class_label: 'Certified cable (VESA DP40/DP80 or similar, Ultra High Speed HDMI)', verdict: 'CONDITIONAL', why: 'Certified for its rated link within its certified length; confirm the rating covers the link above.', sources: ['V4', 'H2'], max_refresh_upper_bound_hz: null });
+    else els.push({ element: 'Cable', class_label: cab === 'marketing' ? 'Label only (e.g. “8K 60Hz”)' : 'Not sure', verdict: 'UNKNOWN', why: 'A label like “8K 60Hz” describes one mode on one standard; it is neither a 60 Hz ceiling nor proof of your mode. A certified cable is the checkable option.', sources: ['V4', 'H2'], max_refresh_upper_bound_hz: null });
     // monitor input
     el('Monitor input', snk, snk.row, 1);
 
     var overall = worstOf(els.map(function (e) { return e.verdict; }));
     overall = quickCap(overall);
     var limiting = els.filter(function (e) { return e.verdict === overall; })[0] || null;
-    var withMax = els.filter(function (e) { return e.max_refresh_upper_bound_hz !== null; }).sort(function (a, b) { return a.max_refresh_upper_bound_hz - b.max_refresh_upper_bound_hz; })[0] || null;
+    // Only finite, positive calculated ceilings count; missing/undefined/NaN/Infinity stay unavailable (null), never rendered (CQ-TECH-01).
+    var withMax = els.filter(function (e) { return isFiniteCeiling(e.max_refresh_upper_bound_hz); }).sort(function (a, b) { return a.max_refresh_upper_bound_hz - b.max_refresh_upper_bound_hz; })[0] || null;
     var limits = chainLimits({ source: src.usbc ? 'usbc' : q.source, middle: middle, sinkInput: q.sinkInput, cable: cab });
     var steps = (q.symptom === 'no-signal' || q.message === 'limited') ? diagnoseNoSignal({ source: src.usbc ? 'usbc' : q.source, middle: middle === 'usbc-adapter' || middle === 'usbc-dock' ? middle : (middle === 'splitter' ? 'splitter' : middle), message: q.message, workedBefore: !!q.workedBefore, displays: displays, windows: q.os !== 'mac' }) : [];
     var refreshSteps = q.symptom === 'refresh' ? [
