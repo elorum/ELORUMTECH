@@ -12,7 +12,7 @@ Live checks (2026-09-18) show Googlebot UA receives **HTTP 200** for robots.txt 
 Most likely causes:
 
 1. **Wrong GSC property** — Domain property for `elorumtech.com` / `elorum.tech` while those DNS names **do not resolve**. Sitemap fetch then fails against a host that is not live.
-2. **Wrong URL-prefix property** — Must be exactly `https://elorumtech.elorum.world/` (project Pages path), not `https://elorum.github.io/` alone.
+2. **Wrong URL-prefix property** — Must be exactly `https://elorumtech.elorum.world/` (custom domain at the host root), not `https://elorum.github.io/` alone.
 3. **Submitted sitemap URL typo** — Must be `https://elorumtech.elorum.world/sitemap.xml` (not a custom domain, not `/sitemap.xml/` trailing slash which 404s).
 
 ## What to do in GSC
