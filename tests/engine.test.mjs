@@ -225,7 +225,7 @@ test('sitemap loc count updated and all files exist', () => {
   const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
   assert.equal(locs.length, 32, 'expected 32 locs, got ' + locs.length);
   for (const loc of locs) {
-    const rel = loc.replace('https://elorum.github.io/ELORUMTECH/', '').replace(/\/$/, '');
+    const rel = loc.replace('https://elorumtech.elorum.world/', '').replace(/\/$/, '');
     const file = rel === '' ? path.join(root, 'index.html')
       : rel === 'guides' ? path.join(root, 'guides', 'index.html')
       : path.join(root, rel);
@@ -322,7 +322,7 @@ test('BN-7 compat BreadcrumbList has no #verified', () => {
   ]) {
     const html = fs.readFileSync(path.join(root, f), 'utf8');
     assert.doesNotMatch(html, /#verified/);
-    assert.match(html, /ELORUMTECH\/guides\//);
+    assert.match(html, /elorumtech\.elorum\.world\/guides\//);
     assert.match(html, /index,follow/);
   }
 });

@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import { render } from '../display/build-pages.mjs';
 
-const BASE = 'https://elorum.github.io/ELORUMTECH/guides/';
+const BASE = 'https://elorumtech.elorum.world/guides/';
 const PAGES = [
   'display-connection-solver.html',
   'external-monitor-not-detected.html',
@@ -93,9 +93,10 @@ test('REM01-HIGH-1 / REM02-NEW-L3 every relative href/src (any quoting) in the 4
       if (/^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i.test(ref)) continue; // absolute URL, protocol-relative or in-page anchor
       const clean = ref.split('#')[0].split('?')[0];
       assert.ok(clean.length > 0, `empty relative reference in ${p}`);
-      // site-root paths: the site is served under /ELORUMTECH/ (GitHub Pages project site), i.e. the repo root
-      if (clean.startsWith('/')) assert.ok(clean.startsWith('/ELORUMTECH/'), `${p}: root path outside the site base: ${ref}`);
-      const target = clean.startsWith('/') ? new URL(clean.slice('/ELORUMTECH/'.length), repoRoot) : new URL(clean, guidesDir);
+      // site-root paths: custom domain serves the repo at the host root (no project-pages path prefix)
+      const projectBase = ['/', 'ELORUMTECH', '/'].join('');
+      if (clean.startsWith('/')) assert.ok(!clean.startsWith(projectBase), `${p}: stale project-pages base path: ${ref}`);
+      const target = clean.startsWith('/') ? new URL(clean.slice(1), repoRoot) : new URL(clean, guidesDir);
       const file = target.pathname.endsWith('/') ? new URL('index.html', target) : target;
       assert.ok(existsSync(file), `${p}: ${ref} -> ${file.pathname} does not exist`);
       checked++;
