@@ -8,7 +8,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const BASE = 'https://elorum.github.io/ELORUMTECH/';
+const BASE = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/site-origin.json'), 'utf8')).origin.replace(/\/$/, '') + '/';
 // Pages whose FAQ/date lines overlap open PR #11 (or are rewritten by it). Re-check after PR #11 is resolved.
 const DEFERRED = new Set(['index.html', 'compatibility/ps5-dell-u2725qe.html', 'guides/ps5-hdmi-2-1-cable-path.html',
   'guides/usb-c-laptop-to-4k-monitor.html', 'guides/usb-c-to-hdmi-adapter-path.html']);
