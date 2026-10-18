@@ -331,7 +331,7 @@ test('BF-23 sitemap entry, guides hub link and internal links resolve', () => {
     assert.ok(fs.existsSync(target), 'broken internal link ' + href);
   }
   for (const m of page.matchAll(/href="(https?:[^"]+)"/g)) {
-    assert.match(m[1], new RegExp('^https://(' + SITE_HOST + '|support\\.microsoft\\.com|learn\\.microsoft\\.com|www\\.gigabyte\\.com|www\\.dell\\.com|www\\.asus\\.com|drivers\\.softpedia\\.com)/'), 'unexpected external host ' + m[1]);
+    assert.match(m[1], new RegExp('^https://(' + SITE_HOST + '|support\\.microsoft\\.com|learn\\.microsoft\\.com|www\\.gigabyte\\.com|www\\.dell\\.com|www\\.asus\\.com|drivers\\.softpedia\\.com|help\\.ea\\.com|support\\.riotgames\\.com)/'), 'unexpected external host ' + m[1]);
   }
 });
 
@@ -531,4 +531,31 @@ test('REM02-R4 inspection tool runs osslsigncode offline (-ignore-crl) and keeps
   assert.match(tool, /Not a malware scan or Windows\/SmartScreen evaluation/);
   assert.match(tool, /certificate chain: not evaluated/);
   assert.doesNotMatch(tool, /\bimport (urllib|requests|http|socket)\b|from (urllib|http|socket)/);
+});
+
+// ---- REM01 Boot-Escape (QA F1–F4 / REV R1–R2 on #26) ----
+test('REM01-BOOT-ESCAPE-F4 BitLocker warning precedes Startup keys; shutdown /r /fw /t 0 with admin', () => {
+  const i = page.indexOf('id="standard-methods"');
+  assert.ok(i > 0);
+  const end = page.indexOf('id="uefi-firmware-settings-missing"', i);
+  const ladder = page.slice(i, end > i ? end : i + 6000);
+  const iBl = ladder.search(/Before you start:|recovery key/i);
+  const iStep1 = ladder.indexOf('<strong>Startup keys:</strong>');
+  assert.ok(iBl >= 0, 'BitLocker / Before you start missing from ladder');
+  assert.ok(iStep1 > iBl, 'BitLocker warning must come before Startup keys (step 1 after Before you start)');
+  assert.match(ladder, /shutdown \/r \/fw \/t 0/);
+  assert.match(ladder, /<strong>admin<\/strong> terminal/);
+  assert.doesNotMatch(ladder, /Prefer a full Restart over Shut down/);
+  assert.equal((ladder.match(/Restart again \(not Shut down\)/g) || []).length, 1);
+});
+
+test('REM01-BOOT-ESCAPE-F1 games claim is sourced (some, not many) with EA + Riot', () => {
+  const i = page.indexOf('id="secure-boot-entry"');
+  assert.ok(i > 0);
+  const sec = page.slice(i, page.indexOf('</section>', i) + 10);
+  assert.doesNotMatch(sec, /many games require a Windows 11 PC/i);
+  assert.match(sec, /some games/i);
+  assert.ok(sec.includes('href="https://help.ea.com/en/articles/technical-issues/secure-boot/"'));
+  assert.ok(sec.includes('href="https://support.riotgames.com/en-us/riot/client/enable-tpm-20"'));
+  assert.match(sec, /BitLocker recovery-key prompt|suspend BitLocker first/i);
 });
