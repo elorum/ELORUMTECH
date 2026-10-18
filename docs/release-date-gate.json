@@ -20,8 +20,8 @@
     {
       "file": "compatibility/macbook-air-m5-dell-u2725qe.html",
       "url": "https://elorumtech.elorum.world/compatibility/macbook-air-m5-dell-u2725qe.html",
-      "visibleUpdated": false,
-      "intendedReleaseDate": "2026-10-17"
+      "visibleUpdated": true,
+      "intendedReleaseDate": "2026-10-18"
     },
     {
       "file": "guides/bios-fast-boot-troubleshooter.html",
@@ -62,6 +62,12 @@
     {
       "file": "guides/index.html",
       "url": "https://elorumtech.elorum.world/guides/",
+      "visibleUpdated": true,
+      "intendedReleaseDate": "2026-10-18"
+    },
+    {
+      "file": "guides/laptop-to-docking-station.html",
+      "url": "https://elorumtech.elorum.world/guides/laptop-to-docking-station.html",
       "visibleUpdated": true,
       "intendedReleaseDate": "2026-10-18"
     }
