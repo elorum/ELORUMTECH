@@ -30,4 +30,4 @@ Most likely causes:
 - sitemap → 200, `application/xml`, well-formed, **32** URLs (every `<loc>` has a `<lastmod>`)
 - All sitemap locs → 200; canonicals match locs; no `noindex` on those pages
 - Retired project-Pages host URLs → 301 to the same path on the custom domain (GitHub automatic)
-- HTTP→HTTPS 301 for the custom domain works
+- HTTP→HTTPS 301 for the custom domain: DEV-verified via --resolve (box has no outbound :80)
