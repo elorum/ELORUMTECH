@@ -19,9 +19,15 @@ const dec = (s) => s.replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint
 const txt = (s) => dec(s.replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').trim();
 
 const sitemap = fs.readFileSync(path.join(ROOT, 'sitemap.xml'), 'utf8');
-const entries = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>\s*<lastmod>([^<]+)<\/lastmod>/g)].map(([, loc, lastmod]) => {
+// Every <url> must carry both <loc> and <lastmod> (QA LOW on #12: do not silently skip missing lastmod).
+const urlBlocks = [...sitemap.matchAll(/<url>\s*([\s\S]*?)<\/url>/g)].map((m) => m[1]);
+const entries = urlBlocks.map((block, i) => {
+  const loc = block.match(/<loc>([^<]+)<\/loc>/)?.[1];
+  const lastmods = [...block.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)].map((m) => m[1]);
+  assert.ok(loc, `sitemap <url> #${i + 1} missing <loc>`);
+  assert.equal(lastmods.length, 1, `sitemap loc ${loc} expected exactly 1 <lastmod>, found ${lastmods.length}`);
   const rel = loc.slice(BASE.length);
-  return { loc, lastmod, file: rel === '' ? 'index.html' : rel.endsWith('/') ? rel + 'index.html' : rel };
+  return { loc, lastmod: lastmods[0], file: rel === '' ? 'index.html' : rel.endsWith('/') ? rel + 'index.html' : rel };
 });
 const ld = (h) => [...h.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1]))
   .flatMap((j) => [].concat(j['@graph'] || j));
