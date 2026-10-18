@@ -331,7 +331,7 @@ test('BF-23 sitemap entry, guides hub link and internal links resolve', () => {
     assert.ok(fs.existsSync(target), 'broken internal link ' + href);
   }
   for (const m of page.matchAll(/href="(https?:[^"]+)"/g)) {
-    assert.match(m[1], new RegExp('^https://(' + SITE_HOST + '|support\\.microsoft\\.com|learn\\.microsoft\\.com|www\\.gigabyte\\.com|www\\.dell\\.com|drivers\\.softpedia\\.com)/'), 'unexpected external host ' + m[1]);
+    assert.match(m[1], new RegExp('^https://(' + SITE_HOST + '|support\\.microsoft\\.com|learn\\.microsoft\\.com|www\\.gigabyte\\.com|www\\.dell\\.com|www\\.asus\\.com|drivers\\.softpedia\\.com)/'), 'unexpected external host ' + m[1]);
   }
 });
 
