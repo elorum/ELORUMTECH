@@ -16,8 +16,10 @@ const SP_LIST = 'https://drivers.softpedia.com/get/MOTHERBOARD/GIGABYTE';
 const WV = 'Per its URL, the Softpedia page is for Windows 10 64-bit; the tested PC’s Windows version was not recorded.';
 const GB_B550I = 'https://www.gigabyte.com/Motherboard/B550I-AORUS-PRO-AX-rev-10/support';
 
+const SITE_ORIGIN = JSON.parse(fs.readFileSync(path.join(root, 'docs/site-origin.json'), 'utf8')).origin;
 const PAGE_REL = 'guides/bios-fast-boot-troubleshooter.html';
-const PAGE_URL = 'https://elorumtech.elorum.world/' + PAGE_REL;
+const PAGE_URL = SITE_ORIGIN.replace(/\/$/, '') + '/' + PAGE_REL;
+const SITE_HOST = new URL(SITE_ORIGIN).host.replace(/\./g, '\\.');
 const page = fs.readFileSync(path.join(root, PAGE_REL), 'utf8');
 const visible = page.replace(/<script[\s\S]*?<\/script>/g, ' ').replace(/<style[\s\S]*?<\/style>/g, ' ');
 
@@ -329,7 +331,7 @@ test('BF-23 sitemap entry, guides hub link and internal links resolve', () => {
     assert.ok(fs.existsSync(target), 'broken internal link ' + href);
   }
   for (const m of page.matchAll(/href="(https?:[^"]+)"/g)) {
-    assert.match(m[1], /^https:\/\/(elorumtech\.elorum\.world|elorum\.github\.io|support\.microsoft\.com|learn\.microsoft\.com|www\.gigabyte\.com|www\.dell\.com|drivers\.softpedia\.com)\//, 'unexpected external host ' + m[1]);
+    assert.match(m[1], new RegExp('^https://(' + SITE_HOST + '|support\\.microsoft\\.com|learn\\.microsoft\\.com|www\\.gigabyte\\.com|www\\.dell\\.com|drivers\\.softpedia\\.com)/'), 'unexpected external host ' + m[1]);
   }
 });
 
