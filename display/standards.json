@@ -238,6 +238,150 @@
         "DSC compression ratios are not set in stone, some computers enable 2.4:1",
         "The operating system is not made aware of any of these settings, it won't report the DisplayPort Version (1.2, 1.4, 2.0 etc), nor will it report if DSC is available, or the DSC compression ratio."
       ]
+    },
+    {
+      "id": "DL1",
+      "url": "https://www.dell.com/support/contents/us-en/article/product-support/self-support-knowledgebase/monitor-screen-video/monitors-and-screens",
+      "title": "Dell Support — Computer turns on but no display: troubleshoot display problems",
+      "publisher": "Dell",
+      "kind": "manufacturer_support",
+      "checked_at": "2026-10-23T07:42:30+02:00",
+      "quotes": [
+        "What should I do if my monitor shows \"No Signal\" or \"Input Not Found\" message?",
+        "In the monitor's menu, make sure the correct input source is selected.",
+        "Ensure the computer isn't in sleep mode. Move the mouse, press any key on the keyboard, or press the power button to wake up your computer.",
+        "Turn on the monitor. If it displays a self-test screen, the monitor is functioning correct."
+      ]
+    },
+    {
+      "id": "DL2",
+      "url": "https://www.dell.com/support/kbdoc/en-us/000132110/how-to-troubleshoot-a-dell-desktop-monitor",
+      "title": "Dell Support — Fix Dell monitor display issues (KB 000132110)",
+      "publisher": "Dell",
+      "kind": "manufacturer_support",
+      "checked_at": "2026-10-23T07:41:10+02:00",
+      "quotes": [
+        "Amber, orange, or blinking white light: The monitor has power but is not receiving a video signal from the computer. This is a computer or cable issue, not a monitor hardware issue.",
+        "Make sure your cable is plugged into the graphics card ports, these are usually located lower on the back panel.",
+        "Using the wrong port (the one built into the main board) is a common cause of a \"no signal\" screen, especially on gaming or high-performance desktops.",
+        "If the black screen started after a recent Windows or driver update, rolling back to the previous driver version may help."
+      ]
+    },
+    {
+      "id": "DL3",
+      "url": "https://www.dell.com/support/kbdoc/en-us/000139468/frequently-asked-questions-faqs-about-the-hdmi-port-on-a-dell-pc",
+      "title": "Dell Support — HDMI ports on Dell devices: complete guide (KB 000139468)",
+      "publisher": "Dell",
+      "kind": "manufacturer_support",
+      "checked_at": "2026-10-23T07:42:00+02:00",
+      "quotes": [
+        "Confirm the display is set to the correct HDMI input (HDMI 1, HDMI 2, etc.).",
+        "Wait 10 seconds for the display to detect signal.",
+        "Example: HDMI 2.1 computer + HDMI 2.0 cable + HDMI 2.0 monitor = HDMI 2.0 performance (4K @ 60 Hz maximum).",
+        "For 4K @ 120 Hz: Ultra High Speed HDMI cable required.",
+        "Under 15 feet (5 meters) - All cable types work well",
+        "Over 50 feet (15+ meters) - Requires active (powered) HDMI cables or fiber optic HDMI cables",
+        "Q: Windows detects the display but shows black screen. Why?",
+        "Wrong resolution selected: Lower resolution in Display settings",
+        "Display outside supported range: Try different refresh rate",
+        "Protected content (HDCP) issues: Update graphics drivers"
+      ]
+    },
+    {
+      "id": "DL4",
+      "url": "https://dl.dell.com/Manuals/all-products/esuprt_electronics_accessories/esuprt_electronics_accessories_monitors/dell-u2720q-monitor_User's-Guide_en-us.pdf",
+      "title": "Dell — UltraSharp U2720Q/U2720QM monitor user’s guide (PDF)",
+      "publisher": "Dell",
+      "kind": "manufacturer_support",
+      "checked_at": "2026-10-23T07:43:20+02:00",
+      "quotes": [
+        "The current input timing is not supported by the monitor display. Please change your input timing to 3840x2160, 60Hz or any other monitor listed timing as per the monitor specifications.",
+        "NOTE: U2720Q/U2720QM default setting is DP 1.4. A DP 1.1 Graphic card may not display normally.",
+        "Some DP 1.1a graphics card cannot support DP 1.4 monitors. Go to OSD menu, under Input Source selection, press and hold DP select key for 8 sec to change the monitor setting from DP 1.4 to DP 1.1a."
+      ]
+    },
+    {
+      "id": "HP1",
+      "url": "https://support.hp.com/us-en/document/ish_7537074-7537126-16",
+      "title": "HP Support — HP PCs: connecting a monitor, projector, or TV (Windows)",
+      "publisher": "HP",
+      "kind": "manufacturer_support",
+      "checked_at": "2026-10-23T07:43:50+02:00",
+      "quotes": [
+        "Except for USB Type-C input, an HP monitor automatically determines which inputs have valid video signals. You must manually select USB Type-C input.",
+        "If you are using an HP monitor, depending on your DisplayPort cable connection, either the DisplayPort or Mini DisplayPort input video connection is disabled between the monitor and connected computer after the computer exits Sleep or loses the input signal.",
+        "You must reconnect to the correct DisplayPort (DisplayPort 1) or Mini DisplayPort (DisplayPort 2) input using the OSD menu. To reconnect, press the OSD button on the monitor, select Menu, select Input, and then select a DisplayPort setting."
+      ]
+    },
+    {
+      "id": "NV1",
+      "url": "https://nvidia.custhelp.com/app/answers/detail/a_id/5310/~/i-get-a-black-screen-after-turning-on-my-pc",
+      "title": "NVIDIA Support — I get a black screen after turning on my PC",
+      "publisher": "NVIDIA",
+      "kind": "manufacturer_support",
+      "checked_at": "2026-10-23T07:41:15+02:00",
+      "page_date": "2023-11-03",
+      "quotes": [
+        "If your using a new monitor that requires Display Port (DP 1.3 or 1.4) try using an HDMI port or a different monitor temporarily.",
+        "If you’re using multiple monitors please try only connecting a single monitor just for troubleshooting purposes."
+      ]
+    },
+    {
+      "id": "NV2",
+      "url": "https://nvidia.custhelp.com/app/answers/detail/a_id/4674",
+      "title": "NVIDIA Support — Graphics firmware update for DisplayPort 1.3 and 1.4 displays",
+      "publisher": "NVIDIA",
+      "kind": "manufacturer_support",
+      "checked_at": "2026-10-23T07:41:55+02:00",
+      "page_date": "2021-09-29",
+      "quotes": [
+        "To enable the latest DisplayPort 1.3 / 1.4 features, Maxwell and desktop Pascal graphics cards may require a firmware update.",
+        "GeForce 10 Series: GeForce GT 1030, GeForce GTX 1050, GTX 1050Ti, GTX 1060, GTX 1070, GTX 1070Ti, GTX 1080, GTX 1080Ti",
+        "Without the update, systems that are connected to a DisplayPort 1.3 / 1.4 monitor could experience blank screens on boot until the operating system loads, or could experience a hang on boot."
+      ]
+    },
+    {
+      "id": "IN1",
+      "url": "https://www.intel.com/content/www/us/en/support/articles/000039215/graphics.html",
+      "title": "Intel Support — Laptop and/or desktop with Intel Graphics unable to detect an external display (000039215)",
+      "publisher": "Intel",
+      "kind": "manufacturer_support",
+      "checked_at": "2026-10-23T07:41:20+02:00",
+      "page_date": "2023-10-04",
+      "quotes": [
+        "The monitor or TV has no video output when linked to a laptop or desktop when using an HDMI cable.",
+        "Update HDMI and TV firmware. For the firmware update, contact your laptop and TV manufacturer.",
+        "Check the display is enabled in the Intel® Graphics Command Center."
+      ]
+    },
+    {
+      "id": "IN2",
+      "url": "https://www.intel.com/content/www/us/en/support/articles/000005485/graphics.html",
+      "title": "Intel Support — Frequently asked questions about HDMI technology (000005485)",
+      "publisher": "Intel",
+      "kind": "manufacturer_support",
+      "checked_at": "2026-10-23T07:43:50+02:00",
+      "page_date": "2025-02-12",
+      "quotes": [
+        "HDCP is a copy protection method where the A/V stream is encrypted between the transmitter and the receiver (A/V receiver, TV), protecting it against illegal copying.",
+        "Cable splitting is not supported.",
+        "We don't support HDMI splitters because their functionality cannot be guaranteed.",
+        "HDMI specifies the performance for the cable, not the maximum cable length.",
+        "Verify that the TV is set to the appropriate Input mode – specifically HDMI. Some TV’s have multiple HDMI connections, so make sure you are using the correct one that corresponds to the port the cable is connected to."
+      ]
+    },
+    {
+      "id": "HL1",
+      "url": "https://www.hdmi.org/spec2sub/ultrahdmicables",
+      "title": "HDMI Licensing Administrator — Ultra96 HDMI Cable and Ultra High Speed HDMI Cable",
+      "publisher": "HDMI Licensing Administrator",
+      "kind": "standard_body",
+      "checked_at": "2026-10-23T07:42:05+02:00",
+      "quotes": [
+        "The Ultra High Speed HDMI Cable was introduced in the HDMI 2.1 Specification and entered the market in 2020. It is applicable for system configurations supporting up to 48Gbps maximum bandwidth.",
+        "Once certified, cables will be required to affix an Ultra96 HDMI Cable or Ultra High Speed HDMI Cable Certification Label to each package or unit of sale enabling consumers to verify the certification status of the product.",
+        "the labels can be scanned by standard QR code apps."
+      ]
     }
   ],
   "links": [
