@@ -1,0 +1,90 @@
+/* ELORUMTECH visual refresh: design tokens ported (copied values) from elorum.world
+   (elorum/Elorum-site site-source/app/globals.css). No webfonts: elorum.world uses
+   system stacks (Georgia serif display, Arial sans body). Loaded after each page's
+   inline <style>, so it overrides look only; no markup or copy depends on it. */
+:root{
+  --ink:#161612;--cream:#f2efe6;--paper:#e7e1d3;--gold:#b79055;--line:rgba(22,22,18,.24);
+  --wine:#792f45;--forest:#28564d;--cobalt:#384f78;--amber:#d19b50;--chalk:#f7f3e9;
+  --night:#171713;--night-deep:#0d0d0b;--panel:#1e1d19;--panel-2:#24231e;
+  --line-dark:rgba(242,239,230,.16);--line-dark-strong:rgba(242,239,230,.32);
+  --muted:#c8c2b6;--muted-2:#a9a398;
+  --serif:Georgia,'Times New Roman',serif;--sans:Arial,Helvetica,sans-serif;
+  --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px;
+  --radius:2px;--pill:999px;
+  --shadow:0 14px 30px rgba(0,0,0,.28);
+  --focus:#d19b50;
+  color-scheme:dark;
+}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--night);color:var(--cream);font-family:var(--sans);text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
+h1,h2{font-family:var(--serif);font-weight:400;color:var(--cream)}
+h1{letter-spacing:-.045em;line-height:1}
+h2{letter-spacing:-.03em;line-height:1.12}
+h3{font-family:var(--sans);font-weight:700;letter-spacing:-.005em;color:var(--cream)}
+p,li,td,caption,.lead,.sub,.muted{color:var(--muted)}
+.lead{font-family:var(--serif);line-height:1.6}
+strong{color:var(--cream)}
+a{color:var(--cream);text-decoration:underline;text-decoration-color:var(--gold);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--gold);text-decoration-color:currentColor}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,[tabindex]:focus-visible,.btn:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+::selection{background:var(--gold);color:var(--ink)}
+/* header / nav */
+nav{border-bottom:1px solid var(--line-dark)}
+.brand{font-weight:900;letter-spacing:-.04em;font-size:1.3rem;color:var(--cream);text-decoration:none}
+.brand:hover{color:var(--cream)}
+nav a:not(.brand),.beta{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none}
+nav a:not(.brand):hover{color:var(--cream)}
+/* eyebrows / tags */
+.tag,.eyebrow{color:var(--gold);font-size:.67rem;font-weight:700;letter-spacing:.24em;text-transform:uppercase}
+.updated,[style*="color:#738094"],[style*="color:#8b97a8"]{color:var(--muted-2)!important}
+[style*="color:#79f2c0"]:not(.btn){color:var(--gold)!important}
+[style*="color:#f6f8fb"]{color:var(--cream)!important}
+[style*="color:#aab5c4"],[style*="color:#dbe4ef"]{color:var(--muted)!important}
+.ok{color:#8fc2b5}.warn{color:var(--amber)}
+/* cards / panels */
+.box,.answer,.check,.faq,.related,.cta,.tool,.sources,.result,.card,.field,.spec,.keep,.note,.hint,.myth,.dlbox,fieldset{background:var(--panel);border:1px solid var(--line-dark);border-radius:var(--radius);box-shadow:none}
+.box{box-shadow:var(--shadow)}
+.field{background:var(--night)}
+.answer,.cta{border-top:2px solid var(--gold)}
+.answer strong,.cta strong{color:var(--gold)}
+.spec{border-style:dashed;color:var(--cream)}
+.faq details{border-top-color:var(--line-dark)}
+.faq summary{color:var(--cream);font-weight:700}
+.field label,label{color:var(--muted)}
+legend{color:var(--cream)}
+/* buttons (elorum.world: cream block, ink text, uppercase tracked) */
+.btn,button.btn,a.btn,a[style*="background:#79f2c0"]{background:var(--cream)!important;color:var(--ink)!important;border:1px solid var(--cream)!important;border-radius:0!important;font-family:var(--sans);font-weight:700;font-size:.75rem;letter-spacing:.13em;text-transform:uppercase;text-decoration:none;transition:background-color .15s,color .15s}
+.btn:hover,a[style*="background:#79f2c0"]:hover{background:var(--gold)!important;border-color:var(--gold)!important;color:var(--ink)!important}
+[style*="border:1px solid #79f2c0"]{background:transparent!important;color:var(--cream)!important;border:1px solid var(--line-dark-strong)!important;border-radius:0!important}
+[style*="border:1px solid #79f2c0"]:hover{border-color:var(--gold)!important;color:var(--gold)!important}
+.chips button.chip,.pill,.confidence{border:1px solid var(--line-dark-strong);border-radius:var(--pill);color:var(--muted);font-family:var(--sans);letter-spacing:.04em}
+.chips button.chip[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.chips button.chip:focus-visible{outline:2px solid var(--focus)}
+select{color:var(--cream)}
+select option,select optgroup{background:var(--night);color:var(--cream)}
+input,textarea{font-family:var(--sans)}
+/* outcome badges */
+.outcome{border-radius:var(--pill);border:1px solid var(--gold);background:var(--gold);color:var(--ink);letter-spacing:.14em}
+.outcome.keep,.outcome.direct{background:var(--gold);color:var(--ink)}
+.outcome.adapter,.outcome.dock{background:transparent;color:var(--amber);border-color:var(--amber)}
+.outcome.capture{background:transparent;color:#e59aa9;border-color:#e59aa9}
+/* tables */
+.tablewrap{border:1px solid var(--line-dark);border-radius:var(--radius)}
+th,td{border-top:1px solid var(--line-dark)}
+thead th{background:var(--panel-2);color:var(--cream);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase}
+tbody th{color:var(--cream)}
+tr.payload td,tr.payload th{background:rgba(183,144,85,.12)}
+/* footer */
+footer{background:var(--night-deep);border-top:1px solid var(--line-dark);color:var(--muted-2)}
+footer a{color:var(--muted);text-decoration-color:var(--line-dark-strong)}
+footer a:hover{color:var(--gold)}
+.skip{background:var(--cream);color:var(--ink);border:2px solid var(--gold);border-radius:0}
+/* mobile */
+@media (max-width:600px){
+  h1{letter-spacing:-.035em}
+  .btn,a[style*="background:#79f2c0"]{min-height:44px}
+  nav a:not(.brand){font-size:.68rem;letter-spacing:.1em}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+}
