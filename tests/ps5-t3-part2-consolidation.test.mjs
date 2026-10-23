@@ -60,3 +60,11 @@ test('t3p2 sitemap lastmod 2026-10-23 exactly for changed URLs', () => {
   assert.deepEqual(at, [BASE + DELL, BASE + CABLE].sort());
   assert.match(sm, new RegExp(`<loc>${BASE}${P1440}</loc>\\s*<lastmod>2026-10-17</lastmod>`));
 });
+
+test('t3p2 Dell: visible Updated 2026-10-23 (T3P2-QA-001)', () => {
+  const h = read(DELL);
+  assert.equal((h.match(/Updated: \d{4}-\d{2}-\d{2}/g) || []).length, 1);
+  assert.match(h, /<h1>PlayStation 5 → Dell U2725QE<\/h1>\n<p class="updated"[^>]*>Updated: 2026-10-23<\/p>/);
+  const g = JSON.parse(read('docs/release-date-gate.json'));
+  assert.equal(g.pages.find((p) => p.file === DELL).visibleUpdated, true);
+});
