@@ -2,7 +2,7 @@
   "schema": "elorumtech-guide-sources/1",
   "job": "ELORUMTECH-SOLVER-ADDITIONS-20261023-01",
   "page": "guides/display-connection-solver.html",
-  "note": "Device facts DF01-DF42 = MI-01 mission MI-ELORUMTECH-SOLVER-ADDITIONS-20261023-01 items MI-SOLV-001..042 (VERIFIED). Every quote was re-fetched by DEV-01 on 2026-10-23 (checked_at, CEST) and matched in the visible page text after HTML-entity decoding and whitespace normalisation; table quotes are cell text. A claim never goes beyond its quotes. MI-SOLV-043..052 (UNVERIFIED) are excluded. Facts are shown on the page; they never make a solver result PASS by themselves.",
+  "note": "Device facts DF01-DF42 = MI-01 mission MI-ELORUMTECH-SOLVER-ADDITIONS-20261023-01 items MI-SOLV-001..042 (VERIFIED). Every quote was re-fetched by DEV-01 on 2026-10-23 (checked_at, CEST) and matched in the visible page text after HTML-entity decoding and whitespace normalisation; table quotes are cell text. A claim never goes beyond its quotes. MI-SOLV-043..052 (UNVERIFIED) are excluded. Facts are shown on the page; they never make a solver result PASS by themselves. REM01 (2026-10-23 23:39-23:42 CEST re-fetch): quotes and context strings match the live page text byte for byte except whitespace; non_ascii lists every non-ASCII code point they contain; context holds verbatim labels/headings from the same page that a row relies on; derived lists each row token that is a spelling or synonym of quoted text, with its rule.",
   "sources": [
     {
       "id": "NIN1",
@@ -14,7 +14,8 @@
       "quotes": [
         "Maximum of 3840x2160 (4K) resolution at 60 fps (TV mode)",
         "Supports 120 fps when 1920x1080/2560x1440 resolutions are selected"
-      ]
+      ],
+      "non_ascii": []
     },
     {
       "id": "NIN2",
@@ -26,6 +27,9 @@
       "quotes": [
         "The length of both the Ultra High Speed HDMI® cable, and USB-C® charging cable is 1.5 meters.",
         "Ultra High Speed HDMI® Cable"
+      ],
+      "non_ascii": [
+        "U+00AE"
       ]
     },
     {
@@ -37,7 +41,8 @@
       "checked_at": "2026-10-23T23:07:04+02:00",
       "quotes": [
         "Capacitive touch screen / 7.9 inch wide colour gamut LCD screen / 1920x1080 resolution / HDR10 support / VRR up to 120 Hz"
-      ]
+      ],
+      "non_ascii": []
     },
     {
       "id": "VLV1",
@@ -48,7 +53,8 @@
       "checked_at": "2026-10-23T23:07:04+02:00",
       "quotes": [
         "USB-C with DisplayPort 1.4 Alt-mode support; up to 8K @60Hz or 4K @120Hz, USB 3.2 Gen 2"
-      ]
+      ],
+      "non_ascii": []
     },
     {
       "id": "VLV2",
@@ -59,7 +65,8 @@
       "checked_at": "2026-10-23T23:07:05+02:00",
       "quotes": [
         "Display port over Type C; up to 8K @60Hz or 4K @120Hz, USB3 gen 2"
-      ]
+      ],
+      "non_ascii": []
     },
     {
       "id": "VLV3",
@@ -74,7 +81,8 @@
         "HDMI 2.0",
         "* MST support currently requires both the HDMI and DisplayPort ports to be in use, update is forthcoming",
         "FreeSync (VRR) support"
-      ]
+      ],
+      "non_ascii": []
     },
     {
       "id": "SNY1",
@@ -85,6 +93,9 @@
       "checked_at": "2026-10-23T23:07:06+02:00",
       "quotes": [
         "Support of 4K 120Hz TVs, 8K TVs, VRR (specified by HDMI ver.2.1)"
+      ],
+      "non_ascii": [
+        "U+00AE"
       ]
     },
     {
@@ -97,6 +108,9 @@
       "quotes": [
         "*1440p video output on PS5 requires a TV or PC monitor that supports 1440p/60Hz, or 1440p/60Hz and 120Hz.",
         "ALLM is only available on compatible TVs with HDMI 2.1"
+      ],
+      "non_ascii": [
+        "U+00AE"
       ]
     },
     {
@@ -109,7 +123,8 @@
       "quotes": [
         "Gaming Resolution. 1440p",
         "Performance Target. Up to 120 FPS"
-      ]
+      ],
+      "non_ascii": []
     },
     {
       "id": "XBX2",
@@ -121,7 +136,8 @@
       "quotes": [
         "High Dynamic Range. Up to 8K HDR",
         "**4K at up to 120FPS: Requires supported content and display."
-      ]
+      ],
+      "non_ascii": []
     },
     {
       "id": "APL1",
@@ -136,6 +152,9 @@
         "One display up to a native resolution of 8K at 60Hz or 5K at 120Hz or 4K at 240Hz",
         "Supports up to two external displays over a single Thunderbolt port",
         "Supports up to two external displays"
+      ],
+      "non_ascii": [
+        "U+2011"
       ]
     },
     {
@@ -144,11 +163,12 @@
       "title": "MacBook Pro - Tech Specs",
       "publisher": "Apple",
       "kind": "manufacturer_spec",
-      "checked_at": "2026-10-23T23:07:07+02:00",
+      "checked_at": "2026-10-23T23:40:32+02:00",
       "quotes": [
-        "Thunderbolt 5 (USB‑C) ports support native DisplayPort 2.1 speeds",
-        "Thunderbolt 4 (USB‑C) ports support native DisplayPort 1.4 speeds"
-      ]
+        "Thunderbolt 5 (USB-C) ports support native DisplayPort 2.1 speeds",
+        "Thunderbolt 4 (USB-C) ports support native DisplayPort 1.4 speeds"
+      ],
+      "non_ascii": []
     },
     {
       "id": "APL3",
@@ -164,7 +184,8 @@
         "Closing the lid of your MacBook Pro with M4 chip or M4 Pro chip will not increase the number of external displays that can be supported.",
         "MacBook Pro models introduced in 2023 or later with the M3 chip support up to two external displays simultaneously with lid closed",
         "Using a supported hub or daisy-chaining displays can enable up to 3 displays over a single Thunderbolt port, but does not increase the maximum number of displays that you can connect."
-      ]
+      ],
+      "non_ascii": []
     },
     {
       "id": "APL4",
@@ -176,7 +197,8 @@
       "quotes": [
         "for host (with 96W host charging)",
         "for connecting high-speed accessories or daisy-chaining additional displays"
-      ]
+      ],
+      "non_ascii": []
     },
     {
       "id": "DEL1",
@@ -189,7 +211,8 @@
         "macOS only allows monitor daisy chaining via Thunderbolt.",
         "Extended mode or duplicate mode",
         "Duplicate mode only"
-      ]
+      ],
+      "non_ascii": []
     },
     {
       "id": "CDG1",
@@ -206,7 +229,8 @@
         "140W Power Delivery",
         "The TS5 Plus provides up to 140W power delivery for even the most demanding laptops.",
         "Higher refresh-rates (above 60Hz) may require DSC (Display Stream Compression) support on the monitors and host GPU."
-      ]
+      ],
+      "non_ascii": []
     },
     {
       "id": "CDG2",
@@ -217,7 +241,8 @@
       "checked_at": "2026-10-23T23:07:07+02:00",
       "quotes": [
         "The two downstream Thunderbolt 5 ports charge at 15W each."
-      ]
+      ],
+      "non_ascii": []
     },
     {
       "id": "OWC1",
@@ -229,7 +254,8 @@
       "quotes": [
         "Connect up to three 8K displays on Windows or dual 6K displays on Mac",
         "With up to 140W charging"
-      ]
+      ],
+      "non_ascii": []
     },
     {
       "id": "LGE1",
@@ -241,6 +267,9 @@
       "quotes": [
         "Graphics card that supports DisplayPort 1.4 or HDMI 2.1 are required to achieve up to 240Hz refresh rate support.",
         "NVIDIA® G-SYNC® Compatible supports variable refresh rate on GeForce GTX 10 Series and higher GPUs on Display Port, and GeForce RTX 30 Series and higher GPUs on HDMI 2.1."
+      ],
+      "non_ascii": [
+        "U+00AE"
       ]
     },
     {
@@ -255,6 +284,9 @@
         "Type C(DP alt.): 3840 x 2160 (Up to 240Hz) and 90W PD charging",
         "G-Sync Compatible AMD FreeSync™ Premium Pro Technology",
         "48 ~ 240Hz"
+      ],
+      "non_ascii": [
+        "U+2122"
       ]
     },
     {
@@ -268,7 +300,8 @@
         "1 x Displayport 2.1 (UHBR 20) in",
         "1 x USB Type-C (Alternate Mode; Upstream port; Power Delivery up to 65W)",
         "DP 2.1 cable (VESA DP80 certified)"
-      ]
+      ],
+      "non_ascii": []
     },
     {
       "id": "AMD1",
@@ -279,6 +312,9 @@
       "checked_at": "2026-10-23T23:07:08+02:00",
       "quotes": [
         "DisplayPort™ 2.1a HDMI™ 2.1b"
+      ],
+      "non_ascii": [
+        "U+2122"
       ]
     },
     {
@@ -291,7 +327,8 @@
       "quotes": [
         "HDMI* 2.1, DP2.1 up to UHBR 13.5, DP2.1 up to UHBR 10",
         "HDMI Variable Refresh Rate (VRR) Yes"
-      ]
+      ],
+      "non_ascii": []
     },
     {
       "id": "NVD1",
@@ -303,7 +340,8 @@
       "quotes": [
         "4 independent displays at 4K 165Hz using DP or HDMI",
         "2 independent displays at 4K 360Hz or 8K 100Hz with DSC using DP or HDMI"
-      ]
+      ],
+      "non_ascii": []
     },
     {
       "id": "VES1",
@@ -314,7 +352,8 @@
       "checked_at": "2026-10-23T23:07:09+02:00",
       "quotes": [
         "With DisplayPort Alt Mode, the USB-C connector can transmit up to 80 Gigabits per second (Gbps) of DisplayPort video data utilizing all four high-speed lanes in the cable, or up to 40 Gbps with simultaneous SuperSpeed USB data delivery."
-      ]
+      ],
+      "non_ascii": []
     },
     {
       "id": "USB1",
@@ -326,6 +365,9 @@
       "quotes": [
         "Up to 80 Gbps operation, based on a new physical layer architecture, using existing 40 Gbps USB Type-C passive cables and newly-defined 80 Gbps USB Type-C active cables.",
         "Updates to data and display protocols to better use the increase in available bandwidth."
+      ],
+      "non_ascii": [
+        "U+00AE"
       ]
     },
     {
@@ -338,6 +380,9 @@
       "quotes": [
         "AdaptiveSync Display guarantees higher refresh rates and low latency, optimized for gaming, plus a lab-certified max refresh rate so you know your display’s full potential.",
         "MediaSync Display is designed for jitter-free media playback supporting all international broadcast video formats."
+      ],
+      "non_ascii": [
+        "U+2019"
       ]
     }
   ],
@@ -366,6 +411,10 @@
           "TV mode",
           "TV mode"
         ]
+      ],
+      "context": [
+        "Output via HDMI connector in TV mode",
+        "Nintendo Switch 2 Dock"
       ]
     },
     {
@@ -392,6 +441,10 @@
           "2560x1440",
           "2560x1440"
         ]
+      ],
+      "context": [
+        "Output via HDMI connector in TV mode",
+        "Nintendo Switch 2 Dock"
       ]
     },
     {
@@ -415,6 +468,9 @@
           "1.5 meters",
           "1.5 meters"
         ]
+      ],
+      "context": [
+        "Nintendo Switch 2 Dock"
       ]
     },
     {
@@ -437,6 +493,9 @@
           "7.9 inch",
           "7.9 inch"
         ]
+      ],
+      "context": [
+        "Nintendo Switch 2 console"
       ]
     },
     {
@@ -463,6 +522,9 @@
           "4K @120Hz",
           "4K @120Hz"
         ]
+      ],
+      "context": [
+        "Steam Deck LCD"
       ]
     },
     {
@@ -485,6 +547,25 @@
           "4K @120Hz",
           "4K @120Hz"
         ]
+      ],
+      "context": [
+        "Steam Deck OLED"
+      ],
+      "derived": [
+        {
+          "field": "claim",
+          "token": "DisplayPort",
+          "from": "Display port over Type C",
+          "kind": "spelling",
+          "rule": "Valve writes \"Display port\"; the row spells it DisplayPort"
+        },
+        {
+          "field": "port",
+          "token": "USB-C",
+          "from": "Display port over Type C",
+          "kind": "synonym",
+          "rule": "Type C is the USB-C connector"
+        }
       ]
     },
     {
@@ -517,6 +598,10 @@
           "1440p 120hz",
           "1440p 120hz"
         ]
+      ],
+      "context": [
+        "Steam Deck",
+        "Docking Station"
       ]
     },
     {
@@ -579,6 +664,9 @@
           "HDMI ver.2.1",
           "HDMI ver.2.1"
         ]
+      ],
+      "context": [
+        "PlayStation®5"
       ]
     },
     {
@@ -601,6 +689,10 @@
           "1440p/60Hz and 120Hz",
           "1440p/60Hz and 120Hz"
         ]
+      ],
+      "context": [
+        "1440p HDMI Video Output",
+        "PlayStation®5"
       ]
     },
     {
@@ -619,6 +711,9 @@
           "ALLM is only available on compatible TVs with HDMI 2.1",
           "ALLM is only available on compatible TVs with HDMI 2.1"
         ]
+      ],
+      "context": [
+        "PlayStation®5"
       ]
     },
     {
@@ -642,6 +737,9 @@
           "up to 120 FPS",
           "Up to 120 FPS"
         ]
+      ],
+      "context": [
+        "1x HDMI 2.1 port"
       ]
     },
     {
@@ -669,6 +767,9 @@
           "requires supported content and display",
           "Requires supported content and display"
         ]
+      ],
+      "context": [
+        "1x HDMI 2.1 port"
       ]
     },
     {
@@ -695,6 +796,11 @@
           "DSC capability",
           "DSC capability"
         ]
+      ],
+      "context": [
+        "Two Thunderbolt 4 (USB-C) ports with support for:",
+        "MacBook Air Technical Specifications",
+        "Apple M5 chip"
       ]
     },
     {
@@ -736,6 +842,20 @@
           "4K at 240Hz",
           "4K at 240Hz"
         ]
+      ],
+      "context": [
+        "Two Thunderbolt 4 (USB-C) ports with support for:",
+        "MacBook Air Technical Specifications",
+        "Apple M5 chip"
+      ],
+      "derived": [
+        {
+          "field": "claim",
+          "token": "one",
+          "from": "One display up to a native resolution of 8K at 60Hz or 5K at 120Hz or 4K at 240Hz",
+          "kind": "spelling",
+          "rule": "lower-case \"One\""
+        }
       ]
     },
     {
@@ -747,13 +867,17 @@
       "source": "APL2",
       "claim": "Thunderbolt 5 (USB-C) ports support native DisplayPort 2.1 speeds (stated in the M5 Max section of the spec page).",
       "quotes": [
-        "Thunderbolt 5 (USB‑C) ports support native DisplayPort 2.1 speeds"
+        "Thunderbolt 5 (USB-C) ports support native DisplayPort 2.1 speeds"
       ],
       "figures": [
         [
           "native DisplayPort 2.1 speeds",
           "native DisplayPort 2.1 speeds"
         ]
+      ],
+      "context": [
+        "MacBook Pro Technical Specifications",
+        "M5 Max"
       ]
     },
     {
@@ -765,13 +889,17 @@
       "source": "APL2",
       "claim": "Thunderbolt 4 (USB-C) ports support native DisplayPort 1.4 speeds.",
       "quotes": [
-        "Thunderbolt 4 (USB‑C) ports support native DisplayPort 1.4 speeds"
+        "Thunderbolt 4 (USB-C) ports support native DisplayPort 1.4 speeds"
       ],
       "figures": [
         [
           "native DisplayPort 1.4 speeds",
           "native DisplayPort 1.4 speeds"
         ]
+      ],
+      "context": [
+        "MacBook Pro Technical Specifications",
+        "Apple M5 chip"
       ]
     },
     {
@@ -798,6 +926,9 @@
           "4K (3840 x 2160) at 144Hz",
           "4K (3840 x 2160) at 144Hz"
         ]
+      ],
+      "context": [
+        "MacBook Pro with M5 Pro chip"
       ]
     },
     {
@@ -824,6 +955,9 @@
           "4K (3840 x 2160) at 144Hz",
           "4K (3840 x 2160) at 144Hz"
         ]
+      ],
+      "context": [
+        "MacBook Pro with M5 Max chip"
       ]
     },
     {
@@ -847,6 +981,9 @@
           "does not increase the number",
           "will not increase the number"
         ]
+      ],
+      "context": [
+        "over Thunderbolt or HDMI"
       ]
     },
     {
@@ -865,6 +1002,9 @@
           "two external displays simultaneously with lid closed",
           "two external displays simultaneously with lid closed"
         ]
+      ],
+      "context": [
+        "over Thunderbolt or HDMI"
       ]
     },
     {
@@ -887,6 +1027,9 @@
           "does not increase the maximum number of displays",
           "does not increase the maximum number of displays"
         ]
+      ],
+      "context": [
+        "MacBook Pro with M5 Pro chip"
       ]
     },
     {
@@ -910,6 +1053,19 @@
           "daisy-chaining additional displays",
           "daisy-chaining additional displays"
         ]
+      ],
+      "context": [
+        "One upstream Thunderbolt 5 port",
+        "One downstream Thunderbolt 5 port"
+      ],
+      "derived": [
+        {
+          "field": "claim",
+          "token": "one",
+          "from": "One downstream Thunderbolt 5 port",
+          "kind": "spelling",
+          "rule": "lower-case \"One\""
+        }
       ]
     },
     {
@@ -938,6 +1094,34 @@
           "extended or duplicate mode",
           "Extended mode or duplicate mode"
         ]
+      ],
+      "context": [
+        "Display modes supported in Windows and macOS",
+        "USB-C with DisplayPort alternate mode",
+        "DisplayPort"
+      ],
+      "derived": [
+        {
+          "field": "claim",
+          "token": "DP",
+          "from": "USB-C with DisplayPort alternate mode",
+          "kind": "synonym",
+          "rule": "DP is the abbreviation of DisplayPort"
+        },
+        {
+          "field": "port",
+          "token": "DP",
+          "from": "USB-C with DisplayPort alternate mode",
+          "kind": "synonym",
+          "rule": "DP is the abbreviation of DisplayPort"
+        },
+        {
+          "field": "port",
+          "token": "Alt Mode",
+          "from": "USB-C with DisplayPort alternate mode",
+          "kind": "synonym",
+          "rule": "Alt Mode is the short form of alternate mode"
+        }
       ]
     },
     {
@@ -964,6 +1148,9 @@
           "dual displays",
           "dual displays"
         ]
+      ],
+      "context": [
+        "Thunderbolt 5 host computer"
       ]
     },
     {
@@ -983,6 +1170,9 @@
           "do not support triple displays",
           "do not support triple displays"
         ]
+      ],
+      "context": [
+        "TS5 Plus"
       ]
     },
     {
@@ -1005,6 +1195,9 @@
           "single display",
           "single display"
         ]
+      ],
+      "context": [
+        "TS5 Plus"
       ]
     },
     {
@@ -1024,6 +1217,9 @@
           "140W",
           "140W"
         ]
+      ],
+      "context": [
+        "Thunderbolt 5 host computer"
       ]
     },
     {
@@ -1046,6 +1242,9 @@
           "monitors and host GPU",
           "monitors and host GPU"
         ]
+      ],
+      "context": [
+        "TS5 Plus"
       ]
     },
     {
@@ -1064,6 +1263,9 @@
           "15W each",
           "15W each"
         ]
+      ],
+      "context": [
+        "What sets the TS5 apart from the rest?"
       ]
     },
     {
@@ -1091,6 +1293,9 @@
           "140W",
           "140W"
         ]
+      ],
+      "context": [
+        "Thunderbolt 5 Dock"
       ]
     },
     {
@@ -1113,6 +1318,9 @@
           "up to 240Hz",
           "up to 240Hz"
         ]
+      ],
+      "context": [
+        "32GS95UE-B"
       ]
     },
     {
@@ -1135,6 +1343,32 @@
           "GeForce RTX 30 Series and higher",
           "GeForce RTX 30 Series and higher"
         ]
+      ],
+      "context": [
+        "32GS95UE-B"
+      ],
+      "derived": [
+        {
+          "field": "claim",
+          "token": "VRR",
+          "from": "NVIDIA® G-SYNC® Compatible supports variable refresh rate on GeForce GTX 10 Series and higher GPUs on Display Port, and GeForce RTX 30 Series and higher GPUs on HDMI 2.1.",
+          "kind": "synonym",
+          "rule": "VRR is the abbreviation of variable refresh rate"
+        },
+        {
+          "field": "claim",
+          "token": "DisplayPort",
+          "from": "NVIDIA® G-SYNC® Compatible supports variable refresh rate on GeForce GTX 10 Series and higher GPUs on Display Port, and GeForce RTX 30 Series and higher GPUs on HDMI 2.1.",
+          "kind": "spelling",
+          "rule": "LG writes \"Display Port\""
+        },
+        {
+          "field": "port",
+          "token": "DisplayPort",
+          "from": "NVIDIA® G-SYNC® Compatible supports variable refresh rate on GeForce GTX 10 Series and higher GPUs on Display Port, and GeForce RTX 30 Series and higher GPUs on HDMI 2.1.",
+          "kind": "spelling",
+          "rule": "LG writes \"Display Port\""
+        }
       ]
     },
     {
@@ -1172,6 +1406,32 @@
           "48 ~ 240Hz",
           "48 ~ 240Hz"
         ]
+      ],
+      "context": [
+        "MPG 321URX QD-OLED"
+      ],
+      "derived": [
+        {
+          "field": "claim",
+          "token": "Type-C",
+          "from": "1 x DisplayPort 1.4a 2 x HDMI™ 2.1 (4K@240Hz) 1 x Type-c (DP alt.) w/PD 90W",
+          "kind": "spelling",
+          "rule": "MSI writes \"Type-c\""
+        },
+        {
+          "field": "port",
+          "token": "2x",
+          "from": "1 x DisplayPort 1.4a 2 x HDMI™ 2.1 (4K@240Hz) 1 x Type-c (DP alt.) w/PD 90W",
+          "kind": "spelling",
+          "rule": "\"2 x\" written as \"2x\""
+        },
+        {
+          "field": "port",
+          "token": "USB-C",
+          "from": "1 x DisplayPort 1.4a 2 x HDMI™ 2.1 (4K@240Hz) 1 x Type-c (DP alt.) w/PD 90W",
+          "kind": "synonym",
+          "rule": "Type-C is the USB-C connector"
+        }
       ]
     },
     {
@@ -1200,6 +1460,32 @@
           "VESA DP80 certified",
           "VESA DP80 certified"
         ]
+      ],
+      "context": [
+        "AORUS FO32U2P"
+      ],
+      "derived": [
+        {
+          "field": "claim",
+          "token": "DisplayPort",
+          "from": "1 x Displayport 2.1 (UHBR 20) in",
+          "kind": "spelling",
+          "rule": "GIGABYTE writes \"Displayport\""
+        },
+        {
+          "field": "port",
+          "token": "DisplayPort",
+          "from": "1 x Displayport 2.1 (UHBR 20) in",
+          "kind": "spelling",
+          "rule": "GIGABYTE writes \"Displayport\""
+        },
+        {
+          "field": "port",
+          "token": "USB-C",
+          "from": "1 x USB Type-C (Alternate Mode; Upstream port; Power Delivery up to 65W)",
+          "kind": "synonym",
+          "rule": "USB Type-C is the USB-C connector"
+        }
       ]
     },
     {
@@ -1222,6 +1508,18 @@
           "2.1b",
           "2.1b"
         ]
+      ],
+      "derived": [
+        {
+          "field": "claim",
+          "token": "UHBR",
+          "from": "DisplayPort™ 2.1a HDMI™ 2.1b",
+          "kind": "absent",
+          "rule": "the row says AMD does not state a UHBR tier; no stored text names one (re-checked: the live page has no \"UHBR\")"
+        }
+      ],
+      "context": [
+        "Radeon RX 9070 XT"
       ]
     },
     {
@@ -1249,6 +1547,9 @@
           "HDMI Variable Refresh Rate (VRR)",
           "HDMI Variable Refresh Rate (VRR)"
         ]
+      ],
+      "context": [
+        "Model Number B580"
       ]
     },
     {
@@ -1272,6 +1573,18 @@
           "4K 360Hz or 8K 100Hz with DSC",
           "4K 360Hz or 8K 100Hz with DSC"
         ]
+      ],
+      "context": [
+        "GeForce RTX 5080"
+      ],
+      "derived": [
+        {
+          "field": "port",
+          "token": "DisplayPort",
+          "from": "4 independent displays at 4K 165Hz using DP or HDMI",
+          "kind": "synonym",
+          "rule": "DP is the abbreviation of DisplayPort"
+        }
       ]
     },
     {
@@ -1298,6 +1611,9 @@
           "40 Gbps",
           "40 Gbps"
         ]
+      ],
+      "context": [
+        "DisplayPort Alt Mode version 2.0"
       ]
     },
     {
@@ -1325,6 +1641,18 @@
           "80 Gbps active cables",
           "80 Gbps USB Type-C active cables"
         ]
+      ],
+      "context": [
+        "USB4® Version 2.0"
+      ],
+      "derived": [
+        {
+          "field": "port",
+          "token": "USB-C",
+          "from": "Up to 80 Gbps operation, based on a new physical layer architecture, using existing 40 Gbps USB Type-C passive cables and newly-defined 80 Gbps USB Type-C active cables.",
+          "kind": "synonym",
+          "rule": "USB Type-C is the USB-C connector"
+        }
       ]
     },
     {
@@ -1348,6 +1676,9 @@
           "jitter-free media playback",
           "jitter-free media playback"
         ]
+      ],
+      "context": [
+        "A component of the VESA DisplayPort video interface standard, VESA’s Adaptive-Sync protocols"
       ]
     }
   ],

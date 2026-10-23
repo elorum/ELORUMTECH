@@ -183,8 +183,8 @@
       "source_url": "https://www.apple.com/macbook-pro/specs/",
       "source_title": "Apple — MacBook Pro - Tech Specs",
       "source_kind": "manufacturer_spec",
-      "relevant_evidence": "Thunderbolt 5 (USB‑C) ports support native DisplayPort 2.1 speeds",
-      "checked_at": "2026-10-23T23:07:07+02:00",
+      "relevant_evidence": "Thunderbolt 5 (USB-C) ports support native DisplayPort 2.1 speeds",
+      "checked_at": "2026-10-23T23:40:32+02:00",
       "page_date": null,
       "confidence": "VERIFIED",
       "notes": "MI-SOLV-017; Apple MacBook Pro (M5 Max) / Thunderbolt 5 (USB-C). Further quotes: docs/sources/display-connection-solver.json DF17."
@@ -194,8 +194,8 @@
       "source_url": "https://www.apple.com/macbook-pro/specs/",
       "source_title": "Apple — MacBook Pro - Tech Specs",
       "source_kind": "manufacturer_spec",
-      "relevant_evidence": "Thunderbolt 4 (USB‑C) ports support native DisplayPort 1.4 speeds",
-      "checked_at": "2026-10-23T23:07:07+02:00",
+      "relevant_evidence": "Thunderbolt 4 (USB-C) ports support native DisplayPort 1.4 speeds",
+      "checked_at": "2026-10-23T23:40:32+02:00",
       "page_date": null,
       "confidence": "VERIFIED",
       "notes": "MI-SOLV-018; Apple MacBook Pro (M5) / Thunderbolt 4 (USB-C). Further quotes: docs/sources/display-connection-solver.json DF18."
@@ -842,7 +842,7 @@
           "physical_connector": "USB-C",
           "direction": "output",
           "link": {
-            "protocol": "USB-C_DP_AltMode",
+            "protocol": "UNKNOWN",
             "version_label": {
               "value": null,
               "status": "UNKNOWN"
