@@ -1,0 +1,67 @@
+# ELORUMTECH-BING-KEY-TEST-20261020-01: manual, read-only Bing Webmaster API key test.
+# Only GET GetUserSites and GetKeyword. Never prints the key, URL, headers, curl stderr or any error body.
+name: bing-key-test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bing-key-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      KEY: ${{ secrets.BING_WEBMASTER_API_KEY }}
+      API: https://ssl.bing.com/webmaster/api.svc/json
+    steps:
+      - name: Check secret and mask
+        run: |
+          if [ -z "$KEY" ]; then
+            echo "::error::Secret BING_WEBMASTER_API_KEY is not set for this repository."
+            exit 1
+          fi
+          echo "::add-mask::$KEY"
+
+      - name: GetUserSites and GetKeyword (GET only)
+        run: |
+          set -euo pipefail
+          umask 077
+          BODY="$(mktemp)"
+          ERR="$(mktemp)"
+          trap 'rm -f "$BODY" "$ERR"' EXIT
+          out() { printf '%s\n' "$1"; printf '%s\n' "$1" >> "$GITHUB_STEP_SUMMARY"; }
+
+          out "## Bing key test"
+          RC=0
+          CODE=$(curl -sS -G -o "$BODY" -w '%{http_code}' "$API/GetUserSites" --data-urlencode "apikey=$KEY" 2>"$ERR") || RC=$?
+          if [ "$RC" != "0" ]; then
+            out "GetUserSites transport error (curl exit $RC)"
+          elif [ "$CODE" = "200" ]; then
+            out "GetUserSites HTTP $CODE"
+            jq -r '.d[]? | "- \(.Url) IsVerified=\(.IsVerified)"' "$BODY" 2>/dev/null | while IFS= read -r l; do out "$l"; done || out "GetUserSites: response not parseable"
+            if jq -e '[.d[]?.Url] | any(test("elorumtech\\.elorum\\.world"))' "$BODY" >/dev/null 2>&1; then
+              out "elorumtech.elorum.world listed: yes"
+            else
+              out "elorumtech.elorum.world listed: no"
+            fi
+          else
+            out "GetUserSites HTTP $CODE (request failed; response body not shown)"
+          fi
+
+          END=$(date -u +%Y-%m-%d)
+          START=$(date -u -d '3 months ago' +%Y-%m-%d)
+          RC=0
+          CODE=$(curl -sS -G -o "$BODY" -w '%{http_code}' "$API/GetKeyword" \
+            --data-urlencode "q=hdmi" --data-urlencode "country=us" --data-urlencode "language=en-US" \
+            --data-urlencode "startDate=$START" --data-urlencode "endDate=$END" \
+            --data-urlencode "apikey=$KEY" 2>"$ERR") || RC=$?
+          if [ "$RC" != "0" ]; then
+            out "GetKeyword transport error (curl exit $RC)"
+          elif [ "$CODE" = "200" ]; then
+            out "GetKeyword q=hdmi us/en-US $START..$END HTTP $CODE"
+            jq -r '(.d | if type=="array" then .[:5][] else . end) | "- \(.Query) Impressions=\(.Impressions) BroadImpressions=\(.BroadImpressions)"' "$BODY" 2>/dev/null | while IFS= read -r l; do out "$l"; done || out "GetKeyword: response not parseable"
+          else
+            out "GetKeyword HTTP $CODE (request failed; response body not shown)"
+          fi
