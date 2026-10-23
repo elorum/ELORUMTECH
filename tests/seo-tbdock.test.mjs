@@ -82,3 +82,39 @@ test('tbdock: exactly one theme stylesheet (visual refresh) and no other stylesh
   assert.equal((h.match(/<link rel="stylesheet"/g) || []).length, 1);
   assert.ok(h.includes(`${THEME}</head>`));
 });
+
+// ---------- CLEANUP-01 (ELORUMTECH-CLEANUP-20261023-01): QA-01 #35 F3, F5 ----------
+// F3: the capability table's values were never asserted, so a wrong number passed. Pin every cell (value + [ID]).
+const TB_CELLS = [
+  ["Thunderbolt 3", "40 Gb/s [I3]", "One 4K display (minimum) [I3]", "Not listed as required [I3]", "15 W [I3]", "16 Gb/s [I3]"],
+  ["Thunderbolt 4", "40 Gb/s [I2]", "Two 4K displays or one 8K display [I3]", "Required up to 100 W, available up to 140 W [I2]", "15 W [I2]", "32 Gb/s [I2]"],
+  ["Thunderbolt 5", "80 Gb/s each way; up to 120 Gb/s transmit with Bandwidth Boost (40 Gb/s receive) [I1]", "Dual 6K required [I1]; up to two 8K 60 Hz monitors [I4]", "Required up to 140 W, available up to 240 W [I1]", "15 W [I1]", "64 Gb/s [I1]"],
+  ["USB4 (minimum)", "20 Gb/s minimum, 40 Gb/s optional [I3]", "One display, no minimum bandwidth [I2]", "Not required [I4]", "7.5 W [I2]", "—"],
+  ["USB4 Version 2.0", "Up to 80 Gb/s; optionally 120 Gb/s one way and 40 Gb/s the other for high-performance displays [U2]", "—", "—", "—", "—"],
+  ["USB-C with USB 3 + DisplayPort", "10 Gb/s [I3]", "One display, no minimum [I3]", "—", "4.5 W [I3]", "—"],
+];
+const tbCells = (html) => {
+  const tb = (html.match(/<table>[\s\S]*?<\/table>/) || [''])[0];
+  return [...tb.matchAll(/<tr><th scope="row">([^<]+)<\/th>([\s\S]*?)<\/tr>/g)].map((m) => [m[1], ...[...m[2].matchAll(/<td>([\s\S]*?)<\/td>/g)].map((c) => c[1].replace(/<a class="srcs" href="#src-([A-Z0-9]+)">\[\1\]<\/a>/g, '[$1]'))]);
+};
+test('tbdock CLEANUP-01: capability table cells pinned (values and source IDs) (#35 F3)', () => {
+  assert.deepEqual(tbCells(h), TB_CELLS);
+});
+test('tbdock CLEANUP-01: table mutants (TB4 PCIe 32→40, TB5 140→100 W, TB3 15→25 W, swapped ID, dropped row)', () => {
+  const muts = [
+    h.replace('32 Gb/s <a class="srcs" href="#src-I2">[I2]</a>', '40 Gb/s <a class="srcs" href="#src-I2">[I2]</a>'),
+    h.replace('Required up to 140 W, available up to 240 W', 'Required up to 100 W, available up to 240 W'),
+    h.replace('<td>15 W <a class="srcs" href="#src-I3">[I3]</a></td>', '<td>25 W <a class="srcs" href="#src-I3">[I3]</a></td>'),
+    h.replace('64 Gb/s <a class="srcs" href="#src-I1">[I1]</a>', '64 Gb/s <a class="srcs" href="#src-I2">[I2]</a>'),
+    h.replace(/<tr><th scope="row">USB4 Version 2\.0<\/th>[\s\S]*?<\/tr>/, ''),
+  ];
+  for (const [i, m] of muts.entries()) { assert.notEqual(m, h, `mutation ${i}`); assert.notDeepEqual(tbCells(m), TB_CELLS, `mutant ${i} survived`); }
+});
+// F5 (JSON-LD part only; title/meta stay frozen): the breadcrumb name matches the page's "Thunderbolt dock guide" H1.
+test('tbdock CLEANUP-01: BreadcrumbList position 3 is "Thunderbolt dock guide" (#35 F5)', () => {
+  const bc = ld.find((o) => o['@type'] === 'BreadcrumbList');
+  assert.equal(bc.itemListElement[2].name, 'Thunderbolt dock guide');
+  assert.equal(bc.itemListElement[2].item, URL_);
+  assert.ok(H1.startsWith('Thunderbolt dock guide'));
+  assert.doesNotMatch(h, /"name": ?"Thunderbolt dock one-cable 4K\/120"/);
+});

@@ -78,7 +78,7 @@ test('nosignal: section, symptom table, HDMI + DisplayPort blocks, BIOS link', (
   const table = (s.match(/<div class="tablewrap" role="region" aria-label="[^"]+" tabindex="0"><table>[\s\S]*?<\/table><\/div>/) || [''])[0];
   assert.ok(table);
   assert.equal((table.match(/<tr><th scope="row">/g) || []).length, 7);
-  for (const k of ['Monitor is on a different input', 'Cable in the motherboard’s video port', 'Mode outside the monitor’s supported range', 'Protected content (HDCP) issue', 'Monitor disabled the DP input after sleep', 'Older NVIDIA card with a DisplayPort 1.3/1.4 monitor', 'Graphics driver']) assert.ok(table.includes(k), k);
+  for (const k of ['Monitor is on a different input', 'Cable in the motherboard’s video port', 'Mode outside the monitor’s supported range', 'Protected content (HDCP) issue', 'Some monitors disable the DP input after sleep; HP documents this for its monitors', 'Older NVIDIA card with a DisplayPort 1.3/1.4 monitor', 'Graphics driver']) assert.ok(table.includes(k), k);
   assert.ok(s.includes('<h3>HDMI: no signal</h3>'));
   assert.ok(s.includes('<h3>DisplayPort: no signal</h3>'));
   assert.ok(s.includes('<a href="bios-fast-boot-troubleshooter.html">'));
@@ -154,4 +154,74 @@ test('nosignal: exactly one theme stylesheet and no other stylesheet', () => {
   assert.equal(h.split(THEME).length - 1, 1);
   assert.equal((h.match(/<link rel="stylesheet"/g) || []).length, 1);
   assert.ok(h.includes(`${THEME}</head>`));
+});
+
+// ---------- CLEANUP-01 (ELORUMTECH-CLEANUP-20261023-01): QA-01 #36 F1, F2, F3 ----------
+// F1: the freeze baseline is regenerated on every content change, so it is not a lasting content check. Pin the
+// HDMI (7) and DisplayPort (4) steps and the table's "What to do" cells here, text and citations included.
+const HDMI_STEPS = [
+  "Set the monitor or TV to the HDMI input number that matches the port you used [DL3] [IN2].",
+  "Press Windows logo key + P, select Duplicate or Extend, and wait 10 seconds for the display to detect the signal [DL3].",
+  "Restart in this order: unplug the HDMI cable, shut down the computer, turn the display off and on, plug the cable back in, then start the computer [DL3].",
+  "Check the cable. 4K at 120 Hz needs an Ultra High Speed HDMI cable [DL3], which is certified for up to 48 Gbps and carries a certification label you can scan with a QR code app [HL1]. Dell says all cable types work well under 5 m (15 ft); beyond 15 m you need an active or fiber optic HDMI cable [DL3].",
+  "Remember the slowest part sets the limit: an HDMI 2.1 computer with an HDMI 2.0 cable and monitor gets HDMI 2.0 performance, 4K at 60 Hz at most [DL3].",
+  "Take out HDMI splitters. Intel does not support cable splitting [IN2].",
+  "Update the graphics driver and the HDMI and TV firmware. On Intel graphics, also check that the display is enabled in Intel Graphics Command Center [IN1].",
+];
+const DP_STEPS = [
+  "After sleep, select the DisplayPort input again in the monitor menu. HP documents that its monitors can disable the DisplayPort input after the computer exits Sleep or loses the signal [HP1].",
+  "Check the DisplayPort version setting. Some DP 1.1a graphics cards cannot drive DP 1.4 monitors; on the Dell U2720Q you hold the DP select key for 8 seconds in the input menu to switch from DP 1.4 to DP 1.1a [DL4].",
+  "Blank only until Windows loads? NVIDIA lists Maxwell and desktop Pascal cards, including the GeForce 10 series, that may need a firmware update for DisplayPort 1.3/1.4 monitors [NV2].",
+  "On a new monitor that needs DisplayPort 1.3 or 1.4, NVIDIA suggests trying an HDMI port or a different monitor temporarily; with several monitors, connect only one while you troubleshoot [NV1].",
+];
+const TODO = [
+  "Select the exact input in the monitor menu (HDMI 1, HDMI 2, DisplayPort) [DL3]. HP monitors find most inputs automatically, but USB-C must be selected manually [HP1].",
+  "Use the graphics card ports, usually lower on the back panel [DL2].",
+  "Lower the resolution or try a different refresh rate [DL3]. The Dell U2720Q, for example, reports “The current input timing is not supported” and asks for 3840x2160, 60Hz or another listed timing [DL4].",
+  "Update the graphics driver [DL3]. HDCP encrypts the stream between the transmitter and the receiver [IN2].",
+  "Wake the computer (move the mouse or press a key) [DL1], then select the DisplayPort input again in the monitor menu [HP1].",
+  "Run NVIDIA’s graphics firmware update for that card [NV2].",
+  "Roll back the graphics driver in Device Manager [DL2].",
+];
+const olItems = (html, t) => [...((section(html).match(new RegExp(`<h3>${t}</h3><ol>([\\s\\S]*?)</ol>`)) || ['', ''])[1]).matchAll(/<li>([\s\S]*?)<\/li>/g)].map((m) => txt(m[1]));
+const todoCells = (html) => [...section(html).matchAll(/<tr><th scope="row">[\s\S]*?<\/td><td>([\s\S]*?)<\/td><\/tr>/g)].map((m) => txt(m[1]));
+function cleanupProblems(html) {
+  const out = [];
+  const hd = olItems(html, 'HDMI: no signal'); const dp = olItems(html, 'DisplayPort: no signal'); const td = todoCells(html);
+  if (hd.length !== 7) out.push(`HDMI steps ${hd.length}`);
+  if (dp.length !== 4) out.push(`DP steps ${dp.length}`);
+  if (JSON.stringify(hd) !== JSON.stringify(HDMI_STEPS)) out.push('HDMI step text');
+  if (JSON.stringify(dp) !== JSON.stringify(DP_STEPS)) out.push('DP step text');
+  if (JSON.stringify(td) !== JSON.stringify(TODO)) out.push('What to do cells');
+  // F2: the sleep cause is scoped to what HP documents, and cites HP1 in the cause cell itself.
+  const row = (section(html).match(/<tr><th scope="row">DisplayPort monitor dark after the PC sleeps<\/th><td>([\s\S]*?)<\/td>/) || ['', ''])[1];
+  if (!/^Some monitors disable the DP input after sleep; HP documents this for its monitors \[HP1\]$/.test(txt(row)) || !row.includes('<a class="srcs" href="#src-HP1">[HP1]</a>')) out.push('sleep cause not scoped to HP1');
+  // F3: NV1's HDMI/other-monitor advice keeps its condition (a new DP 1.3/1.4 monitor).
+  const nv = dp.find((x) => /NV1/.test(x)) || '';
+  if (!/^On a new monitor that needs DisplayPort 1\.3 or 1\.4, NVIDIA suggests trying an HDMI port or a different monitor temporarily/.test(nv)) out.push('NV1 advice lost its condition');
+  const q = src('NV1').quotes;
+  if (!q.some((x) => x.includes('new monitor that requires Display Port (DP 1.3 or 1.4) try using an HDMI port or a different monitor temporarily'))) out.push('NV1 condition quote');
+  if (!q.some((x) => x.includes('try only connecting a single monitor'))) out.push('NV1 single-monitor quote');
+  return out;
+}
+
+test('nosignal CLEANUP-01: 7 HDMI + 4 DP steps and What-to-do cells pinned; HP1 sleep scope; NV1 condition (#36 F1–F3)', () => {
+  assert.deepEqual(cleanupProblems(h), []);
+});
+
+test('nosignal CLEANUP-01: mutants (dropped restart step, edited step, edited cell, old cause wording, unconditional NV1)', () => {
+  const muts = [
+    h.replace(/<li>Restart in this order:[\s\S]*?<\/li>\n?/, ''),
+    h.replace('wait 10 seconds for the display', 'wait 30 seconds for the display'),
+    h.replace('hold the DP select key for 8 seconds', 'hold the DP select key for 5 seconds'),
+    h.replace('Roll back the graphics driver in Device Manager', 'Reinstall Windows'),
+    h.replace('Use the graphics card ports, usually lower on the back panel <a class="srcs" href="#src-DL2">[DL2]</a>', 'Use the graphics card ports, usually lower on the back panel'),
+    h.replace('<td>Some monitors disable the DP input after sleep; HP documents this for its monitors <a class="srcs" href="#src-HP1">[HP1]</a></td>', '<td>Monitor disabled the DP input after sleep</td>'),
+    h.replace('On a new monitor that needs DisplayPort 1.3 or 1.4, NVIDIA suggests trying', 'While you test, NVIDIA suggests trying'),
+    h.replace('</ol></div>\n<p>Black screen only', '<li>Try another cable.</li></ol></div>\n<p>Black screen only'),
+  ];
+  for (const [i, m] of muts.entries()) {
+    assert.notEqual(m, h, `mutation ${i} must change the page`);
+    assert.ok(cleanupProblems(m).length > 0, `mutant ${i} survived`);
+  }
 });

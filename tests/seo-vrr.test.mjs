@@ -358,7 +358,8 @@ function remProblems(html) {
 test('vrr REM01: Mac HDMI exception [AP2], Intel Arc VESA-over-HDMI [IN1], FAQ 5 dock scope, no uncited tips', () => {
   assert.deepEqual(remProblems(h), []);
   const ap2 = src('AP2');
-  assert.match(ap2.checked_at, /^2026-10-23T16:30:20\+02:00$/);
+  // CLEANUP-01 re-checked AP2 live (title + the adapter sentence in full); was 16:30:20.
+  assert.match(ap2.checked_at, /^2026-10-23T22:48:37\+02:00$/);
   for (const q of ['Use an Ultra High Speed 48 Gbps HDMI cable', 'Connect the HDMI cable directly from the HDMI port on your Mac to your display.']) assert.ok(ap2.quotes.includes(q), q);
 });
 
@@ -368,7 +369,7 @@ test('vrr REM01: checks catch the old wording (mutants)', () => {
     h.replace(/Mac: for Adaptive Sync use a Thunderbolt or USB-C cable, not an HDMI adapter (<a class="srcs" href="#src-AP1">\[AP1\]<\/a>); the Mac models Apple lists also get VRR from their own HDMI port with an Ultra High Speed 48 Gbps HDMI cable, no adapter <a class="srcs" href="#src-AP2">\[AP2\]<\/a>\./, 'Mac: Thunderbolt or USB-C cable, not an HDMI adapter $1.'),
     h.replace(/For Adaptive Sync, Apple says not to use an HDMI cable or adapter (<a class="srcs" href="#src-AP1">\[AP1\]<\/a>); on the Mac models Apple lists for HDMI VRR, connect the HDMI cable directly from the Mac’s HDMI port with no adapter <a class="srcs" href="#src-AP2">\[AP2\]<\/a>\./, 'Apple says not to use an HDMI cable or adapter $1, and'),
     h.replace(/ HDMI: the Mac models Apple lists \([\s\S]*?connected directly without an adapter <a class="srcs" href="#src-AP2">\[AP2\]<\/a>/, ''),
-    h.replaceAll('; on the Mac models Apple lists for HDMI VRR, connect the HDMI cable directly from the Mac’s HDMI port and don’t use an adapter with it.', '.'),
+    h.replaceAll('; on the Mac models Apple lists for HDMI VRR, connect the HDMI cable directly from the Mac’s HDMI port, and to get the highest resolution and refresh rate don’t use an adapter with it.', '.'),
     h.replace('</p><p class="reviewed"', ' HDMI VRR never works on a Mac.</p><p class="reviewed"').replace('<h2 id="what">What VRR does</h2><p>', '<h2 id="what">What VRR does</h2><p>On a Mac, HDMI VRR does not work at all. '),
     // F2: Arc back in the HDMI Forum VRR row / old FreeSync-row sentence / Arc row removed / old answer
     h.replace(/Intel Arc is not in this row: its VRR over HDMI is VESA Adaptive Sync, shown in the next row (<a class="srcs" href="#src-IN1">\[IN1\]<\/a>)\./, 'Intel Arc needs an HDMI input that is HDMI 2.1 standard $1.'),
@@ -394,4 +395,67 @@ test('vrr REM01: checks catch the old wording (mutants)', () => {
   assert.notEqual(swap, h);
   assert.equal(figureOk(swap, F('Ultra High Speed 48 Gbps HDMI cable')), false);
   assert.equal(repeatedOk(swap, ['48 Gbps', ['AP2']]), false);
+});
+
+// ---------- CLEANUP-01 (ELORUMTECH-CLEANUP-20261023-01): QA-01 #38 R1, R2, R3 ----------
+const AP2_LABEL = 'Apple Support — Use an 8K display with your Mac (HDMI VRR)';
+const HIGHEST = 'To get the highest resolution and refresh rate, don’t use an adapter with the HDMI cable.';
+const FIRMWARE = 'Make sure that your display is using the latest firmware from the manufacturer.';
+const MAC_MODELS = ['MacBook Pro with M2 Pro, M3 Pro, M2 Max or M3 Max introduced in 2023 or later', 'Mac mini (2023 with M2 Pro)', 'Mac Studio and Mac Pro introduced in 2023'];
+function cleanupProblems(html, S = SRC) {
+  const out = [];
+  const q = (id) => (S.sources.find((x) => x.id === id) || { quotes: [] }).quotes;
+  const blocks = blocksOf(html);
+  // R1: the AP2 no-adapter advice keeps Apple's condition, in the adapter row and FAQ 5 (visible + JSON-LD).
+  const adapter = blocks.find((b) => /Apple: do not use an HDMI cable or adapter for Adaptive Sync/.test(txt(b))) || '';
+  if (!txt(adapter).includes('“To get the highest resolution and refresh rate, don’t use an adapter with the HDMI cable”') || !adapter.includes(cite('AP2'))) out.push('adapter row: AP2 advice without its condition');
+  const vis = [...html.matchAll(/<details><summary>([\s\S]*?)<\/summary><p>([\s\S]*?)<\/p><\/details>/g)].map((m) => txt(m[2]));
+  const f5v = vis.find((a) => /MST hub/.test(a)) || '';
+  const f5l = faqTexts(html).find((a) => /MST hub/.test(a)) || '';
+  for (const [k, a] of [['visible', f5v], ['JSON-LD', f5l]]) if (!a.includes('and to get the highest resolution and refresh rate don’t use an adapter with it')) out.push(`FAQ 5 ${k}: AP2 advice without its condition`);
+  if (!q('AP2').includes(HIGHEST)) out.push('AP2 quote for the condition missing');
+  // R2: FAQ 7's firmware sentence is tied to the stored Apple quote.
+  const f7 = vis.find((a) => /flicker/.test(a)) || '';
+  if (!f7.includes('Apple also says to make sure the display is using the latest firmware from the manufacturer.')) out.push('FAQ 7 firmware sentence changed');
+  if (!q('AP2').includes(FIRMWARE)) out.push('FAQ 7 firmware sentence has no stored AP2 quote');
+  // R2: per-occurrence pins for the AP2 Mac HDMI facts (short answer + Mac row) and the full model list.
+  if (claimSegments(html, 'Ultra High Speed 48 Gbps HDMI cable').length !== 2 || claimSegments(html, '48 Gbps').length !== 2) out.push('48 Gbps occurrence count');
+  const macRow = blocks.find((b) => /^Adaptive Sync: Thunderbolt/.test(txt(b))) || '';
+  if (!txt(macRow).includes('own HDMI port with an Ultra High Speed 48 Gbps HDMI cable')) out.push('Mac row: 48 Gbps cable changed');
+  const models = (txt(macRow).match(/the Mac models Apple lists \(([^)]*\([^)]*\)[^)]*)\)/) || [, ''])[1];
+  if (models !== MAC_MODELS.join('; ')) out.push(`Mac row model list: ${models}`);
+  for (const m of ['MacBook Pro with M2 Pro, M3 Pro, M2 Max or M3 Max introduced in 2023 or later', 'Mac mini (2023 with M2 Pro)', 'Mac Studio introduced in 2023', 'Mac Pro introduced in 2023']) if (!q('AP2').includes(m)) out.push(`AP2 model quote missing: ${m}`);
+  // R3: the AP2 label matches Apple's live title, on the page and in the JSON.
+  if (!html.includes(`rel="noopener">${AP2_LABEL}</a> — Apple, checked 2026-10-23 22:48 CEST</li>`)) out.push('AP2 source label/time');
+  if ((S.sources.find((x) => x.id === 'AP2') || {}).title !== AP2_LABEL) out.push('AP2 JSON title');
+  if (/8K or 4K display with your Mac/.test(html)) out.push('old AP2 label');
+  return out;
+}
+
+test('vrr CLEANUP-01: AP2 condition in adapter row + FAQ 5, FAQ 7 firmware quote, 48 Gbps/model pins, AP2 label (#38 R1–R3)', () => {
+  assert.deepEqual(cleanupProblems(h), []);
+});
+
+test('vrr CLEANUP-01: mutants', () => {
+  const muts = [
+    h.replace('Apple says “To get the highest resolution and refresh rate, don’t use an adapter with the HDMI cable”', 'don’t use an adapter with the HDMI cable'),
+    h.replace('connect the HDMI cable directly from the Mac’s HDMI port, and to get the highest resolution and refresh rate don’t use an adapter with it.', 'connect the HDMI cable directly from the Mac’s HDMI port and don’t use an adapter with it.'),
+    h.replace(/("text":"[^"]*?)connect the HDMI cable directly from the Mac’s HDMI port, and to get the highest resolution and refresh rate don’t use an adapter with it\./, '$1connect the HDMI cable directly from the Mac’s HDMI port and don’t use an adapter with it.'),
+    h.replace('</summary><p>Apple says that if you are not gaming', '</summary><p>Apple says that if you are not gaming').replace(/(<details><summary>Why does my screen flicker[\s\S]*?) Apple also says to make sure the display is using the latest firmware from the manufacturer\./, '$1'),
+    // single-occurrence 48→18 in the Mac row only, and a dropped model (QA-01 #38 R2: these survived the seo-vrr tests)
+    h.replace('own HDMI port with an Ultra High Speed 48 Gbps HDMI cable, connected directly', 'own HDMI port with an Ultra High Speed 18 Gbps HDMI cable, connected directly'),
+    h.replace('Mac mini (2023 with M2 Pro); ', ''),
+    h.replace('Mac Studio and Mac Pro introduced in 2023', 'Mac Studio introduced in 2023'),
+    h.replace('Apple Support — Use an 8K display with your Mac (HDMI VRR)</a>', 'Apple Support — Use an 8K or 4K display with your Mac (HDMI VRR)</a>'),
+    h.replace('(HDMI VRR)</a> — Apple, checked 2026-10-23 22:48 CEST', '(HDMI VRR)</a> — Apple, checked 2026-10-23 16:30 CEST'),
+  ];
+  for (const [i, m] of muts.entries()) {
+    assert.notEqual(m, h, `CLEANUP mutation ${i} must change the page`);
+    assert.ok(cleanupProblems(m).length > 0, `CLEANUP mutant ${i} survived`);
+  }
+  const without = (id, drop) => ({ sources: SRC.sources.map((x) => (x.id === id ? { ...x, quotes: x.quotes.filter((q) => q !== drop) } : x)) });
+  assert.ok(cleanupProblems(h, without('AP2', FIRMWARE)).length > 0, 'deleting the firmware quote must fail');
+  assert.ok(cleanupProblems(h, without('AP2', HIGHEST)).length > 0, 'deleting the condition quote must fail');
+  assert.ok(cleanupProblems(h, without('AP2', 'Mac mini (2023 with M2 Pro)')).length > 0, 'deleting a model quote must fail');
+  assert.ok(cleanupProblems(h, { sources: SRC.sources.map((x) => (x.id === 'AP2' ? { ...x, title: 'Apple Support — Use an 8K or 4K display with your Mac (HDMI VRR)' } : x)) }).length > 0);
 });

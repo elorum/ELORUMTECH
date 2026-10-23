@@ -17,7 +17,7 @@ const meta = (h) => (h.match(/name="description" content="([^"]*)"/) || [])[1];
 const hrefs = (h) => [...h.matchAll(/<a [^>]*href="([^"]+)"[^>]*>([^<]+)<\/a>/g)].map((m) => ({ href: m[1], text: m[2] }));
 
 const SEO = {
-  [CABLE]: { title: 'PS5 HDMI 2.1 Cable: Bandwidth, 4K120, VRR | ELORUMTECH', h1: 'PS5 HDMI 2.1 cable path', faq: 4 },
+  [CABLE]: { title: 'PS5 HDMI 2.1 Cable: Bandwidth, 4K120, VRR | ELORUMTECH', h1: 'PS5 HDMI 2.1 cable path', faq: 5 }, // CLEANUP-01 (QA-01 #40 F4): JSON-LD now carries all 5 visible FAQ entries
   [DELL]: { title: 'PS5 + Dell U2725QE: 4K 120Hz Compatibility | ELORUMTECH', h1: 'PlayStation 5 → Dell U2725QE', faq: 4 },
 };
 

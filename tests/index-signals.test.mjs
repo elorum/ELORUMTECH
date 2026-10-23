@@ -173,10 +173,33 @@ test('IS-3 every TechArticle has exactly one datePublished from docs/date-publis
   assert.deepEqual(Object.keys(PUB).sort(), ARTICLES);
   for (const f of ALL) assert.deepEqual(pubProblems(f, read(f)), [], f);
 });
+// CLEANUP-01 (QA-01 #40 F3): a shallow clone or a missing origin/main used to skip IS-3-GIT silently, so the suite
+// could pass without ever checking datePublished against git. Now it fails loudly; the only way to skip is the
+// explicit opt-out ELORUMTECH_SKIP_GIT_HISTORY=1 (e.g. for a tarball checkout), which is reported as a skip.
+export function gitHistoryDecision({ hasOriginMain, shallow, env = {} }) {
+  if (hasOriginMain && !shallow) return { action: 'run' };
+  const why = !hasOriginMain ? 'origin/main is missing' : 'the clone is shallow';
+  if (env.ELORUMTECH_SKIP_GIT_HISTORY === '1') return { action: 'skip', reason: `${why}; skipped by ELORUMTECH_SKIP_GIT_HISTORY=1` };
+  return { action: 'fail', reason: `${why}: IS-3-GIT needs full history (git fetch --unshallow origin main) or set ELORUMTECH_SKIP_GIT_HISTORY=1 to skip explicitly` };
+}
+test('IS-3-GIT-DECISION full history runs; shallow or missing origin/main fails unless explicitly skipped', () => {
+  assert.equal(gitHistoryDecision({ hasOriginMain: true, shallow: false }).action, 'run');
+  assert.equal(gitHistoryDecision({ hasOriginMain: true, shallow: false, env: { ELORUMTECH_SKIP_GIT_HISTORY: '1' } }).action, 'run');
+  assert.equal(gitHistoryDecision({ hasOriginMain: false, shallow: false }).action, 'fail');
+  assert.equal(gitHistoryDecision({ hasOriginMain: true, shallow: true }).action, 'fail');
+  assert.equal(gitHistoryDecision({ hasOriginMain: false, shallow: true }).action, 'fail');
+  for (const v of ['', '0', 'true', 'yes']) assert.equal(gitHistoryDecision({ hasOriginMain: true, shallow: true, env: { ELORUMTECH_SKIP_GIT_HISTORY: v } }).action, 'fail', v);
+  const s = gitHistoryDecision({ hasOriginMain: true, shallow: true, env: { ELORUMTECH_SKIP_GIT_HISTORY: '1' } });
+  assert.equal(s.action, 'skip'); assert.match(s.reason, /shallow/);
+  assert.match(gitHistoryDecision({ hasOriginMain: false, shallow: false }).reason, /origin\/main is missing/);
+});
 test('IS-3-GIT docs/date-published.json equals the first-parent commit on main that added each file (Europe/Copenhagen)', (t) => {
-  let ok = true;
-  try { execFileSync('git', ['rev-parse', '--verify', 'origin/main'], { cwd: root, stdio: 'ignore' }); } catch { ok = false; }
-  if (!ok || execFileSync('git', ['rev-parse', '--is-shallow-repository'], { cwd: root, encoding: 'utf8' }).trim() === 'true') return t.skip('no full history');
+  let hasOriginMain = true, shallow = true;
+  try { execFileSync('git', ['rev-parse', '--verify', 'origin/main'], { cwd: root, stdio: 'ignore' }); } catch { hasOriginMain = false; }
+  try { shallow = execFileSync('git', ['rev-parse', '--is-shallow-repository'], { cwd: root, encoding: 'utf8' }).trim() === 'true'; } catch { hasOriginMain = false; }
+  const d0 = gitHistoryDecision({ hasOriginMain, shallow, env: process.env });
+  if (d0.action === 'skip') return t.skip(d0.reason);
+  assert.equal(d0.action, 'run', d0.reason);
   for (const [f, v] of Object.entries(PUB)) {
     const lines = execFileSync('git', ['log', 'origin/main', '--first-parent', '--diff-filter=A', '--format=%H %cd', '--date=format-local:%Y-%m-%d', '--', f], { cwd: root, encoding: 'utf8', env: { ...process.env, TZ: 'Europe/Copenhagen' } }).trim().split('\n');
     const [sha, d] = lines.at(-1).split(' ');

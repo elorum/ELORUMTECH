@@ -121,12 +121,14 @@
    "title": "VESA — DisplayPort UHBR device certification and DP40/DP80 cables",
    "publisher": "VESA",
    "kind": "standard_body",
-   "checked_at": "2026-10-23T08:14:49+02:00",
+   "checked_at": "2026-10-23T22:48:00+02:00",
    "quotes": [
     "uncompressed 8K 60Hz HDR, 4K 240Hz HDR, two 4K 120Hz HDR or four 4K 60Hz HDR displays through a single cable",
     "VESA certified DP80 cables will also support the UHBR13.5 link rate (13.5 Gbps)",
-    "full-feature passive USB-C cables already support UHBR bit rate speeds"
-   ]
+    "full-feature passive USB-C cables already support UHBR bit rate speeds",
+    "The higher bandwidths enabled by UHBR support a variety of use cases such as uncompressed 8K 60Hz HDR, 4K 240Hz HDR, two 4K 120Hz HDR or four 4K 60Hz HDR displays through a single cable."
+   ],
+   "fetch_note": "CLEANUP-01 re-check: curl 403 (WP Engine block page), read via WebFetch; added the full UHBR use-case sentence (QA-01 #37 R1)."
   },
   {
    "id": "V4",
