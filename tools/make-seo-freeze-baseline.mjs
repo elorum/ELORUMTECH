@@ -1,4 +1,5 @@
 // Usage: node tools/make-seo-freeze-baseline.mjs <git-ref>  -> docs/seo-freeze-baseline.json
+// Pass the full 40-char commit SHA (not a short ref): the ref is written verbatim into the JSON, so only the full SHA regenerates byte-identically.
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import crypto from 'node:crypto';

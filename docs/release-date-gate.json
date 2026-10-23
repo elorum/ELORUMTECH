@@ -82,6 +82,12 @@
       "url": "https://elorumtech.elorum.world/guides/thunderbolt-dock-one-cable-4k-120.html",
       "visibleUpdated": true,
       "intendedReleaseDate": "2026-10-23"
+    },
+    {
+      "file": "guides/displayport-vs-hdmi.html",
+      "url": "https://elorumtech.elorum.world/guides/displayport-vs-hdmi.html",
+      "visibleUpdated": true,
+      "intendedReleaseDate": "2026-10-23"
     }
   ]
 }

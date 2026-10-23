@@ -223,7 +223,8 @@ test('port capability warn appears for USB-C laptop paths in buildResult spec', 
 test('sitemap loc count updated and all files exist', () => {
   const xml = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
   const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
-  assert.equal(locs.length, 32, 'expected 32 locs, got ' + locs.length);
+  // 33 since SEO-DPVSHDMI-01 added guides/displayport-vs-hdmi.html.
+  assert.equal(locs.length, 33, 'expected 33 locs, got ' + locs.length);
   for (const loc of locs) {
     const rel = loc.replace('https://elorumtech.elorum.world/', '').replace(/\/$/, '');
     const file = rel === '' ? path.join(root, 'index.html')
