@@ -48,6 +48,13 @@ const FIGURES = [
   ['connected natively via DisplayPort', 'NV4', 'connected natively via DisplayPort v1.2'],
   ['even if the display does not support HDMI 2.1', 'AMD1', 'even if the display does not support HDMI 2.1'],
   ['lag, judder and frame tearing', 'HL1', 'lag, judder and frame tearing'],
+  // REM01 F1: the AP2 HDMI exception for the Mac models Apple lists.
+  ['Ultra High Speed 48 Gbps HDMI cable', 'AP2', 'Use an Ultra High Speed 48 Gbps HDMI cable'],
+  ['MacBook Pro with M2 Pro, M3 Pro, M2 Max or M3 Max introduced in 2023 or later', 'AP2', 'MacBook Pro with M2 Pro, M3 Pro, M2 Max or M3 Max introduced in 2023 or later'],
+  ['Mac mini (2023 with M2 Pro)', 'AP2', 'Mac mini (2023 with M2 Pro)'],
+  ['don’t use an adapter with the HDMI cable', 'AP2', 'don’t use an adapter with the HDMI cable'],
+  // REM01 F2: Intel Arc's VRR over HDMI is VESA Adaptive Sync on an HDMI 2.1 input.
+  ['the display must also support VESA Adaptive Sync', 'IN1', 'The display must also support VESA Adaptive Sync since this is the VRR supported by Intel Arc A-Series / B-Series GPUs.'],
 ];
 // Repeated figures: every element that contains the token must cite one of the listed sources (per occurrence).
 const REPEATED = [
@@ -61,6 +68,7 @@ const REPEATED = [
   ['11th-generation', ['IN2']],
   ['AI 400', ['AMD1']],
   ['Gaming Only', ['XB4']],
+  ['48 Gbps', ['AP2']],
 ];
 const FIX_STEPS = 8;
 const BUY_STEPS = 4;
@@ -160,7 +168,7 @@ test('vrr: answer box, required sections, path matrix and console-vs-PC table', 
   assert.equal(tables.length, 2);
   assert.equal((h.match(/<table>/g) || []).length, 2, 'every table is inside .tablewrap');
   const rows = (t) => [...t.matchAll(/<tr><th scope="row">([^<]+)<\/th>/g)].map((m) => txt(m[1]));
-  assert.deepEqual(rows(tables[0]), ['HDMI 2.1 → HDMI 2.1 (HDMI Forum VRR)', 'FreeSync over HDMI (displays without HDMI 2.1)', 'DisplayPort → DisplayPort (VESA Adaptive-Sync)', 'USB-C / Thunderbolt carrying DisplayPort, direct', 'Thunderbolt / USB-C dock', 'DisplayPort or USB-C → HDMI adapter', 'MST hub or daisy-chain']);
+  assert.deepEqual(rows(tables[0]), ['HDMI 2.1 → HDMI 2.1 (HDMI Forum VRR)', 'HDMI 2.1 input → VESA Adaptive Sync (Intel Arc)', 'FreeSync over HDMI (displays without HDMI 2.1)', 'DisplayPort → DisplayPort (VESA Adaptive-Sync)', 'USB-C / Thunderbolt carrying DisplayPort, direct', 'Thunderbolt / USB-C dock', 'DisplayPort or USB-C → HDMI adapter', 'MST hub or daisy-chain']);
   assert.deepEqual(rows(tables[1]), ['PS5 / PS5 Pro', 'Xbox Series X', 'Xbox Series S', 'NVIDIA GeForce (G-SYNC Compatible)', 'AMD Radeon (FreeSync)', 'Intel Arc A-Series / B-Series', 'Intel 11th-generation integrated graphics', 'Mac']);
   assert.ok(h.includes('.tablewrap{overflow-x:auto;scroll-padding-inline:40px;'), 'tablewrap scroll-padding (page-local)');
   assert.ok(h.includes('<section class="cta" aria-labelledby="cta-heading">'));
@@ -305,4 +313,85 @@ test('vrr: exactly one theme stylesheet right before </head>; no prices or affil
   assert.ok(h.includes(`${THEME}</head>`));
   assert.doesNotMatch(txt(h), /[$€£]\s?\d|\d\s?(USD|EUR|kr\.?)\b/);
   assert.doesNotMatch(h, /amazon\.|amzn\.|[?&]tag=|affiliate|rel="sponsored"/i);
+});
+
+// REM01 (QA-01 PR #38 F1–F4): Mac HDMI exception [AP2], Intel Arc = VESA Adaptive Sync over HDMI 2.1 [IN1],
+// FAQ 5 does not contradict AMD's dock list, and no uncited editorial tips.
+const pathRow = (html, row) => {
+  const paths = (html.match(/<div class="tablewrap" role="region" aria-label="Which connection paths carry VRR"[\s\S]*?<\/table><\/div>/) || [''])[0];
+  const m = paths.match(new RegExp(`<tr><th scope="row">${row.replace(/[/.()|]/g, '\\$&')}</th>([\\s\\S]*?)</tr>`));
+  return m ? m[1] : null;
+};
+function remProblems(html) {
+  const out = [];
+  const blocks = blocksOf(html);
+  const faq = faqTexts(html);
+  const answer = (html.match(/<div class="answer">([\s\S]*?)<\/div>/) || ['', ''])[1];
+  // F1: wherever Apple's AP1 HDMI warning appears, the AP2 built-in-HDMI exception sits in the same element.
+  for (const b of blocks) {
+    const t = txt(b);
+    if (/HDMI cable or adapter|not an HDMI adapter/.test(t) && !(b.includes(cite('AP2')) && /HDMI/.test(t.split(/HDMI cable or adapter|not an HDMI adapter/).slice(1).join(' ')))) out.push(`AP1 HDMI warning without the AP2 exception: ${t.slice(0, 70)}`);
+    if (/HDMI[^.]{0,40}(never|does not|doesn’t|won’t) work[^.]{0,20}Mac|Mac[^.]{0,40}(never|cannot|can’t)[^.]{0,30}HDMI/.test(t)) out.push(`Mac HDMI VRR stated as impossible: ${t.slice(0, 70)}`);
+  }
+  if (!/own HDMI port with an Ultra High Speed 48 Gbps HDMI cable/.test(txt(answer)) || !answer.includes(cite('AP2'))) out.push('short answer lost the AP2 Mac HDMI exception');
+  const fix5 = blocks.find((b) => /Remove adapters, docks and hubs/.test(b)) || '';
+  if (!(/Mac’s HDMI port/.test(txt(fix5)) && fix5.includes(cite('AP2')))) out.push('fix step lost the AP2 Mac HDMI exception');
+  const mac = blocks.find((b) => /^Adaptive Sync: Thunderbolt/.test(txt(b))) || '';
+  if (!(/own HDMI port/.test(txt(mac)) && mac.includes(cite('AP2')))) out.push('Mac row lost the AP2 HDMI exception');
+  for (const q of faq) if (/not an HDMI cable or adapter/.test(q) && !/Mac’s HDMI port/.test(q)) out.push('FAQ AP1 warning without the AP2 exception');
+  // F2: Arc is VESA Adaptive Sync over an HDMI 2.1 input, never listed as HDMI Forum VRR.
+  const forum = pathRow(html, 'HDMI 2.1 → HDMI 2.1 (HDMI Forum VRR)') || '';
+  for (const seg of txt(forum).split(/(?<=\.)\s/)) if (/Intel Arc/.test(seg) && !/VESA Adaptive Sync/.test(seg)) out.push(`Intel Arc in the HDMI Forum VRR row: ${seg.slice(0, 60)}`);
+  const arc = pathRow(html, 'HDMI 2.1 input → VESA Adaptive Sync (Intel Arc)');
+  if (!arc || !arc.includes(cite('IN1')) || !/VESA Adaptive Sync/.test(txt(arc)) || !/HDMI 2\.1 standard/.test(txt(arc))) out.push('Intel Arc VESA-over-HDMI row missing or uncited');
+  for (const b of blocks) { const t = txt(b); if (/Intel Arc( and NVIDIA)? (describe|needs?|uses?) HDMI (VRR|2\.1)/.test(t)) out.push(`Arc described as HDMI VRR: ${t.slice(0, 60)}`); }
+  if (!/Intel Arc uses VESA Adaptive Sync, also over an HDMI 2\.1 input/.test(txt(answer))) out.push('short answer: Arc HDMI path not scoped to VESA Adaptive Sync');
+  // F3: FAQ 5 must not deny dock VRR outright next to AMD's FreeSync dock list.
+  const f5 = faq.find((q) => /MST hub/.test(q)) || '';
+  if (/promise VRR through a dock\b/.test(f5) || !/docks in general/.test(f5) || !/FreeSync compatible docks/.test(f5)) out.push('FAQ 5 dock wording contradicts AMD1 dock list');
+  // F4: the three uncited tips are gone.
+  const plain = txt(main(html)) + ' ' + faq.join(' ');
+  for (const tip of ['test directly first', 'Connect the VRR display directly to the graphics card for gaming', 'check the display maker’s firmware and settings']) if (plain.includes(tip)) out.push(`uncited tip: ${tip}`);
+  return out;
+}
+
+test('vrr REM01: Mac HDMI exception [AP2], Intel Arc VESA-over-HDMI [IN1], FAQ 5 dock scope, no uncited tips', () => {
+  assert.deepEqual(remProblems(h), []);
+  const ap2 = src('AP2');
+  assert.match(ap2.checked_at, /^2026-10-23T16:30:20\+02:00$/);
+  for (const q of ['Use an Ultra High Speed 48 Gbps HDMI cable', 'Connect the HDMI cable directly from the HDMI port on your Mac to your display.']) assert.ok(ap2.quotes.includes(q), q);
+});
+
+test('vrr REM01: checks catch the old wording (mutants)', () => {
+  const muts = [
+    // F1: old short answer, fix step, Mac row and FAQ 5 (AP1 warning alone)
+    h.replace(/Mac: for Adaptive Sync use a Thunderbolt or USB-C cable, not an HDMI adapter (<a class="srcs" href="#src-AP1">\[AP1\]<\/a>); the Mac models Apple lists also get VRR from their own HDMI port with an Ultra High Speed 48 Gbps HDMI cable, no adapter <a class="srcs" href="#src-AP2">\[AP2\]<\/a>\./, 'Mac: Thunderbolt or USB-C cable, not an HDMI adapter $1.'),
+    h.replace(/For Adaptive Sync, Apple says not to use an HDMI cable or adapter (<a class="srcs" href="#src-AP1">\[AP1\]<\/a>); on the Mac models Apple lists for HDMI VRR, connect the HDMI cable directly from the Mac’s HDMI port with no adapter <a class="srcs" href="#src-AP2">\[AP2\]<\/a>\./, 'Apple says not to use an HDMI cable or adapter $1, and'),
+    h.replace(/ HDMI: the Mac models Apple lists \([\s\S]*?connected directly without an adapter <a class="srcs" href="#src-AP2">\[AP2\]<\/a>/, ''),
+    h.replaceAll('; on the Mac models Apple lists for HDMI VRR, connect the HDMI cable directly from the Mac’s HDMI port and don’t use an adapter with it.', '.'),
+    h.replace('</p><p class="reviewed"', ' HDMI VRR never works on a Mac.</p><p class="reviewed"').replace('<h2 id="what">What VRR does</h2><p>', '<h2 id="what">What VRR does</h2><p>On a Mac, HDMI VRR does not work at all. '),
+    // F2: Arc back in the HDMI Forum VRR row / old FreeSync-row sentence / Arc row removed / old answer
+    h.replace(/Intel Arc is not in this row: its VRR over HDMI is VESA Adaptive Sync, shown in the next row (<a class="srcs" href="#src-IN1">\[IN1\]<\/a>)\./, 'Intel Arc needs an HDMI input that is HDMI 2.1 standard $1.'),
+    h.replace(/NVIDIA describes VRR over HDMI on displays that support it over HDMI 2\.1 (<a class="srcs" href="#src-NV3">\[NV3\]<\/a>)\./, `Intel Arc and NVIDIA describe HDMI VRR on HDMI 2.1 displays ${cite('IN1')}$1.`),
+    h.replace(/<tr><th scope="row">HDMI 2\.1 input → VESA Adaptive Sync \(Intel Arc\)<\/th>[\s\S]*?<\/tr>/, ''),
+    h.replace('Intel Arc uses VESA Adaptive Sync, also over an HDMI 2.1 input', 'Intel Arc uses VESA Adaptive Sync'),
+    // F3: old FAQ 5 dock wording
+    h.replaceAll('promise VRR through docks in general, through a DisplayPort-to-HDMI adapter or through an MST hub', 'promise VRR through a dock, a DisplayPort-to-HDMI adapter or an MST hub'),
+    // F4: uncited tips back
+    h.replace('Check the hub maker’s documentation.', 'Connect the VRR display directly to the graphics card for gaming.'),
+    h.replaceAll('or use a setting such as Gaming Only on Xbox. Apple also says to make sure the display is using the latest firmware from the manufacturer.', 'or use a setting such as Gaming Only on Xbox, and check the display maker’s firmware and settings.'),
+  ];
+  for (const [i, m] of muts.entries()) {
+    assert.notEqual(m, h, `REM01 mutation ${i} must change the page`);
+    assert.ok(remProblems(m).length > 0, `REM01 mutant ${i} survived`);
+  }
+  // Figure mutants: 48 Gbps -> 18 Gbps, AP2 swapped for AP1 next to the HDMI exception.
+  const F = (k) => FIGURES.find((f) => f[0] === k);
+  const g18 = h.replaceAll('Ultra High Speed 48 Gbps HDMI cable', 'Ultra High Speed 18 Gbps HDMI cable');
+  assert.notEqual(g18, h);
+  assert.equal(figureOk(g18, F('Ultra High Speed 48 Gbps HDMI cable')), false);
+  const swap = h.replace(`own HDMI port with an Ultra High Speed 48 Gbps HDMI cable, no adapter ${cite('AP2')}`, `own HDMI port with an Ultra High Speed 48 Gbps HDMI cable, no adapter ${cite('AP1')}`);
+  assert.notEqual(swap, h);
+  assert.equal(figureOk(swap, F('Ultra High Speed 48 Gbps HDMI cable')), false);
+  assert.equal(repeatedOk(swap, ['48 Gbps', ['AP2']]), false);
 });

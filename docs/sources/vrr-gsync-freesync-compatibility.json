@@ -2,7 +2,7 @@
  "schema": "elorumtech-guide-sources/1",
  "job": "ELORUMTECH-SEO-VRR-20261023-01",
  "page": "guides/vrr-gsync-freesync-compatibility.html",
- "note": "Primary sources for the VRR / G-SYNC / FreeSync compatibility guide. Every quote is verbatim from the fetched page (whitespace normalised). checked_at = when DEV-01 fetched it (CEST). Every figure on the page is cited with [ID] and must appear in that source's quotes (tests/seo-vrr.test.mjs). NV3/NV4 are NVIDIA support articles last updated 09/29/2021; for HDMI 2.1 VRR GPU generation the page shows both NV2 (GeForce 30 series and higher, G-SYNC Compatible list footnote) and NV3 (GTX 16/RTX 20 and higher) side by side rather than picking one. VRR through docks, DP-to-HDMI adapters and MST hubs is not documented by these sources and is labelled as such on the page.",
+ "note": "Primary sources for the VRR / G-SYNC / FreeSync compatibility guide. Every quote is verbatim from the fetched page (whitespace normalised). checked_at = when DEV-01 fetched it (CEST). Every figure on the page is cited with [ID] and must appear in that source's quotes (tests/seo-vrr.test.mjs). NV3/NV4 are NVIDIA support articles last updated 09/29/2021; for HDMI 2.1 VRR GPU generation the page shows both NV2 (GeForce 30 series and higher, G-SYNC Compatible list footnote) and NV3 (GTX 16/RTX 20 and higher) side by side rather than picking one. VRR through docks, DP-to-HDMI adapters and MST hubs is not documented by these sources and is labelled as such on the page (AMD1's FreeSync-compatible dock list for Ryzen AI 400 Series devices is the one maker-scoped exception). REM01 (2026-10-23): AP2 re-fetched 16:30 CEST and extended with its HDMI connection quotes (listed Macs get VRR from the Mac's own HDMI port with an Ultra High Speed 48 Gbps HDMI cable, no adapter); AP1's 'Do not use an HDMI cable or adapter' is scoped to Adaptive Sync. Intel Arc's VRR over HDMI is VESA Adaptive Sync over an HDMI 2.1 input (IN1), not HDMI Forum VRR.",
  "sources": [
   {
    "id": "HL1",
@@ -284,10 +284,18 @@
    "title": "Apple Support — Use an 8K or 4K display with your Mac (HDMI VRR)",
    "publisher": "Apple",
    "kind": "manufacturer_support",
-   "checked_at": "2026-10-23T10:41:17+02:00",
+   "checked_at": "2026-10-23T16:30:20+02:00",
    "quotes": [
     "These Mac models support 8K resolution, 4K resolution with refresh rates of up to 240Hz, and VRR on a compatible external display:",
-    "On some TVs, these settings appear under different names such as “game mode” for VRR"
+    "MacBook Pro with M2 Pro, M3 Pro, M2 Max or M3 Max introduced in 2023 or later",
+    "Mac mini (2023 with M2 Pro)",
+    "Mac Studio introduced in 2023",
+    "Mac Pro introduced in 2023",
+    "Use an Ultra High Speed 48 Gbps HDMI cable",
+    "Connect the HDMI cable directly from the HDMI port on your Mac to your display.",
+    "don’t use an adapter with the HDMI cable",
+    "On some TVs, these settings appear under different names such as “game mode” for VRR",
+    "Make sure that your display is using the latest firmware from the manufacturer."
    ]
   },
   {
