@@ -197,3 +197,65 @@ test('dpvshdmi: exactly one theme stylesheet right before </head>; no prices or 
   assert.doesNotMatch(txt(h), /[$€£]\s?\d|\d\s?(USD|EUR|kr\.?)\b/);
   assert.doesNotMatch(h, /amazon\.|amzn\.|[?&]tag=|affiliate|rel="sponsored"/i);
 });
+
+// REM01 (QA-01 F4/F5 on PR #37): VESA's example configurations carry the version label VESA gives them,
+// and the macOS/MST statement is attributed to its source (Dell [DL1]) wherever it appears, incl. FAQ JSON-LD.
+const VESA_EXAMPLES = [
+  // [label + example as on the page, label as VESA words it in the V4 quote]
+  ['Among its example configurations for DisplayPort 2.0 and 2.1, VESA lists two 4K (3840×2160) displays @144Hz without compression', 'important features of DisplayPort 2.0 and 2.1'],
+  ['VESA’s own example for DP 2.0 using only two lanes of a USB-C connector (DP Alt Mode): three QHD (2560×1440) @120Hz displays without compression', 'DP 2.0 can enable such configurations as'],
+];
+function scopeProblems(html) {
+  const out = [];
+  const body = html.replace(/<section class="sources"[\s\S]*?<\/section>/, ''); // source titles are not claims
+  const blocks = [...body.matchAll(/<(li|td|p|div(?= class="answer"))\b[^>]*>([\s\S]*?)<\/(?:li|td|p|div)>/g)].map((m) => m[2]);
+  for (const [onPage, inSource] of VESA_EXAMPLES) {
+    const hit = blocks.filter((b) => txt(b).includes(onPage));
+    if (hit.length !== 1 || !hit[0].includes('<a class="srcs" href="#src-V4">[V4]</a>')) out.push(`VESA example not labelled/cited: ${onPage.slice(0, 40)}`);
+    if (!src('V4').quotes.some((q) => q.includes(inSource))) out.push(`V4 quote missing: ${inSource}`);
+  }
+  if (/DisplayPort 2\.1 bandwidth|over DisplayPort 2\.1 using only two USB-C lanes/.test(html)) out.push('VESA DP 2.0 example labelled DP 2.1');
+  const plain = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => m[1]).join(' ');
+  if (/macOS does not support MST/.test(html) || /macOS does not support MST/.test(plain)) out.push('unscoped macOS MST claim');
+  for (const b of blocks) {
+    const t = txt(b);
+    if (/macOS/.test(t) && /\bMST\b|Multi-Stream/.test(t)) {
+      if (!/Dell’s (dock )?documentation/.test(t)) out.push(`macOS MST not attributed to Dell: ${t.slice(0, 60)}`);
+      if (b.includes('class="srcs"') && !b.includes('<a class="srcs" href="#src-DL1">[DL1]</a>')) out.push(`macOS MST without [DL1]: ${t.slice(0, 60)}`);
+    }
+  }
+  const faqHits = faqLdOf(html).filter((q) => /macOS/.test(q) && /MST|Multi-Stream/.test(q));
+  if (!faqHits.length || faqHits.some((q) => !/Dell’s (dock )?documentation/.test(q))) out.push('FAQ JSON-LD macOS MST not attributed to Dell');
+  if (!src('DL1').quotes.some((q) => q.includes('lack of support for Multi-Stream Transport in macOS'))) out.push('DL1 quote missing');
+  return out;
+}
+function faqLdOf(html) {
+  const lds = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1]));
+  const f = lds.find((o) => o['@type'] === 'FAQPage');
+  return f ? f.mainEntity.map((q) => q.acceptedAnswer.text) : [];
+}
+
+test('dpvshdmi REM01: VESA examples labelled DP 2.0 / 2.0 and 2.1 as the source gives them; macOS MST scoped to Dell [DL1]', () => {
+  assert.deepEqual(scopeProblems(h), []);
+  // Every place that mentions macOS + MST (answer box, MST section, recommendation table, FAQ) is attributed.
+  const n = [...h.replace(/<section class="sources"[\s\S]*?<\/section>/, '').matchAll(/<(li|td|p|div(?= class="answer"))\b[^>]*>([\s\S]*?)<\/(?:li|td|p|div)>/g)].filter((m) => /macOS/.test(txt(m[2])) && /\bMST\b|Multi-Stream/.test(txt(m[2]))).length;
+  assert.ok(n >= 4, `macOS/MST mentions found: ${n}`);
+  // F1 (375 px): page-local scroll-padding so keyboard focus scrolls end-of-row table links fully into view.
+  assert.ok(h.includes('.tablewrap{overflow-x:auto;scroll-padding-inline:40px;'), 'tablewrap scroll-padding (page-local)');
+});
+
+test('dpvshdmi REM01: scope checks catch mutants (old DP 2.1 labels, unscoped macOS claim in body, table, FAQ visible+JSON-LD)', () => {
+  const muts = [
+    h.replace('Among its example configurations for DisplayPort 2.0 and 2.1, VESA lists two 4K', 'With DisplayPort 2.1 bandwidth, VESA’s example is two 4K'),
+    h.replace('VESA’s own example for DP 2.0 using only two lanes of a USB-C connector (DP Alt Mode): three QHD (2560×1440) @120Hz displays without compression', 'VESA’s own example: three QHD (2560×1440) @120Hz displays without compression over DisplayPort 2.1 using only two USB-C lanes'),
+    h.replace('<p>Dell’s documentation for its Thunderbolt docks on Apple USB-C hosts points to “a lack of support for Multi-Stream Transport in macOS”', '<p>macOS does not support MST'),
+    h.replace('<td>On a Mac, Dell’s dock documentation states that macOS lacks MST support', '<td>macOS does not support MST'),
+    h.replace('; on a Mac, Dell’s dock documentation states that macOS lacks MST support <a class="srcs" href="#src-DL1">[DL1]</a>', '; macOS lacks MST support <a class="srcs" href="#src-DL1">[DL1]</a>'),
+    h.replaceAll('Dell’s dock documentation states that macOS lacks support for Multi-Stream Transport, so Macs', 'macOS does not support MST, so Macs'),
+    h.replace('macOS lacks MST support <a class="srcs" href="#src-DL1">[DL1]</a>;', 'macOS lacks MST support <a class="srcs" href="#src-IN1">[IN1]</a>;'),
+  ];
+  for (const [i, m] of muts.entries()) {
+    assert.notEqual(m, h, `mutation ${i} must change the page`);
+    assert.ok(scopeProblems(m).length > 0, `mutant ${i} survived`);
+  }
+});

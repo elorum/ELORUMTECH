@@ -150,7 +150,9 @@
     "Two 4K (3840×2160) displays @144Hz and 24 bpp 4:4:4 (no compression)",
     "Three QHD (2560×1440) @120Hz and 24 bpp 4:4:4 (no compression)",
     "Adapters and Adapter cables are used to connect DisplayPort over USB-C to an HDMI input on the HDTV.",
-    "HDMI 2.0 is supported to enable 4K resolution."
+    "HDMI 2.0 is supported to enable 4K resolution.",
+    "What are the important features of DisplayPort 2.0 and 2.1?",
+    "When using only two lanes on the USB-C connector via DP Alt Mode to allow for simultaneous SuperSpeed USB data and video, DP 2.0 can enable such configurations as:"
    ]
   },
   {
