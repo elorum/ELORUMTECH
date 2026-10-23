@@ -75,7 +75,10 @@ test('tbdock: choosing section, capability table, USB-C monitor section and inte
   }
 });
 
-test('tbdock: no theme stylesheet from the visual refresh PR', () => {
-  assert.ok(!/elorum-theme\.css/.test(h));
-  assert.ok(!/<link rel="stylesheet"/.test(h));
+test('tbdock: exactly one theme stylesheet (visual refresh) and no other stylesheet', () => {
+  const THEME = '<link rel="stylesheet" href="/assets/elorum-theme.css">';
+  assert.equal(h.split(THEME).length - 1, 1);
+  assert.equal((h.match(/elorum-theme\.css/g) || []).length, 1);
+  assert.equal((h.match(/<link rel="stylesheet"/g) || []).length, 1);
+  assert.ok(h.includes(`${THEME}</head>`));
 });

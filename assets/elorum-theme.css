@@ -1,0 +1,118 @@
+/* ELORUMTECH theme — elorum.world design tokens (values copied from elorum/Elorum-site
+   site-source/app/globals.css and the live render): light cream page, ink text, dark
+   ink header band and footer, gold/wine/forest/cobalt accents, Georgia + Arial system
+   stacks (no webfonts), square buttons, pill chips. Loaded after each page's inline
+   <style>; overrides presentation only. Inline style="" colours written for the old
+   dark theme are remapped below so they keep WCAG AA on cream.
+   The consent banner is styled inline by analytics.js (tracking code) and is not changed. */
+:root{
+  --ink:#161612;--cream:#f2efe6;--paper:#e7e1d3;--gold:#b79055;--line:rgba(22,22,18,.24);
+  --wine:#792f45;--forest:#28564d;--cobalt:#384f78;--amber:#d19b50;--chalk:#f7f3e9;
+  --night:#10100e;--night-deep:#0d0d0b;
+  --text-2:#4a463e;--text-3:#5c574d;--gold-ink:#7a5a26;--warn-ink:#8a5a12;
+  --on-dark:#f2efe6;--on-dark-2:#c8c2b6;--line-dark:rgba(255,255,255,.25);
+  --serif:Georgia,'Times New Roman',serif;--sans:Arial,Helvetica,sans-serif;
+  --radius:2px;--pill:999px;--shadow:0 14px 30px rgba(38,31,24,.06);
+  color-scheme:light;
+}
+html{-webkit-text-size-adjust:100%;background:var(--cream)}
+body{background:var(--cream);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+h1,h2{font-family:var(--serif);font-weight:400;color:var(--ink)}
+h1{letter-spacing:-.045em;line-height:1}
+h2{letter-spacing:-.03em;line-height:1.12}
+h3,h4{font-family:var(--sans);font-weight:700;color:var(--ink)}
+p,li,td,dd,dt,caption,.lead,.sub,.muted,.hint,.note,.unk,.src,.srcs,.srclist,.opt,.scope,.ext,.dl{color:var(--text-2)}
+.lead{font-family:var(--serif);line-height:1.6}
+strong,b,legend,summary,label,th{color:var(--ink)}
+a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--gold);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--wine);text-decoration-color:currentColor}
+:focus-visible,a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--wine)!important;outline-offset:3px}
+::selection{background:var(--gold);color:var(--ink)}
+/* header band: dark like elorum.world's header, full-bleed without markup changes */
+nav{background:var(--night);border-bottom:1px solid var(--line-dark);box-shadow:0 0 0 100vmax var(--night);clip-path:inset(0 -100vmax)}
+nav,nav *{color:var(--on-dark-2)}
+nav .brand,nav .brand *{font-weight:900;letter-spacing:-.04em;font-size:1.3rem;color:var(--on-dark)!important;text-decoration:none}
+nav a:not(.brand),.beta{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--on-dark-2)!important;text-decoration:none}
+nav a:not(.brand):hover{color:var(--on-dark)!important}
+nav :focus-visible{outline-color:var(--amber)!important}
+.brand{color:var(--ink);text-decoration:none}
+/* eyebrows */
+.tag,.eyebrow{color:var(--wine);font-size:.67rem;font-weight:700;letter-spacing:.24em;text-transform:uppercase}
+.updated{color:var(--text-3)!important}
+/* remap inline style="" colours authored for the old dark theme */
+[style*="color:#738094"],[style*="color:#8b97a8"],[style*="color:#7d899a"]{color:var(--text-3)!important}
+[style*="color:#aab5c4"],[style*="color:#dbe4ef"],[style*="color:#c8d1dc"]{color:var(--text-2)!important}
+[style*="color:#f6f8fb"]{color:var(--ink)!important}
+[style*="color:#79f2c0"]:not(.btn){color:var(--wine)!important}
+/* page-level inline rules that set dark-theme text colours at class specificity */
+.card p,.seo p,.guides p,.verified p,.faq p,.muted,.sub,.hint,.note,.myth .src,.src,.opt,.pill,.scope,.confidence,code,.lead{color:var(--text-2)}
+.faq summary,.field label,.inline label,label,.check h3,.faq h3,.tool h3,.card h3,.related h3{color:var(--ink)}
+.answer strong,.cta strong,.dl strong,.testimony strong{color:var(--wine)}
+.g-compatible{background:#e3ece6;color:var(--forest)}
+.g-different-problem{background:#e4e8f0;color:var(--cobalt)}
+#result h3,.tool label{color:var(--ink)}
+/* consent banner (analytics.js, untouched): keep its own inline colours */
+#elorumtech-analytics-consent p{color:inherit}
+nav[style]{color:var(--on-dark-2)!important}
+.ok{color:var(--forest)}.warn{color:var(--warn-ink)}
+/* cards / panels */
+.box,.answer,.check,.faq,.related,.cta,.tool,.sources,.result,.card,.spec,.keep,.myth,.dl,.testimony,.dlbox,fieldset{background:var(--chalk);border:1px solid var(--line);border-radius:var(--radius);box-shadow:none;color:var(--ink)}
+.box{box-shadow:var(--shadow)}
+.field{background:var(--cream);border:1px solid var(--line);border-radius:var(--radius)}
+.answer,.cta{border-top:2px solid var(--gold)}
+.answer strong,.cta strong{color:var(--wine)}
+.spec{border-style:dashed}
+.keep{background:#e9efe9;border-color:rgba(40,86,77,.35);color:var(--forest)}
+.faq details{border-top-color:var(--line)}
+.faq summary{font-weight:700}
+.card a{color:var(--ink)}.card a:hover{color:var(--wine)}
+.card p{color:var(--text-2)}
+/* form controls (solver, engine) */
+input,select,textarea{font-family:var(--sans)}
+select,input[type=number],input[type=text],input:not([type]),textarea{background:var(--chalk)!important;color:var(--ink)!important;border:1px solid var(--line)!important;border-radius:var(--radius);color-scheme:light}
+.field select{background:transparent!important;border:0!important}
+select option,select optgroup{background:var(--chalk)!important;color:var(--ink)!important}
+input::placeholder{color:var(--text-3);opacity:1}
+input[type=radio],input[type=checkbox]{accent-color:var(--wine)}
+/* buttons: ink block, cream text, uppercase tracked, square */
+.btn,button.btn,a.btn,a[style*="background:#79f2c0"]{background:var(--ink)!important;color:var(--cream)!important;border:1px solid var(--ink)!important;border-radius:0!important;font-family:var(--sans);font-weight:700;font-size:.75rem;letter-spacing:.13em;text-transform:uppercase;text-decoration:none;transition:background-color .15s,color .15s}
+.btn:hover,a[style*="background:#79f2c0"]:hover{background:var(--wine)!important;border-color:var(--wine)!important;color:var(--cream)!important}
+[style*="border:1px solid #79f2c0"]{background:transparent!important;color:var(--ink)!important;border:1px solid var(--ink)!important;border-radius:0!important}
+[style*="border:1px solid #79f2c0"]:hover{color:var(--wine)!important;border-color:var(--wine)!important}
+.chips button.chip,.pill,.confidence{background:transparent;border:1px solid var(--line);border-radius:var(--pill);color:var(--text-2);font-family:var(--sans);letter-spacing:.04em}
+.chips button.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--cream)}
+.skip{background:var(--ink);color:var(--cream)!important;border:2px solid var(--gold);border-radius:0}
+/* outcome badges */
+.outcome{border-radius:var(--pill);border:1px solid var(--forest);background:var(--forest);color:var(--cream);letter-spacing:.14em}
+.outcome.keep,.outcome.direct{background:var(--forest);border-color:var(--forest);color:var(--cream)}
+.outcome.adapter,.outcome.dock{background:transparent;color:var(--warn-ink);border-color:var(--warn-ink)}
+.outcome.capture{background:transparent;color:var(--wine);border-color:var(--wine)}
+/* tables */
+.tablewrap{border:1px solid var(--line);border-radius:var(--radius);background:var(--chalk)}
+th,td{border-top:1px solid var(--line)}
+thead th{background:var(--paper);color:var(--ink);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase}
+tbody th{color:var(--ink)}
+tr.payload td,tr.payload th{background:rgba(183,144,85,.16)}
+/* footer: dark like elorum.world */
+footer{background:var(--night-deep);border-top:0;color:var(--on-dark-2)!important;box-shadow:0 0 0 100vmax var(--night-deep);clip-path:inset(0 -100vmax)}
+footer *{color:var(--on-dark-2)!important}
+footer a{text-decoration-color:rgba(242,239,230,.4)}
+footer a:hover{color:var(--on-dark)!important}
+footer :focus-visible{outline-color:var(--amber)!important}
+@media (max-width:600px){
+  h1{letter-spacing:-.035em}
+  .btn,a[style*="background:#79f2c0"]{min-height:44px}
+  nav a:not(.brand){font-size:.68rem;letter-spacing:.1em}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+}
+/* REM02: dynamically rendered solver states (display/solver-ui.js) on cream/chalk */
+.verdict{color:var(--ink)!important;border-color:var(--line)}
+.v-pass{border-color:var(--forest)!important}.v-fail{border-color:var(--wine)!important}
+.v-unknown{border-color:var(--warn-ink)!important}.v-conditional{border-color:var(--cobalt)!important}
+.err{color:var(--wine)!important}
+/* REM02: focus ring inside the navy consent banner (analytics.js untouched) */
+#elorumtech-analytics-consent :focus-visible{outline-color:var(--amber)!important}
+/* REM02: keep focus rings inside clipping boxes (breadcrumb band clip-path, scrolling tables) */
+nav[aria-label="Breadcrumb"] :focus-visible,.tbl :focus-visible,.tablewrap a:focus-visible{outline-offset:-2px!important}
