@@ -1,0 +1,24 @@
+$ node -v -> v20.19.2
+
+> elorumtech@0.1.0 release-gate
+> node tests/release-date-gate.mjs --release
+
+RELEASE-DATE GATE: PASS (2026-10-23, 13 pages, status CONFIRMED)
+exit 0
+
+$ node tests/release-date-gate.mjs --release --ship-date=2026-10-17   # negative control, must FAIL
+RELEASE-DATE GATE: FAIL
+- declared date 2026-10-23 != actual ship date 2026-10-17
+- compatibility/ps5-dell-u2725qe.html: page intendedReleaseDate 2026-10-23 is after ship date 2026-10-17
+- compatibility/macbook-air-m5-dell-u2725qe.html: page intendedReleaseDate 2026-10-18 is after ship date 2026-10-17
+- guides/bios-fast-boot-troubleshooter.html: page intendedReleaseDate 2026-10-18 is after ship date 2026-10-17
+- guides/display-connection-solver.html: page intendedReleaseDate 2026-10-18 is after ship date 2026-10-17
+- guides/external-monitor-not-detected.html: page intendedReleaseDate 2026-10-18 is after ship date 2026-10-17
+- guides/monitor-stuck-at-60hz.html: page intendedReleaseDate 2026-10-18 is after ship date 2026-10-17
+- guides/usb-c-dock-display-limits.html: page intendedReleaseDate 2026-10-18 is after ship date 2026-10-17
+- guides/console-handheld-display-hub.html: page intendedReleaseDate 2026-10-18 is after ship date 2026-10-17
+- guides/index.html: page intendedReleaseDate 2026-10-18 is after ship date 2026-10-17
+- guides/laptop-to-docking-station.html: page intendedReleaseDate 2026-10-18 is after ship date 2026-10-17
+- guides/ps5-hdmi-2-1-cable-path.html: page intendedReleaseDate 2026-10-23 is after ship date 2026-10-17
+- guides/thunderbolt-dock-one-cable-4k-120.html: page intendedReleaseDate 2026-10-23 is after ship date 2026-10-17
+exit 1

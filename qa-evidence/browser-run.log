@@ -1,0 +1,194 @@
+about.html fails 0 err 0 ovf375 false
+compatibility/macbook-air-m5-dell-u2725qe.html fails 0 err 0 ovf375 false
+compatibility/ps5-dell-u2725qe.html fails 0 err 0 ovf375 false
+disclosure.html fails 0 err 0 ovf375 false
+guides/bios-fast-boot-troubleshooter.html fails 0 err 0 ovf375 false
+guides/console-handheld-display-hub.html fails 0 err 0 ovf375 false
+guides/console-hdmi-avr-passthrough-path.html fails 0 err 0 ovf375 false
+guides/display-connection-solver.html fails 0 err 0 ovf375 false
+guides/displayport-monitor-connection-path.html fails 0 err 0 ovf375 false
+guides/dual-monitor-dock-mst-vs-thunderbolt.html fails 0 err 0 ovf375 false
+guides/external-monitor-not-detected.html fails 0 err 0 ovf375 false
+guides/hdmi-capture-passthrough-path.html fails 0 err 0 ovf375 false
+guides/index.html fails 0 err 0 ovf375 false
+guides/ipad-usbc-to-monitor-hdmi.html fails 0 err 0 ovf375 false
+guides/laptop-to-docking-station.html fails 0 err 0 ovf375 false
+guides/macbook-to-hdmi-display.html fails 0 err 0 ovf375 false
+guides/monitor-stuck-at-60hz.html fails 0 err 0 ovf375 false
+guides/nintendo-switch-2-display-path.html fails 0 err 0 ovf375 false
+guides/ps5-hdmi-2-1-cable-path.html fails 0 err 0 ovf375 false
+guides/ps5-to-1440p-monitor.html fails 0 err 0 ovf375 false
+guides/steam-deck-external-display.html fails 0 err 0 ovf375 false
+guides/thunderbolt-dock-one-cable-4k-120.html fails 0 err 0 ovf375 false
+guides/usb-c-dock-display-limits.html fails 0 err 0 ovf375 false
+guides/usb-c-hub-vs-dock.html fails 0 err 0 ovf375 false
+guides/usb-c-laptop-to-4k-monitor.html fails 0 err 0 ovf375 false
+guides/usb-c-pd-charger-compatibility.html fails 0 err 0 ovf375 false
+guides/usb-c-phone-to-monitor.html fails 0 err 0 ovf375 false
+guides/usb-c-to-hdmi-adapter-path.html fails 0 err 0 ovf375 false
+guides/usb4-vs-thunderbolt-4-monitor.html fails 0 err 0 ovf375 false
+guides/xbox-series-display-compatibility.html fails 0 err 0 ovf375 false
+index.html fails 0 err 0 ovf375 false
+methodology.html fails 0 err 0 ovf375 false
+{
+ "totals": {
+  "pages": 32,
+  "contrastElementsChecked": 7256,
+  "contrastFailures": 0,
+  "consoleErrors": 0,
+  "pagesWithHorizontalOverflowAt375": 0,
+  "focusStopsWithoutVisibleIndicator": 0,
+  "elementsAnimatingUnderReducedMotion": 0
+ },
+ "post": {
+  "snapshots": 112,
+  "elementsChecked": 22616,
+  "contrastFailures": 0,
+  "failures": [],
+  "minRatio": 5.34,
+  "byEngine": {
+   "home": 8,
+   "solver": 16,
+   "bios": 16,
+   "hub": 16,
+   "details-open": 56
+  }
+ },
+ "parity": [
+  [
+   1280,
+   true,
+   true,
+   56,
+   0
+  ],
+  [
+   375,
+   true,
+   true,
+   56,
+   0
+  ]
+ ],
+ "consent": [
+  {
+   "text": "Allow analytics",
+   "focusVisible": true,
+   "outline": "solid 2px rgb(209, 155, 80)",
+   "bannerBg": "rgb(14, 19, 28)",
+   "ratio": 7.55
+  },
+  {
+   "text": "Necessary only",
+   "focusVisible": true,
+   "outline": "solid 2px rgb(209, 155, 80)",
+   "bannerBg": "rgb(14, 19, 28)",
+   "ratio": 7.55
+  }
+ ],
+ "crumbs": [
+  "guides/console-handheld-display-hub.html clipped=false inset(0px -1280px)",
+  "guides/display-connection-solver.html clipped=false inset(0px -1280px)",
+  "guides/external-monitor-not-detected.html clipped=false inset(0px -1280px)",
+  "guides/monitor-stuck-at-60hz.html clipped=false inset(0px -1280px)",
+  "guides/usb-c-dock-display-limits.html clipped=false inset(0px -1280px)"
+ ],
+ "tbdock": {
+  "375": {
+   "themeLinksHead": 1,
+   "themeLinksMain": 0,
+   "title": "Thunderbolt Dock Guide: TB4 vs TB5, Monitors, 4K/120 | ELORUMTECH",
+   "h1": [
+    "Thunderbolt dock guide: how to choose one for one-cable 4K/120"
+   ],
+   "rows": [
+    "Thunderbolt 3",
+    "Thunderbolt 4",
+    "Thunderbolt 5",
+    "USB4 (minimum)",
+    "USB4 Version 2.0",
+    "USB-C with USB 3 + DisplayPort"
+   ],
+   "tablewrap": {
+    "clientWidth": 339,
+    "scrollWidth": 640,
+    "overflowX": "auto",
+    "scrollableInside": true
+   },
+   "pageOverflow": false,
+   "sources": 12,
+   "citations": 38,
+   "auditChecked": 180,
+   "auditFailures": 0,
+   "minRatio": 6.24,
+   "regionChecked": 169,
+   "regionFailures": 0,
+   "regionMin": 6.24,
+   "focus": [
+    {
+     "sel": ".tablewrap a",
+     "focusVisibleRule": "solid 2px rgb(121, 47, 69) off -2px"
+    },
+    {
+     "sel": "section.sources a",
+     "focusVisibleRule": "solid 2px rgb(121, 47, 69) off 3px"
+    },
+    {
+     "sel": "#choose ~ * a.srcs, a.srcs",
+     "focusVisibleRule": "solid 2px rgb(121, 47, 69) off -2px"
+    }
+   ],
+   "consoleErrorsHead": 0,
+   "mainTextIdentical": true,
+   "rowsIdentical": true
+  },
+  "1280": {
+   "themeLinksHead": 1,
+   "themeLinksMain": 0,
+   "title": "Thunderbolt Dock Guide: TB4 vs TB5, Monitors, 4K/120 | ELORUMTECH",
+   "h1": [
+    "Thunderbolt dock guide: how to choose one for one-cable 4K/120"
+   ],
+   "rows": [
+    "Thunderbolt 3",
+    "Thunderbolt 4",
+    "Thunderbolt 5",
+    "USB4 (minimum)",
+    "USB4 Version 2.0",
+    "USB-C with USB 3 + DisplayPort"
+   ],
+   "tablewrap": {
+    "clientWidth": 898,
+    "scrollWidth": 898,
+    "overflowX": "auto",
+    "scrollableInside": false
+   },
+   "pageOverflow": false,
+   "sources": 12,
+   "citations": 38,
+   "auditChecked": 213,
+   "auditFailures": 0,
+   "minRatio": 6.24,
+   "regionChecked": 202,
+   "regionFailures": 0,
+   "regionMin": 6.24,
+   "focus": [
+    {
+     "sel": ".tablewrap a",
+     "focusVisibleRule": "solid 2px rgb(121, 47, 69) off -2px"
+    },
+    {
+     "sel": "section.sources a",
+     "focusVisibleRule": "solid 2px rgb(121, 47, 69) off 3px"
+    },
+    {
+     "sel": "#choose ~ * a.srcs, a.srcs",
+     "focusVisibleRule": "solid 2px rgb(121, 47, 69) off -2px"
+    }
+   ],
+   "consoleErrorsHead": 0,
+   "mainTextIdentical": true,
+   "rowsIdentical": true
+  }
+ }
+}

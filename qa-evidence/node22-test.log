@@ -1,0 +1,3311 @@
+$ node -v -> v22.20.0
+TAP version 13
+# Subtest: bing-key-test: real workflow passes every check
+ok 1 - bing-key-test: real workflow passes every check
+  ---
+  duration_ms: 4.45727
+  type: 'test'
+  ...
+# Subtest: bing-key-test: parser reads expected structure
+ok 2 - bing-key-test: parser reads expected structure
+  ---
+  duration_ms: 0.445248
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: push trigger
+ok 3 - bing-key-test mutation is rejected: push trigger
+  ---
+  duration_ms: 1.570994
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: schedule trigger
+ok 4 - bing-key-test mutation is rejected: schedule trigger
+  ---
+  duration_ms: 0.453044
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: contents: write
+ok 5 - bing-key-test mutation is rejected: contents: write
+  ---
+  duration_ms: 0.254556
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: extra permission
+ok 6 - bing-key-test mutation is rejected: extra permission
+  ---
+  duration_ms: 0.263635
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: second job
+ok 7 - bing-key-test mutation is rejected: second job
+  ---
+  duration_ms: 0.321049
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: timeout 30
+ok 8 - bing-key-test mutation is rejected: timeout 30
+  ---
+  duration_ms: 0.274632
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: checkout step
+ok 9 - bing-key-test mutation is rejected: checkout step
+  ---
+  duration_ms: 0.381204
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: upload artifact
+ok 10 - bing-key-test mutation is rejected: upload artifact
+  ---
+  duration_ms: 0.575228
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: key from other source
+ok 11 - bing-key-test mutation is rejected: key from other source
+  ---
+  duration_ms: 0.300984
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: other secret
+ok 12 - bing-key-test mutation is rejected: other secret
+  ---
+  duration_ms: 0.213816
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: empty check no exit
+ok 13 - bing-key-test mutation is rejected: empty check no exit
+  ---
+  duration_ms: 1.015345
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: empty check exit 0
+ok 14 - bing-key-test mutation is rejected: empty check exit 0
+  ---
+  duration_ms: 0.30871
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: remove add-mask
+ok 15 - bing-key-test mutation is rejected: remove add-mask
+  ---
+  duration_ms: 0.230989
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: add-mask after curl
+ok 16 - bing-key-test mutation is rejected: add-mask after curl
+  ---
+  duration_ms: 0.197706
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: verbose curl
+ok 17 - bing-key-test mutation is rejected: verbose curl
+  ---
+  duration_ms: 0.332599
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: trace curl
+ok 18 - bing-key-test mutation is rejected: trace curl
+  ---
+  duration_ms: 0.251194
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: set -x
+ok 19 - bing-key-test mutation is rejected: set -x
+  ---
+  duration_ms: 0.150082
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: POST
+ok 20 - bing-key-test mutation is rejected: POST
+  ---
+  duration_ms: 0.134908
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: raw --data
+ok 21 - bing-key-test mutation is rejected: raw --data
+  ---
+  duration_ms: 0.150708
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: write method
+ok 22 - bing-key-test mutation is rejected: write method
+  ---
+  duration_ms: 0.176596
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: third curl
+ok 23 - bing-key-test mutation is rejected: third curl
+  ---
+  duration_ms: 0.199407
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: print .Message
+ok 24 - bing-key-test mutation is rejected: print .Message
+  ---
+  duration_ms: 0.18612
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: sed redaction
+ok 25 - bing-key-test mutation is rejected: sed redaction
+  ---
+  duration_ms: 0.189986
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: cat body
+ok 26 - bing-key-test mutation is rejected: cat body
+  ---
+  duration_ms: 0.203025
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: print stderr
+ok 27 - bing-key-test mutation is rejected: print stderr
+  ---
+  duration_ms: 0.196215
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: curl stderr uncaptured
+ok 28 - bing-key-test mutation is rejected: curl stderr uncaptured
+  ---
+  duration_ms: 0.163341
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: echo key
+ok 29 - bing-key-test mutation is rejected: echo key
+  ---
+  duration_ms: 0.174241
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: echo URL
+ok 30 - bing-key-test mutation is rejected: echo URL
+  ---
+  duration_ms: 0.233391
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: remove trap
+ok 31 - bing-key-test mutation is rejected: remove trap
+  ---
+  duration_ms: 0.547087
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: trap misses ERR
+ok 32 - bing-key-test mutation is rejected: trap misses ERR
+  ---
+  duration_ms: 0.366785
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: no umask
+ok 33 - bing-key-test mutation is rejected: no umask
+  ---
+  duration_ms: 0.327898
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: wrong keyword param
+ok 34 - bing-key-test mutation is rejected: wrong keyword param
+  ---
+  duration_ms: 0.218647
+  type: 'test'
+  ...
+# Subtest: bing-key-test mutation is rejected: jq stderr shown
+ok 35 - bing-key-test mutation is rejected: jq stderr shown
+  ---
+  duration_ms: 0.698207
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull: real workflow passes every check
+ok 36 - bing-keyword-pull: real workflow passes every check
+  ---
+  duration_ms: 3.493594
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull: structure, 28 keywords, dates
+ok 37 - bing-keyword-pull: structure, 28 keywords, dates
+  ---
+  duration_ms: 0.473867
+  type: 'test'
+  ...
+# Subtest: bing-key-test.yml is unchanged by this job (still 2 run steps, no uses)
+ok 38 - bing-key-test.yml is unchanged by this job (still 2 run steps, no uses)
+  ---
+  duration_ms: 0.26001
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: push trigger
+ok 39 - bing-keyword-pull mutation is rejected: push trigger
+  ---
+  duration_ms: 0.815263
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: schedule trigger
+ok 40 - bing-keyword-pull mutation is rejected: schedule trigger
+  ---
+  duration_ms: 0.990237
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: contents: write
+ok 41 - bing-keyword-pull mutation is rejected: contents: write
+  ---
+  duration_ms: 0.323605
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: extra permission
+ok 42 - bing-keyword-pull mutation is rejected: extra permission
+  ---
+  duration_ms: 0.426731
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: second job
+ok 43 - bing-keyword-pull mutation is rejected: second job
+  ---
+  duration_ms: 0.28576
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: timeout 60
+ok 44 - bing-keyword-pull mutation is rejected: timeout 60
+  ---
+  duration_ms: 0.552785
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: checkout step
+ok 45 - bing-keyword-pull mutation is rejected: checkout step
+  ---
+  duration_ms: 0.582057
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: unpinned artifact
+ok 46 - bing-keyword-pull mutation is rejected: unpinned artifact
+  ---
+  duration_ms: 0.457781
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: retention 90
+ok 47 - bing-keyword-pull mutation is rejected: retention 90
+  ---
+  duration_ms: 0.359989
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: key from vars
+ok 48 - bing-keyword-pull mutation is rejected: key from vars
+  ---
+  duration_ms: 0.356257
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: other secret
+ok 49 - bing-keyword-pull mutation is rejected: other secret
+  ---
+  duration_ms: 0.376067
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: empty check exit 0
+ok 50 - bing-keyword-pull mutation is rejected: empty check exit 0
+  ---
+  duration_ms: 1.173051
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: remove add-mask
+ok 51 - bing-keyword-pull mutation is rejected: remove add-mask
+  ---
+  duration_ms: 0.76096
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: set -x
+ok 52 - bing-keyword-pull mutation is rejected: set -x
+  ---
+  duration_ms: 0.408056
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: set -e aborts on first failure
+ok 53 - bing-keyword-pull mutation is rejected: set -e aborts on first failure
+  ---
+  duration_ms: 0.392836
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: set +e removed
+ok 54 - bing-keyword-pull mutation is rejected: set +e removed
+  ---
+  duration_ms: 0.352859
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: POST
+ok 55 - bing-keyword-pull mutation is rejected: POST
+  ---
+  duration_ms: 0.286905
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: raw -d
+ok 56 - bing-keyword-pull mutation is rejected: raw -d
+  ---
+  duration_ms: 0.245233
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: verbose curl
+ok 57 - bing-keyword-pull mutation is rejected: verbose curl
+  ---
+  duration_ms: 0.273778
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: param not urlencoded
+ok 58 - bing-keyword-pull mutation is rejected: param not urlencoded
+  ---
+  duration_ms: 0.339771
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: write method
+ok 59 - bing-keyword-pull mutation is rejected: write method
+  ---
+  duration_ms: 0.466055
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: third curl
+ok 60 - bing-keyword-pull mutation is rejected: third curl
+  ---
+  duration_ms: 0.378347
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: curl stderr uncaptured
+ok 61 - bing-keyword-pull mutation is rejected: curl stderr uncaptured
+  ---
+  duration_ms: 0.356289
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: echo key
+ok 62 - bing-keyword-pull mutation is rejected: echo key
+  ---
+  duration_ms: 0.350246
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: echo URL
+ok 63 - bing-keyword-pull mutation is rejected: echo URL
+  ---
+  duration_ms: 0.641133
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: print body on error
+ok 64 - bing-keyword-pull mutation is rejected: print body on error
+  ---
+  duration_ms: 0.299597
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: print .Message
+ok 65 - bing-keyword-pull mutation is rejected: print .Message
+  ---
+  duration_ms: 0.324978
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: print stderr
+ok 66 - bing-keyword-pull mutation is rejected: print stderr
+  ---
+  duration_ms: 0.286094
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: sed redaction
+ok 67 - bing-keyword-pull mutation is rejected: sed redaction
+  ---
+  duration_ms: 0.269984
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: jq stderr shown
+ok 68 - bing-keyword-pull mutation is rejected: jq stderr shown
+  ---
+  duration_ms: 0.243654
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: remove trap
+ok 69 - bing-keyword-pull mutation is rejected: remove trap
+  ---
+  duration_ms: 3.181788
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: trap misses ERR
+ok 70 - bing-keyword-pull mutation is rejected: trap misses ERR
+  ---
+  duration_ms: 0.435366
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: no umask
+ok 71 - bing-keyword-pull mutation is rejected: no umask
+  ---
+  duration_ms: 0.421109
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: keyword dropped
+ok 72 - bing-keyword-pull mutation is rejected: keyword dropped
+  ---
+  duration_ms: 0.428448
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: keyword altered
+ok 73 - bing-keyword-pull mutation is rejected: keyword altered
+  ---
+  duration_ms: 0.59251
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: keyword added
+ok 74 - bing-keyword-pull mutation is rejected: keyword added
+  ---
+  duration_ms: 3.380695
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: wrong start date
+ok 75 - bing-keyword-pull mutation is rejected: wrong start date
+  ---
+  duration_ms: 1.506995
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: wrong country
+ok 76 - bing-keyword-pull mutation is rejected: wrong country
+  ---
+  duration_ms: 0.358822
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: no all-fail exit
+ok 77 - bing-keyword-pull mutation is rejected: no all-fail exit
+  ---
+  duration_ms: 0.313339
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: remove leak guard
+ok 78 - bing-keyword-pull mutation is rejected: remove leak guard
+  ---
+  duration_ms: 0.880946
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: leak guard no exit
+ok 79 - bing-keyword-pull mutation is rejected: leak guard no exit
+  ---
+  duration_ms: 0.414532
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: leak guard conditional
+ok 80 - bing-keyword-pull mutation is rejected: leak guard conditional
+  ---
+  duration_ms: 0.356703
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: upload before guard
+ok 81 - bing-keyword-pull mutation is rejected: upload before guard
+  ---
+  duration_ms: 0.332668
+  type: 'test'
+  ...
+# Subtest: bing-keyword-pull mutation is rejected: no sleep
+ok 82 - bing-keyword-pull mutation is rejected: no sleep
+  ---
+  duration_ms: 0.309192
+  type: 'test'
+  ...
+# Subtest: workflow uses the env jq filters (no inline jq programs)
+ok 83 - workflow uses the env jq filters (no inline jq programs)
+  ---
+  duration_ms: 0.208597
+  type: 'test'
+  ...
+# Subtest: KW_JQ fixture: object
+ok 84 - KW_JQ fixture: object
+  ---
+  duration_ms: 5.210337
+  type: 'test'
+  ...
+# Subtest: KW_JQ fixture: array picks matching Query
+ok 85 - KW_JQ fixture: array picks matching Query
+  ---
+  duration_ms: 9.336836
+  type: 'test'
+  ...
+# Subtest: KW_JQ fixture: array without match picks first object
+ok 86 - KW_JQ fixture: array without match picks first object
+  ---
+  duration_ms: 4.119143
+  type: 'test'
+  ...
+# Subtest: KW_JQ fixture: empty array
+ok 87 - KW_JQ fixture: empty array
+  ---
+  duration_ms: 3.633097
+  type: 'test'
+  ...
+# Subtest: KW_JQ fixture: null d
+ok 88 - KW_JQ fixture: null d
+  ---
+  duration_ms: 3.896848
+  type: 'test'
+  ...
+# Subtest: KW_JQ fixture: missing d
+ok 89 - KW_JQ fixture: missing d
+  ---
+  duration_ms: 4.57504
+  type: 'test'
+  ...
+# Subtest: STATS_JQ fixture: object with ISO date
+ok 90 - STATS_JQ fixture: object with ISO date
+  ---
+  duration_ms: 3.60183
+  type: 'test'
+  ...
+# Subtest: STATS_JQ fixture: plain date kept
+ok 91 - STATS_JQ fixture: plain date kept
+  ---
+  duration_ms: 10.79573
+  type: 'test'
+  ...
+# Subtest: STATS_JQ fixture: /Date(ms)/
+ok 92 - STATS_JQ fixture: /Date(ms)/
+  ---
+  duration_ms: 7.774839
+  type: 'test'
+  ...
+# Subtest: STATS_JQ fixture: /Date(ms+0000)/ and -0700
+ok 93 - STATS_JQ fixture: /Date(ms+0000)/ and -0700
+  ---
+  duration_ms: 4.592413
+  type: 'test'
+  ...
+# Subtest: STATS_JQ fixture: missing and null date -> empty
+ok 94 - STATS_JQ fixture: missing and null date -> empty
+  ---
+  duration_ms: 6.249283
+  type: 'test'
+  ...
+# Subtest: STATS_JQ fixture: multiple rows mixed formats
+ok 95 - STATS_JQ fixture: multiple rows mixed formats
+  ---
+  duration_ms: 5.432576
+  type: 'test'
+  ...
+# Subtest: STATS_JQ fixture: null d -> no rows
+ok 96 - STATS_JQ fixture: null d -> no rows
+  ---
+  duration_ms: 4.856821
+  type: 'test'
+  ...
+# Subtest: STATS_JQ fixture: empty array -> no rows
+ok 97 - STATS_JQ fixture: empty array -> no rows
+  ---
+  duration_ms: 4.949612
+  type: 'test'
+  ...
+# Subtest: STATS_JQ fixture: non-object entries skipped
+ok 98 - STATS_JQ fixture: non-object entries skipped
+  ---
+  duration_ms: 5.894565
+  type: 'test'
+  ...
+# Subtest: jq filters fail (non-zero) on non-JSON body so the workflow writes its fallback row
+ok 99 - jq filters fail (non-zero) on non-JSON body so the workflow writes its fallback row
+  ---
+  duration_ms: 7.433454
+  type: 'test'
+  ...
+# Subtest: regression BINGKW-QA-001: unconditional capture would drop ISO dates
+ok 100 - regression BINGKW-QA-001: unconditional capture would drop ISO dates
+  ---
+  duration_ms: 3.523071
+  type: 'test'
+  ...
+# Subtest: BF-1 no POST never offers the utility, regardless of other answers
+ok 101 - BF-1 no POST never offers the utility, regardless of other answers
+  ---
+  duration_ms: 1.242401
+  type: 'test'
+  ...
+# Subtest: BF-2 firmware starts but no Windows → NO_WINDOWS, utility not offered
+ok 102 - BF-2 firmware starts but no Windows → NO_WINDOWS, utility not offered
+  ---
+  duration_ms: 0.195698
+  type: 'test'
+  ...
+# Subtest: BF-3 exact tested board rev 1.0 → TESTED_CONFIG with testimony wording and unknown versions
+ok 103 - BF-3 exact tested board rev 1.0 → TESTED_CONFIG with testimony wording and unknown versions
+  ---
+  duration_ms: 0.193336
+  type: 'test'
+  ...
+# Subtest: BF-4 signature not checked → not ready to run; valid GIGA-BYTE signature → ready
+ok 104 - BF-4 signature not checked → not ready to run; valid GIGA-BYTE signature → ready
+  ---
+  duration_ms: 0.129543
+  type: 'test'
+  ...
+# Subtest: BF-5 invalid or other signer → STOP_SIGNATURE, never ready
+ok 105 - BF-5 invalid or other signer → STOP_SIGNATURE, never ready
+  ---
+  duration_ms: 0.182223
+  type: 'test'
+  ...
+# Subtest: BF-6 other Gigabyte board: listed → LISTED (not tested), not listed → UNSUPPORTED, not checked → UNKNOWN
+ok 106 - BF-6 other Gigabyte board: listed → LISTED (not tested), not listed → UNSUPPORTED, not checked → UNKNOWN
+  ---
+  duration_ms: 0.158035
+  type: 'test'
+  ...
+# Subtest: BF-7 same model but revision other/unknown is NOT the tested config
+ok 107 - BF-7 same model but revision other/unknown is NOT the tested config
+  ---
+  duration_ms: 0.173366
+  type: 'test'
+  ...
+# Subtest: BF-8 unknown model with "listed" claim stays UNKNOWN
+ok 108 - BF-8 unknown model with "listed" claim stays UNKNOWN
+  ---
+  duration_ms: 0.075706
+  type: 'test'
+  ...
+# Subtest: BF-9 non-Gigabyte → UNSUPPORTED; unknown vendor → UNKNOWN
+ok 109 - BF-9 non-Gigabyte → UNSUPPORTED; unknown vendor → UNKNOWN
+  ---
+  duration_ms: 0.223562
+  type: 'test'
+  ...
+# Subtest: BF-10 OS: other → UNSUPPORTED; unknown → UNKNOWN
+ok 110 - BF-10 OS: other → UNSUPPORTED; unknown → UNKNOWN
+  ---
+  duration_ms: 0.289177
+  type: 'test'
+  ...
+# Subtest: BF-11 empty / garbage input falls back to cautious defaults (never compatible)
+ok 111 - BF-11 empty / garbage input falls back to cautious defaults (never compatible)
+  ---
+  duration_ms: 0.133214
+  type: 'test'
+  ...
+# Subtest: BF-12 exhaustive: any "unknown"/"not-checked" identity answer never yields a compatible group
+ok 112 - BF-12 exhaustive: any "unknown"/"not-checked" identity answer never yields a compatible group
+  ---
+  duration_ms: 15.835743
+  type: 'test'
+  ...
+# Subtest: BF-13 compatible steps: download-verify-scan before run; save work, recovery key, manual action only
+ok 113 - BF-13 compatible steps: download-verify-scan before run; save work, recovery key, manual action only
+  ---
+  duration_ms: 0.447846
+  type: 'test'
+  ...
+# Subtest: BF-14 page: crawlable SEO basics (title, description, canonical, single H1, og)
+ok 114 - BF-14 page: crawlable SEO basics (title, description, canonical, single H1, og)
+  ---
+  duration_ms: 0.332165
+  type: 'test'
+  ...
+# Subtest: BF-15 page: FAQPage JSON-LD questions/answers equal the visible FAQ exactly
+ok 115 - BF-15 page: FAQPage JSON-LD questions/answers equal the visible FAQ exactly
+  ---
+  duration_ms: 0.684205
+  type: 'test'
+  ...
+# Subtest: BF-16 page: required testimony wording, unknown versions and no universal claims
+ok 116 - BF-16 page: required testimony wording, unknown versions and no universal claims
+  ---
+  duration_ms: 0.75893
+  type: 'test'
+  ...
+# Subtest: BF-17 page: owner-provided source — one exact-board Softpedia link, scoped, nofollow; no hosting, no internal status jargon (REM01 F6)
+ok 117 - BF-17 page: owner-provided source — one exact-board Softpedia link, scoped, nofollow; no hosting, no internal status jargon (REM01 F6)
+  ---
+  duration_ms: 4.277482
+  type: 'test'
+  ...
+# Subtest: BF-17b page: all-boards section links GIGABYTE Download Center and warns against other boards' files
+ok 118 - BF-17b page: all-boards section links GIGABYTE Download Center and warns against other boards' files
+  ---
+  duration_ms: 0.268772
+  type: 'test'
+  ...
+# Subtest: BF-17c logic: LINKS constants match the page, owner-provided status, nofollow on third-party
+ok 119 - BF-17c logic: LINKS constants match the page, owner-provided status, nofollow on third-party
+  ---
+  duration_ms: 0.407327
+  type: 'test'
+  ...
+# Subtest: BF-17d logic: only the exact tested-board branch shows the B550I link; unknown/other-board branches show all-boards link
+ok 120 - BF-17d logic: only the exact tested-board branch shows the B550I link; unknown/other-board branches show all-boards link
+  ---
+  duration_ms: 14.795617
+  type: 'test'
+  ...
+# Subtest: BF-17e default form state shows no B550I link (default stays Unknown)
+ok 121 - BF-17e default form state shows no B550I link (default stays Unknown)
+  ---
+  duration_ms: 0.378453
+  type: 'test'
+  ...
+# Subtest: BF-18 page: safety guidance present and no security bypass advice
+ok 122 - BF-18 page: safety guidance present and no security bypass advice
+  ---
+  duration_ms: 0.402786
+  type: 'test'
+  ...
+# Subtest: BF-19 page: distinguishes no-BIOS / no-POST / no-Windows and Fast Boot vs Fast Startup
+ok 123 - BF-19 page: distinguishes no-BIOS / no-POST / no-Windows and Fast Boot vs Fast Startup
+  ---
+  duration_ms: 0.174004
+  type: 'test'
+  ...
+# Subtest: BF-20 page: file identity on page matches the logic module constants
+ok 124 - BF-20 page: file identity on page matches the logic module constants
+  ---
+  duration_ms: 0.849493
+  type: 'test'
+  ...
+# Subtest: BF-21 page: accessible interactive tool (fieldset/legend radios, live region, noscript, script wired)
+ok 125 - BF-21 page: accessible interactive tool (fieldset/legend radios, live region, noscript, script wired)
+  ---
+  duration_ms: 0.703382
+  type: 'test'
+  ...
+# Subtest: BF-22 default form state renders UNKNOWN (no pass by default)
+ok 126 - BF-22 default form state renders UNKNOWN (no pass by default)
+  ---
+  duration_ms: 0.220766
+  type: 'test'
+  ...
+# Subtest: BF-23 sitemap entry, guides hub link and internal links resolve
+ok 127 - BF-23 sitemap entry, guides hub link and internal links resolve
+  ---
+  duration_ms: 1.569029
+  type: 'test'
+  ...
+# Subtest: BF-24 page: UEFI Firmware Settings missing/restarts section cites Dell KB and Microsoft Learn (B14); Fast Startup wording matches source (B15)
+ok 128 - BF-24 page: UEFI Firmware Settings missing/restarts section cites Dell KB and Microsoft Learn (B14); Fast Startup wording matches source (B15)
+  ---
+  duration_ms: 0.267772
+  type: 'test'
+  ...
+# Subtest: REM01-F1 unread Softpedia page: no "titled" / "Its title" / "we verified" wording anywhere (page incl. JSON-LD, logic strings)
+ok 129 - REM01-F1 unread Softpedia page: no "titled" / "Its title" / "we verified" wording anywhere (page incl. JSON-LD, logic strings)
+  ---
+  duration_ms: 32.07452
+  type: 'test'
+  ...
+# Subtest: REM01-F3 tested board + Windows 11: GIGABYTE page leads, Softpedia secondary, no "Compatible branch" badge
+ok 130 - REM01-F3 tested board + Windows 11: GIGABYTE page leads, Softpedia secondary, no "Compatible branch" badge
+  ---
+  duration_ms: 9.337153
+  type: 'test'
+  ...
+# Subtest: REM01-F4 setup.exe hash/version/signature rows are labelled as static inspection, not a malware scan or SmartScreen evaluation
+ok 131 - REM01-F4 setup.exe hash/version/signature rows are labelled as static inspection, not a malware scan or SmartScreen evaluation
+  ---
+  duration_ms: 0.394975
+  type: 'test'
+  ...
+# Subtest: REM01-F5a garbage / missing inputs never give compatible, readyToRun or TESTED_CONFIG
+ok 132 - REM01-F5a garbage / missing inputs never give compatible, readyToRun or TESTED_CONFIG
+  ---
+  duration_ms: 0.831418
+  type: 'test'
+  ...
+# Subtest: REM01-F5b general safety list keeps SmartScreen/UAC/antivirus "stop" and the BitLocker recovery-key item; no bypass
+ok 133 - REM01-F5b general safety list keeps SmartScreen/UAC/antivirus "stop" and the BitLocker recovery-key item; no bypass
+  ---
+  duration_ms: 2.426359
+  type: 'test'
+  ...
+# Subtest: REM01-F5c failed-methods framing sentence stays; no prevalence and no scan/safety claims on the page
+ok 134 - REM01-F5c failed-methods framing sentence stays; no prevalence and no scan/safety claims on the page
+  ---
+  duration_ms: 0.692961
+  type: 'test'
+  ...
+# Subtest: REM01-F6 softened lead and failed-methods wording; plain-language source note
+ok 135 - REM01-F6 softened lead and failed-methods wording; plain-language source note
+  ---
+  duration_ms: 0.115444
+  type: 'test'
+  ...
+# Subtest: REM02-R1a page: first button CTA is the GIGABYTE Download Center search, before the tested-board section; Softpedia is a plain reference link
+ok 136 - REM02-R1a page: first button CTA is the GIGABYTE Download Center search, before the tested-board section; Softpedia is a plain reference link
+  ---
+  duration_ms: 0.494088
+  type: 'test'
+  ...
+# Subtest: REM02-R1b logic: Download Center search is links[0] for every input with links (exhaustive); Softpedia TESTED_CONFIG-only and last
+ok 137 - REM02-R1b logic: Download Center search is links[0] for every input with links (exhaustive); Softpedia TESTED_CONFIG-only and last
+  ---
+  duration_ms: 10.673291
+  type: 'test'
+  ...
+# Subtest: REM02-R2 owner-confirmed source wording in download box, FAQ (visible = JSON-LD), TESTED_DOWNLOAD_STEP and Sources; sourceStatus OWNER_CONFIRMED
+ok 138 - REM02-R2 owner-confirmed source wording in download box, FAQ (visible = JSON-LD), TESTED_DOWNLOAD_STEP and Sources; sourceStatus OWNER_CONFIRMED
+  ---
+  duration_ms: 0.611573
+  type: 'test'
+  ...
+# Subtest: REM02-R3 failed-methods sentence: sources cover only setup keys and the Windows UEFI Firmware Settings restart, not CMOS reset
+ok 139 - REM02-R3 failed-methods sentence: sources cover only setup keys and the Windows UEFI Firmware Settings restart, not CMOS reset
+  ---
+  duration_ms: 0.17229
+  type: 'test'
+  ...
+# Subtest: REM02-R4 inspection tool runs osslsigncode offline (-ignore-crl) and keeps its scope disclaimers
+ok 140 - REM02-R4 inspection tool runs osslsigncode offline (-ignore-crl) and keeps its scope disclaimers
+  ---
+  duration_ms: 0.176672
+  type: 'test'
+  ...
+# Subtest: REM01-BOOT-ESCAPE-F4 BitLocker warning precedes Startup keys; shutdown /r /fw /t 0 with admin
+ok 141 - REM01-BOOT-ESCAPE-F4 BitLocker warning precedes Startup keys; shutdown /r /fw /t 0 with admin
+  ---
+  duration_ms: 0.152468
+  type: 'test'
+  ...
+# Subtest: REM01-BOOT-ESCAPE-F1 games claim is sourced (some, not many) with EA + Riot
+ok 142 - REM01-BOOT-ESCAPE-F1 games claim is sourced (some, not many) with EA + Riot
+  ---
+  duration_ms: 0.152208
+  type: 'test'
+  ...
+# Subtest: CH-1 hub page meta: canonical, title, description, robots, og, analytics
+ok 143 - CH-1 hub page meta: canonical, title, description, robots, og, analytics
+  ---
+  duration_ms: 1.051571
+  type: 'test'
+  ...
+# Subtest: CH-2 JSON-LD + dates: dateModified, Updated, lastmod = 2026-10-18; sources-checked date shown; Breadcrumb ends at page
+ok 144 - CH-2 JSON-LD + dates: dateModified, Updated, lastmod = 2026-10-18; sources-checked date shown; Breadcrumb ends at page
+  ---
+  duration_ms: 0.423622
+  type: 'test'
+  ...
+# Subtest: CH-3 FAQPage JSON-LD equals the visible FAQ exactly
+ok 145 - CH-3 FAQPage JSON-LD equals the visible FAQ exactly
+  ---
+  duration_ms: 0.819193
+  type: 'test'
+  ...
+# Subtest: CH-4 every relative link on the hub resolves to a file on this branch
+ok 146 - CH-4 every relative link on the hub resolves to a file on this branch
+  ---
+  duration_ms: 2.568199
+  type: 'test'
+  ...
+# Subtest: CH-5 external links on the hub are OEM / standards bodies only
+ok 147 - CH-5 external links on the hub are OEM / standards bodies only
+  ---
+  duration_ms: 0.439622
+  type: 'test'
+  ...
+# Subtest: CH-6 every SOURCE is a primary host, has a checked date, and is listed on the page
+ok 148 - CH-6 every SOURCE is a primary host, has a checked date, and is listed on the page
+  ---
+  duration_ms: 0.439832
+  type: 'test'
+  ...
+# Subtest: CH-7 planner covers every device x symptom; SOURCED steps cite, UNKNOWN never passes
+ok 149 - CH-7 planner covers every device x symptom; SOURCED steps cite, UNKNOWN never passes
+  ---
+  duration_ms: 0.773369
+  type: 'test'
+  ...
+# Subtest: CH-8 recovery routes: Xbox X/S, PS5, Deck sourced; Switch 2 recovery UNKNOWN
+ok 150 - CH-8 recovery routes: Xbox X/S, PS5, Deck sourced; Switch 2 recovery UNKNOWN
+  ---
+  duration_ms: 0.199749
+  type: 'test'
+  ...
+# Subtest: CH-9 handheld max external modes stay UNKNOWN (null) and render as UNKNOWN on the page
+ok 151 - CH-9 handheld max external modes stay UNKNOWN (null) and render as UNKNOWN on the page
+  ---
+  duration_ms: 0.39993
+  type: 'test'
+  ...
+# Subtest: CH-10 no invented demand, no affiliate patterns, no PASS claims on the hub
+ok 152 - CH-10 no invented demand, no affiliate patterns, no PASS claims on the hub
+  ---
+  duration_ms: 0.563598
+  type: 'test'
+  ...
+# Subtest: CH-11 hub is linked from the guides directory and links every existing console page
+ok 153 - CH-11 hub is linked from the guides directory and links every existing console page
+  ---
+  duration_ms: 0.317646
+  type: 'test'
+  ...
+# Subtest: CH-12 Engine CTAs use exact Engine source/destination labels
+ok 154 - CH-12 Engine CTAs use exact Engine source/destination labels
+  ---
+  duration_ms: 0.395928
+  type: 'test'
+  ...
+# Subtest: CH-13 HIGH-1: Microsoft disagreement on 120 Hz shown, each statement with its own article
+ok 155 - CH-13 HIGH-1: Microsoft disagreement on 120 Hz shown, each statement with its own article
+  ---
+  duration_ms: 1.083901
+  type: 'test'
+  ...
+# Subtest: CH-14 M2: exactly these 7 cells are PARTIAL (sourced + UNKNOWN steps)
+ok 156 - CH-14 M2: exactly these 7 cells are PARTIAL (sourced + UNKNOWN steps)
+  ---
+  duration_ms: 0.218628
+  type: 'test'
+  ...
+# Subtest: CH-15 M2: inline picker renders UNKNOWN badge for UNKNOWN steps and for null maxMode
+ok 157 - CH-15 M2: inline picker renders UNKNOWN badge for UNKNOWN steps and for null maxMode
+  ---
+  duration_ms: 1.829107
+  type: 'test'
+  ...
+# Subtest: CH-16 L1: plan() rejects prototype keys
+ok 158 - CH-16 L1: plan() rejects prototype keys
+  ---
+  duration_ms: 0.137628
+  type: 'test'
+  ...
+# Subtest: CH-17 L2-L4 wording: reset myth, HDMI-only scope, Legion Go controller ports
+ok 159 - CH-17 L2-L4 wording: reset myth, HDMI-only scope, Legion Go controller ports
+  ---
+  duration_ms: 0.090295
+  type: 'test'
+  ...
+# Subtest: CQ-TECH-01a engine: default all-unknown chain has no ceiling (null) and stays UNKNOWN
+ok 160 - CQ-TECH-01a engine: default all-unknown chain has no ceiling (null) and stays UNKNOWN
+  ---
+  duration_ms: 1.402273
+  type: 'test'
+  ...
+# Subtest: CQ-TECH-01b engine: mixed known/unknown chain reports the finite known ceiling; verdict unchanged
+ok 161 - CQ-TECH-01b engine: mixed known/unknown chain reports the finite known ceiling; verdict unchanged
+  ---
+  duration_ms: 0.558695
+  type: 'test'
+  ...
+# Subtest: CQ-TECH-01c engine: no element in any page option combination carries undefined/NaN/Infinity
+ok 162 - CQ-TECH-01c engine: no element in any page option combination carries undefined/NaN/Infinity
+  ---
+  duration_ms: 85.267981
+  type: 'test'
+  ...
+# Subtest: CQ-TECH-01d DOM: default page input (Not sure x3, 3440x1440@165, 8-bit RGB) renders UNKNOWN and no "undefined Hz"
+ok 163 - CQ-TECH-01d DOM: default page input (Not sure x3, 3440x1440@165, 8-bit RGB) renders UNKNOWN and no "undefined Hz"
+  ---
+  duration_ms: 4.559054
+  type: 'test'
+  ...
+# Subtest: CQ-TECH-01e DOM: valid finite ceilings are still shown (mixed chain and HDMI 2.0 FAIL at 121.1 Hz)
+ok 164 - CQ-TECH-01e DOM: valid finite ceilings are still shown (mixed chain and HDMI 2.0 FAIL at 121.1 Hz)
+  ---
+  duration_ms: 1.622406
+  type: 'test'
+  ...
+# Subtest: DP-01 DP 1.2 HBR2 x4 source, documented timing needs more → FAIL (source limiting)
+ok 165 - DP-01 DP 1.2 HBR2 x4 source, documented timing needs more → FAIL (source limiting)
+  ---
+  duration_ms: 11.074733
+  type: 'test'
+  ...
+# Subtest: DP-02 HBR3 x4 + certified cable + exact mode in sink DP verified list → PASS
+ok 166 - DP-02 HBR3 x4 + certified cable + exact mode in sink DP verified list → PASS
+  ---
+  duration_ms: 1.123582
+  type: 'test'
+  ...
+# Subtest: DP-03 sink timing only CVT-RBv2-derived, not in verified list → CONDITIONAL
+ok 167 - DP-03 sink timing only CVT-RBv2-derived, not in verified list → CONDITIONAL
+  ---
+  duration_ms: 1.02995
+  type: 'test'
+  ...
+# Subtest: DP-04 version label "DP 1.4" only, rate UNKNOWN → UNKNOWN
+ok 168 - DP-04 version label "DP 1.4" only, rate UNKNOWN → UNKNOWN
+  ---
+  duration_ms: 1.855273
+  type: 'test'
+  ...
+# Subtest: DP-05a lower bound exceeds HBR3 payload, DSC VERIFIED false on a segment → FAIL
+ok 169 - DP-05a lower bound exceeds HBR3 payload, DSC VERIFIED false on a segment → FAIL
+  ---
+  duration_ms: 1.231361
+  type: 'test'
+  ...
+# Subtest: DP-05b DSC UNKNOWN on a segment, accept_dsc=true → UNKNOWN
+ok 170 - DP-05b DSC UNKNOWN on a segment, accept_dsc=true → UNKNOWN
+  ---
+  duration_ms: 0.937667
+  type: 'test'
+  ...
+# Subtest: DP-05c DSC UNKNOWN, accept_dsc=false → FAIL
+ok 171 - DP-05c DSC UNKNOWN, accept_dsc=false → FAIL
+  ---
+  duration_ms: 0.809049
+  type: 'test'
+  ...
+# Subtest: DP-06 lower bound fits but timing unknown, no verified mode → UNKNOWN (never PASS)
+ok 172 - DP-06 lower bound fits but timing unknown, no verified mode → UNKNOWN (never PASS)
+  ---
+  duration_ms: 0.866271
+  type: 'test'
+  ...
+# Subtest: HD-01 HDMI 2.0 TMDS sink input, request exceeding it → FAIL (sink input)
+ok 173 - HD-01 HDMI 2.0 TMDS sink input, request exceeding it → FAIL (sink input)
+  ---
+  duration_ms: 1.582306
+  type: 'test'
+  ...
+# Subtest: HD-02 FRL documented on source and sink, UHS cable, mode in sink HDMI list → PASS
+ok 174 - HD-02 FRL documented on source and sink, UHS cable, mode in sink HDMI list → PASS
+  ---
+  duration_ms: 1.01776
+  type: 'test'
+  ...
+# Subtest: HD-03 HDMI 2.1 label but FRL rate not documented on one end → UNKNOWN
+ok 175 - HD-03 HDMI 2.1 label but FRL rate not documented on one end → UNKNOWN
+  ---
+  duration_ms: 0.762995
+  type: 'test'
+  ...
+# Subtest: HD-04a sink frl_support VERIFIED false, FRL-only request → FAIL
+ok 176 - HD-04a sink frl_support VERIFIED false, FRL-only request → FAIL
+  ---
+  duration_ms: 0.601622
+  type: 'test'
+  ...
+# Subtest: HD-04b TMDS-level mode in sink HDMI verified list → PASS
+ok 177 - HD-04b TMDS-level mode in sink HDMI verified list → PASS
+  ---
+  duration_ms: 1.64956
+  type: 'test'
+  ...
+# Subtest: HD-04c TMDS-level mode not listed, DERIVED timing fits → CONDITIONAL
+ok 178 - HD-04c TMDS-level mode not listed, DERIVED timing fits → CONDITIONAL
+  ---
+  duration_ms: 0.475384
+  type: 'test'
+  ...
+# Subtest: HD-05a monitor 165 Hz on DP, user on DP, mode in DP list → PASS
+ok 179 - HD-05a monitor 165 Hz on DP, user on DP, mode in DP list → PASS
+  ---
+  duration_ms: 0.498038
+  type: 'test'
+  ...
+# Subtest: HD-05b user on DP, DP timing only DERIVED, not listed → CONDITIONAL
+ok 180 - HD-05b user on DP, DP timing only DERIVED, not listed → CONDITIONAL
+  ---
+  duration_ms: 0.443223
+  type: 'test'
+  ...
+# Subtest: HD-05c same monitor, user on HDMI → FAIL (HDMI input limit, actual port)
+ok 181 - HD-05c same monitor, user on HDMI → FAIL (HDMI input limit, actual port)
+  ---
+  duration_ms: 0.462656
+  type: 'test'
+  ...
+# Subtest: HD-06 HDMI YCbCr 4:2:2 request → UNKNOWN (arithmetic assessment UNKNOWN)
+ok 182 - HD-06 HDMI YCbCr 4:2:2 request → UNKNOWN (arithmetic assessment UNKNOWN)
+  ---
+  duration_ms: 0.52315
+  type: 'test'
+  ...
+# Subtest: CB-01 UHBR cable on DP 1.4 HBR3 source → path rate HBR3; PASS with source as bandwidth limit
+ok 183 - CB-01 UHBR cable on DP 1.4 HBR3 source → path rate HBR3; PASS with source as bandwidth limit
+  ---
+  duration_ms: 0.441657
+  type: 'test'
+  ...
+# Subtest: CB-02 passive cable with only "8K 60Hz" listing text, rest VERIFIED, documented timing fits → CONDITIONAL
+ok 184 - CB-02 passive cable with only "8K 60Hz" listing text, rest VERIFIED, documented timing fits → CONDITIONAL
+  ---
+  duration_ms: 0.749472
+  type: 'test'
+  ...
+# Subtest: CB-03 "8K 60Hz" label vs 3440x1440 165 Hz → not PASS, no "60 Hz limit", explanation present
+ok 185 - CB-03 "8K 60Hz" label vs 3440x1440 165 Hz → not PASS, no "60 Hz limit", explanation present
+  ---
+  duration_ms: 0.944137
+  type: 'test'
+  ...
+# Subtest: CB-04 "4K 120Hz" label used for a different mode → UNKNOWN
+ok 186 - CB-04 "4K 120Hz" label used for a different mode → UNKNOWN
+  ---
+  duration_ms: 0.569582
+  type: 'test'
+  ...
+# Subtest: CB-05 "HDMI 2.1" cable without UHS certification, sink timing UNKNOWN → UNKNOWN
+ok 187 - CB-05 "HDMI 2.1" cable without UHS certification, sink timing UNKNOWN → UNKNOWN
+  ---
+  duration_ms: 0.63471
+  type: 'test'
+  ...
+# Subtest: CB-06a certified cable longer than certified length, documented timing fits → CONDITIONAL
+ok 188 - CB-06a certified cable longer than certified length, documented timing fits → CONDITIONAL
+  ---
+  duration_ms: 0.590842
+  type: 'test'
+  ...
+# Subtest: CB-06b same but sink timing UNKNOWN → UNKNOWN
+ok 189 - CB-06b same but sink timing UNKNOWN → UNKNOWN
+  ---
+  duration_ms: 0.466461
+  type: 'test'
+  ...
+# Subtest: CB-07 documented directional cable → CONDITIONAL "orient source end"
+ok 190 - CB-07 documented directional cable → CONDITIONAL "orient source end"
+  ---
+  duration_ms: 0.62548
+  type: 'test'
+  ...
+# Subtest: UC-01 USB-C DP Alt Mode with 4 lanes documented, mode verified → PASS (single verdict)
+ok 191 - UC-01 USB-C DP Alt Mode with 4 lanes documented, mode verified → PASS (single verdict)
+  ---
+  duration_ms: 0.503858
+  type: 'test'
+  ...
+# Subtest: UC-02 USB-C Alt Mode with USB 3 data sharing (2 lanes) exceeds halved payload → FAIL
+ok 192 - UC-02 USB-C Alt Mode with USB 3 data sharing (2 lanes) exceeds halved payload → FAIL
+  ---
+  duration_ms: 1.206757
+  type: 'test'
+  ...
+# Subtest: UC-03 USB-C port with no documented video support → UNKNOWN
+ok 193 - UC-03 USB-C port with no documented video support → UNKNOWN
+  ---
+  duration_ms: 0.551753
+  type: 'test'
+  ...
+# Subtest: UC-04 USB4/Thunderbolt dock, two displays exceed the shared tunnel payload → FAIL (single verdict)
+ok 194 - UC-04 USB4/Thunderbolt dock, two displays exceed the shared tunnel payload → FAIL (single verdict)
+  ---
+  duration_ms: 0.957041
+  type: 'test'
+  ...
+# Subtest: UC-05 dock with documented per-port maximum applies even when host is faster → FAIL (dock port)
+ok 195 - UC-05 dock with documented per-port maximum applies even when host is faster → FAIL (dock port)
+  ---
+  duration_ms: 0.780496
+  type: 'test'
+  ...
+# Subtest: UC-06 dock with only marketing "dual 4K" → UNKNOWN
+ok 196 - UC-06 dock with only marketing "dual 4K" → UNKNOWN
+  ---
+  duration_ms: 0.553615
+  type: 'test'
+  ...
+# Subtest: MD-01a MST hub, two displays within one HBR3 link, all VERIFIED → PASS
+ok 197 - MD-01a MST hub, two displays within one HBR3 link, all VERIFIED → PASS
+  ---
+  duration_ms: 0.743696
+  type: 'test'
+  ...
+# Subtest: MD-01b one sink timing only DERIVED → CONDITIONAL
+ok 198 - MD-01b one sink timing only DERIVED → CONDITIONAL
+  ---
+  duration_ms: 2.008023
+  type: 'test'
+  ...
+# Subtest: MD-02 MST sum exceeds link payload → FAIL for the joint request
+ok 199 - MD-02 MST sum exceeds link payload → FAIL for the joint request
+  ---
+  duration_ms: 2.624691
+  type: 'test'
+  ...
+# Subtest: MD-03 macOS host with MST hub, OS MST support not documented → UNKNOWN
+ok 200 - MD-03 macOS host with MST hub, OS MST support not documented → UNKNOWN
+  ---
+  duration_ms: 0.351349
+  type: 'test'
+  ...
+# Subtest: MD-04 display_count above documented source max_displays → FAIL
+ok 201 - MD-04 display_count above documented source max_displays → FAIL
+  ---
+  duration_ms: 0.219031
+  type: 'test'
+  ...
+# Subtest: AD-01 passive DP-to-HDMI with DP++ VERIFIED → limited to the documented TMDS level → FAIL for 4K120
+ok 202 - AD-01 passive DP-to-HDMI with DP++ VERIFIED → limited to the documented TMDS level → FAIL for 4K120
+  ---
+  duration_ms: 0.384712
+  type: 'test'
+  ...
+# Subtest: AD-02 passive DP-to-HDMI with DP++ VERIFIED false → FAIL
+ok 203 - AD-02 passive DP-to-HDMI with DP++ VERIFIED false → FAIL
+  ---
+  duration_ms: 0.312257
+  type: 'test'
+  ...
+# Subtest: AD-03 active DP-to-HDMI 2.1 converter, DSC pass-through not documented, mode needs DSC → UNKNOWN
+ok 204 - AD-03 active DP-to-HDMI 2.1 converter, DSC pass-through not documented, mode needs DSC → UNKNOWN
+  ---
+  duration_ms: 0.498286
+  type: 'test'
+  ...
+# Subtest: AD-04 active converter with unknown HDR/VRR pass-through → SDR PASS, HDR/VRR UNKNOWN, overall UNKNOWN
+ok 205 - AD-04 active converter with unknown HDR/VRR pass-through → SDR PASS, HDR/VRR UNKNOWN, overall UNKNOWN
+  ---
+  duration_ms: 0.617758
+  type: 'test'
+  ...
+# Subtest: BT-01a 8-bit SDR RGB in sink verified list, DSC false somewhere → PASS
+ok 206 - BT-01a 8-bit SDR RGB in sink verified list, DSC false somewhere → PASS
+  ---
+  duration_ms: 0.282079
+  type: 'test'
+  ...
+# Subtest: BT-01b 8-bit mode not listed, timing VERIFIED, fits → CONDITIONAL
+ok 207 - BT-01b 8-bit mode not listed, timing VERIFIED, fits → CONDITIONAL
+  ---
+  duration_ms: 0.274822
+  type: 'test'
+  ...
+# Subtest: BT-01c 10-bit HDR RGB with documented timing exceeding payload, DSC false → FAIL with joint and separate sub-results
+ok 208 - BT-01c 10-bit HDR RGB with documented timing exceeding payload, DSC false → FAIL with joint and separate sub-results
+  ---
+  duration_ms: 0.369219
+  type: 'test'
+  ...
+# Subtest: BT-01d DP 10-bit HDR YCbCr 4:2:2, documented timing fits, not listed, subsampling accepted → CONDITIONAL
+ok 209 - BT-01d DP 10-bit HDR YCbCr 4:2:2, documented timing fits, not listed, subsampling accepted → CONDITIONAL
+  ---
+  duration_ms: 0.28042
+  type: 'test'
+  ...
+# Subtest: BT-02 DSC on source and sink, active adapter DSC UNKNOWN → DSC-dependent mode UNKNOWN
+ok 210 - BT-02 DSC on source and sink, active adapter DSC UNKNOWN → DSC-dependent mode UNKNOWN
+  ---
+  duration_ms: 0.37208
+  type: 'test'
+  ...
+# Subtest: BT-03 DSC documented on every segment and the mode is a documented DSC mode → PASS
+ok 211 - BT-03 DSC documented on every segment and the mode is a documented DSC mode → PASS
+  ---
+  duration_ms: 0.384947
+  type: 'test'
+  ...
+# Subtest: BT-04a DSC everywhere, exceeds, mode not in any DSC list, accept_dsc=true → UNKNOWN
+ok 212 - BT-04a DSC everywhere, exceeds, mode not in any DSC list, accept_dsc=true → UNKNOWN
+  ---
+  duration_ms: 0.2976
+  type: 'test'
+  ...
+# Subtest: BT-04b as BT-04a with accept_dsc=false → FAIL
+ok 213 - BT-04b as BT-04a with accept_dsc=false → FAIL
+  ---
+  duration_ms: 0.223307
+  type: 'test'
+  ...
+# Subtest: BT-05 bandwidth fits but sink HDR UNKNOWN → HDR sub-result UNKNOWN, SDR independent
+ok 214 - BT-05 bandwidth fits but sink HDR UNKNOWN → HDR sub-result UNKNOWN, SDR independent
+  ---
+  duration_ms: 0.2574
+  type: 'test'
+  ...
+# Subtest: BT-06a VRR documented only on the DP input, user on HDMI → VRR sub-result FAIL
+ok 215 - BT-06a VRR documented only on the DP input, user on HDMI → VRR sub-result FAIL
+  ---
+  duration_ms: 0.563154
+  type: 'test'
+  ...
+# Subtest: BT-06b user on DP, VRR VERIFIED everywhere and in the verified mode → VRR sub-result PASS
+ok 216 - BT-06b user on DP, VRR VERIFIED everywhere and in the verified mode → VRR sub-result PASS
+  ---
+  duration_ms: 0.282816
+  type: 'test'
+  ...
+# Subtest: BT-06c VRR UNKNOWN on the source output → VRR sub-result UNKNOWN
+ok 217 - BT-06c VRR UNKNOWN on the source output → VRR sub-result UNKNOWN
+  ---
+  duration_ms: 0.244776
+  type: 'test'
+  ...
+# Subtest: BT-07 chroma subsampling needed but not accepted → FAIL for RGB; 4:2:0 shown only as an option
+ok 218 - BT-07 chroma subsampling needed but not accepted → FAIL for RGB; 4:2:0 shown only as an option
+  ---
+  duration_ms: 0.249635
+  type: 'test'
+  ...
+# Subtest: MS-01 exact monitor model unknown → UNKNOWN with a full report
+ok 219 - MS-01 exact monitor model unknown → UNKNOWN with a full report
+  ---
+  duration_ms: 0.24086
+  type: 'test'
+  ...
+# Subtest: MS-02a per-input timings missing, lower bound exceeds payload → FAIL
+ok 220 - MS-02a per-input timings missing, lower bound exceeds payload → FAIL
+  ---
+  duration_ms: 0.20802
+  type: 'test'
+  ...
+# Subtest: MS-02b per-input timings missing, lower bound does not exceed → UNKNOWN (needs EDID/timing table)
+ok 221 - MS-02b per-input timings missing, lower bound does not exceed → UNKNOWN (needs EDID/timing table)
+  ---
+  duration_ms: 0.161449
+  type: 'test'
+  ...
+# Subtest: MS-03 VERIFIED field without evidence id, or DERIVED without derived_from → rejected
+ok 222 - MS-03 VERIFIED field without evidence id, or DERIVED without derived_from → rejected
+  ---
+  duration_ms: 0.225914
+  type: 'test'
+  ...
+# Subtest: MS-04 retailer listing is the only source for a "verified" mode → not PASS
+ok 223 - MS-04 retailer listing is the only source for a "verified" mode → not PASS
+  ---
+  duration_ms: 0.234284
+  type: 'test'
+  ...
+# Subtest: MS-05 checked_at without time zone → rejected
+ok 224 - MS-05 checked_at without time zone → rejected
+  ---
+  duration_ms: 0.14758
+  type: 'test'
+  ...
+# Subtest: MS-06 zero/negative refresh or unknown chroma → input rejected, no verdict
+ok 225 - MS-06 zero/negative refresh or unknown chroma → input rejected, no verdict
+  ---
+  duration_ms: 0.446199
+  type: 'test'
+  ...
+# Subtest: OW-01 user-owned cable VERIFIED adequate → PASS, purchase_needed NO
+ok 226 - OW-01 user-owned cable VERIFIED adequate → PASS, purchase_needed NO
+  ---
+  duration_ms: 0.236924
+  type: 'test'
+  ...
+# Subtest: OW-02 owned passive cable UNKNOWN → CONDITIONAL; recommends the adequate HBR3 class, not the newest standard
+ok 227 - OW-02 owned passive cable UNKNOWN → CONDITIONAL; recommends the adequate HBR3 class, not the newest standard
+  ---
+  duration_ms: 0.234748
+  type: 'test'
+  ...
+# Subtest: OW-03 affiliate price data for a more expensive item does not change verdict or adequacy order
+ok 228 - OW-03 affiliate price data for a more expensive item does not change verdict or adequacy order
+  ---
+  duration_ms: 0.444311
+  type: 'test'
+  ...
+# Subtest: RW-01 DUTZO + RTX 3080 + unknown cable, issue-text facts only → overall UNKNOWN, every sub-result UNKNOWN
+ok 229 - RW-01 DUTZO + RTX 3080 + unknown cable, issue-text facts only → overall UNKNOWN, every sub-result UNKNOWN
+  ---
+  duration_ms: 1.07849
+  type: 'test'
+  ...
+# Subtest: RW-02 all named evidence present → PASS for that mode only
+ok 230 - RW-02 all named evidence present → PASS for that mode only
+  ---
+  duration_ms: 2.399739
+  type: 'test'
+  ...
+# Subtest: RW-02b DP-input timing and cable VERIFIED but the RTX 3080 board/output spec UNKNOWN → UNKNOWN
+ok 231 - RW-02b DP-input timing and cable VERIFIED but the RTX 3080 board/output spec UNKNOWN → UNKNOWN
+  ---
+  duration_ms: 0.309975
+  type: 'test'
+  ...
+# Subtest: RW-02c timing documented and fits, no verified-mode listing → CONDITIONAL (never PASS)
+ok 232 - RW-02c timing documented and fits, no verified-mode listing → CONDITIONAL (never PASS)
+  ---
+  duration_ms: 0.272271
+  type: 'test'
+  ...
+# Subtest: LN-01 dangling evidence id → rejected by lint L2
+ok 233 - LN-01 dangling evidence id → rejected by lint L2
+  ---
+  duration_ms: 0.184076
+  type: 'test'
+  ...
+# Subtest: LN-02 duplicate evidence id → rejected by lint L2
+ok 234 - LN-02 duplicate evidence id → rejected by lint L2
+  ---
+  duration_ms: 0.09853
+  type: 'test'
+  ...
+# Subtest: LN-03 VERIFIED field citing MARKETING/retailer evidence → rejected by lint L3
+ok 235 - LN-03 VERIFIED field citing MARKETING/retailer evidence → rejected by lint L3
+  ---
+  duration_ms: 0.106458
+  type: 'test'
+  ...
+# Subtest: LN-04 VERIFIED mode citing a non-manufacturer source → rejected by lint L3
+ok 236 - LN-04 VERIFIED mode citing a non-manufacturer source → rejected by lint L3
+  ---
+  duration_ms: 0.107568
+  type: 'test'
+  ...
+# Subtest: LN-05 unresolved segment device/port → rejected by lint L4
+ok 237 - LN-05 unresolved segment device/port → rejected by lint L4
+  ---
+  duration_ms: 0.223198
+  type: 'test'
+  ...
+# Subtest: LN-06 verified mode without status, or non-UNKNOWN without evidence → rejected (L5)
+ok 238 - LN-06 verified mode without status, or non-UNKNOWN without evidence → rejected (L5)
+  ---
+  duration_ms: 0.181523
+  type: 'test'
+  ...
+# Subtest: LN-07 PASS with max_verified_mode null → rejected (L6)
+ok 239 - LN-07 PASS with max_verified_mode null → rejected (L6)
+  ---
+  duration_ms: 0.230183
+  type: 'test'
+  ...
+# Subtest: LN-08 PASS with empty or unresolved sources → rejected (L6/L2)
+ok 240 - LN-08 PASS with empty or unresolved sources → rejected (L6/L2)
+  ---
+  duration_ms: 0.322489
+  type: 'test'
+  ...
+# Subtest: LN-09 PASS with arithmetic UNKNOWN or EXCEEDS (outside a documented DSC mode) → rejected (L6/NEW-M1)
+ok 241 - LN-09 PASS with arithmetic UNKNOWN or EXCEEDS (outside a documented DSC mode) → rejected (L6/NEW-M1)
+  ---
+  duration_ms: 1.330031
+  type: 'test'
+  ...
+# Subtest: LN-10 UNKNOWN with empty unknowns → rejected (L6)
+ok 242 - LN-10 UNKNOWN with empty unknowns → rejected (L6)
+  ---
+  duration_ms: 0.202262
+  type: 'test'
+  ...
+# Subtest: LN-11 DERIVED field with empty derived_from → rejected (L1)
+ok 243 - LN-11 DERIVED field with empty derived_from → rejected (L1)
+  ---
+  duration_ms: 0.113335
+  type: 'test'
+  ...
+# Subtest: REM02-NEW-L3 VERIFIED field with value null → rejected; lint L7 payload > raw → rejected
+ok 244 - REM02-NEW-L3 VERIFIED field with value null → rejected; lint L7 payload > raw → rejected
+  ---
+  duration_ms: 0.207149
+  type: 'test'
+  ...
+# Subtest: REM02-NEW-M3 MARKETING status inside verified_operating_modes → rejected
+ok 245 - REM02-NEW-M3 MARKETING status inside verified_operating_modes → rejected
+  ---
+  duration_ms: 0.083501
+  type: 'test'
+  ...
+# Subtest: unit: bits_per_pixel per link type; HDMI 4:2:2 UNKNOWN
+ok 246 - unit: bits_per_pixel per link type; HDMI 4:2:2 UNKNOWN
+  ---
+  duration_ms: 0.053538
+  type: 'test'
+  ...
+# Subtest: unit: PLAN §6 worked example 3440×1440×165 active lower bound 19.62 / 24.52 Gbit/s
+ok 247 - unit: PLAN §6 worked example 3440×1440×165 active lower bound 19.62 / 24.52 Gbit/s
+  ---
+  duration_ms: 0.088455
+  type: 'test'
+  ...
+# Subtest: unit: precedence FAIL > UNKNOWN > CONDITIONAL > PASS
+ok 248 - unit: precedence FAIL > UNKNOWN > CONDITIONAL > PASS
+  ---
+  duration_ms: 0.054283
+  type: 'test'
+  ...
+# Subtest: REM01-HIGH-2 all-VERIFIED path without a cable segment does not return PASS (UNKNOWN, PLAN §4)
+ok 249 - REM01-HIGH-2 all-VERIFIED path without a cable segment does not return PASS (UNKNOWN, PLAN §4)
+  ---
+  duration_ms: 0.461878
+  type: 'test'
+  ...
+# Subtest: REM01-MEDIUM-1a VERIFIED 8-bit mode, request 10-bit → not PASS (E46)
+ok 250 - REM01-MEDIUM-1a VERIFIED 8-bit mode, request 10-bit → not PASS (E46)
+  ---
+  duration_ms: 1.658433
+  type: 'test'
+  ...
+# Subtest: REM01-MEDIUM-1b VERIFIED SDR mode, request HDR10 with HDR documented on every port → HDR sub-result not PASS (E30)
+ok 251 - REM01-MEDIUM-1b VERIFIED SDR mode, request HDR10 with HDR documented on every port → HDR sub-result not PASS (E30)
+  ---
+  duration_ms: 0.645899
+  type: 'test'
+  ...
+# Subtest: REM01-MEDIUM-1c VERIFIED mode without VRR, request VRR with VRR documented on every port → VRR sub-result not PASS
+ok 252 - REM01-MEDIUM-1c VERIFIED mode without VRR, request VRR with VRR documented on every port → VRR sub-result not PASS
+  ---
+  duration_ms: 0.282704
+  type: 'test'
+  ...
+# Subtest: REM01-MEDIUM-2a requirement above the DERIVED FRL payload (42.667) but below the VERIFIED raw 48 → UNKNOWN (E25)
+ok 253 - REM01-MEDIUM-2a requirement above the DERIVED FRL payload (42.667) but below the VERIFIED raw 48 → UNKNOWN (E25)
+  ---
+  duration_ms: 0.30524
+  type: 'test'
+  ...
+# Subtest: REM01-MEDIUM-2b DERIVED link rate with otherwise VERIFIED evidence and a verified mode → CONDITIONAL, not PASS (E45); explanation names the verified-mode basis (X5)
+ok 254 - REM01-MEDIUM-2b DERIVED link rate with otherwise VERIFIED evidence and a verified mode → CONDITIONAL, not PASS (E45); explanation names the verified-mode basis (X5)
+  ---
+  duration_ms: 0.394134
+  type: 'test'
+  ...
+# Subtest: REM01-MEDIUM-4a active converter with identity model UNKNOWN blocks PASS
+ok 255 - REM01-MEDIUM-4a active converter with identity model UNKNOWN blocks PASS
+  ---
+  duration_ms: 1.533
+  type: 'test'
+  ...
+# Subtest: REM01-MEDIUM-4b dock with identity model UNKNOWN blocks PASS
+ok 256 - REM01-MEDIUM-4b dock with identity model UNKNOWN blocks PASS
+  ---
+  duration_ms: 0.87579
+  type: 'test'
+  ...
+# Subtest: REM01-LOW-1a verified YCbCr 4:2:0 mode, request does not accept chroma subsampling → FAIL; accepted → PASS (E31)
+ok 257 - REM01-LOW-1a verified YCbCr 4:2:0 mode, request does not accept chroma subsampling → FAIL; accepted → PASS (E31)
+  ---
+  duration_ms: 0.586404
+  type: 'test'
+  ...
+# Subtest: REM01-LOW-1b unresolved segment in_port_id → rejected by lint L4 (E37)
+ok 258 - REM01-LOW-1b unresolved segment in_port_id → rejected by lint L4 (E37)
+  ---
+  duration_ms: 0.218234
+  type: 'test'
+  ...
+# Subtest: REM01-MEDIUM-3a quickSolve without a pixel clock never returns CONDITIONAL, even with a certified cable (E40)
+ok 259 - REM01-MEDIUM-3a quickSolve without a pixel clock never returns CONDITIONAL, even with a certified cable (E40)
+  ---
+  duration_ms: 1.227334
+  type: 'test'
+  ...
+# Subtest: REM01-MEDIUM-3b quickSolve with a user pixel clock that fits → exactly CONDITIONAL per link and overall (E41)
+ok 260 - REM01-MEDIUM-3b quickSolve with a user pixel clock that fits → exactly CONDITIONAL per link and overall (E41)
+  ---
+  duration_ms: 0.513718
+  type: 'test'
+  ...
+# Subtest: REM01-MEDIUM-3c quickSolve USB-C dock with USB 3 data halves the DP lanes and changes the verdict (E42)
+ok 261 - REM01-MEDIUM-3c quickSolve USB-C dock with USB 3 data halves the DP lanes and changes the verdict (E42)
+  ---
+  duration_ms: 0.326325
+  type: 'test'
+  ...
+# Subtest: REM02-P0 control: source_output → certified cable → sink_input, all VERIFIED + verified mode → PASS
+ok 262 - REM02-P0 control: source_output → certified cable → sink_input, all VERIFIED + verified mode → PASS
+  ---
+  duration_ms: 0.35087
+  type: 'test'
+  ...
+# Subtest: REM02-B1-P14 path [cable, sink_input] with no source device → UNKNOWN
+ok 263 - REM02-B1-P14 path [cable, sink_input] with no source device → UNKNOWN
+  ---
+  duration_ms: 3.199961
+  type: 'test'
+  ...
+# Subtest: REM02-B1-P2 first segment kind=usb_c_alt_mode (not source_output) → UNKNOWN even with a VERIFIED source model
+ok 264 - REM02-B1-P2 first segment kind=usb_c_alt_mode (not source_output) → UNKNOWN even with a VERIFIED source model
+  ---
+  duration_ms: 0.220868
+  type: 'test'
+  ...
+# Subtest: REM02-B1-P2 first segment kind=usb4_tunnel (not source_output) → UNKNOWN even with a VERIFIED source model
+ok 265 - REM02-B1-P2 first segment kind=usb4_tunnel (not source_output) → UNKNOWN even with a VERIFIED source model
+  ---
+  duration_ms: 0.143826
+  type: 'test'
+  ...
+# Subtest: REM02-B1-P2 first segment kind=passive_adapter (not source_output) → UNKNOWN even with a VERIFIED source model
+ok 266 - REM02-B1-P2 first segment kind=passive_adapter (not source_output) → UNKNOWN even with a VERIFIED source model
+  ---
+  duration_ms: 0.113863
+  type: 'test'
+  ...
+# Subtest: REM02-B1-P2 first segment kind=cable (not source_output) → UNKNOWN even with a VERIFIED source model
+ok 267 - REM02-B1-P2 first segment kind=cable (not source_output) → UNKNOWN even with a VERIFIED source model
+  ---
+  duration_ms: 0.188906
+  type: 'test'
+  ...
+# Subtest: REM02-B1-P2c last segment kind=usb_c_alt_mode (not sink_input) → UNKNOWN
+ok 268 - REM02-B1-P2c last segment kind=usb_c_alt_mode (not sink_input) → UNKNOWN
+  ---
+  duration_ms: 0.330338
+  type: 'test'
+  ...
+# Subtest: REM02-B1 source_output / sink_input in the middle of the path → UNKNOWN
+ok 269 - REM02-B1 source_output / sink_input in the middle of the path → UNKNOWN
+  ---
+  duration_ms: 0.384425
+  type: 'test'
+  ...
+# Subtest: REM02-B1-P1 usb_c_alt_mode segment pointing at a separate device with model UNKNOWN → UNKNOWN (REV NEW-M1)
+ok 270 - REM02-B1-P1 usb_c_alt_mode segment pointing at a separate device with model UNKNOWN → UNKNOWN (REV NEW-M1)
+  ---
+  duration_ms: 0.639058
+  type: 'test'
+  ...
+# Subtest: REM02-B1-P1 usb4_tunnel segment pointing at a separate device with model UNKNOWN → UNKNOWN (REV NEW-M1)
+ok 271 - REM02-B1-P1 usb4_tunnel segment pointing at a separate device with model UNKNOWN → UNKNOWN (REV NEW-M1)
+  ---
+  duration_ms: 0.506856
+  type: 'test'
+  ...
+# Subtest: REM02-B1-P1 passive_adapter segment pointing at a separate device with model UNKNOWN → UNKNOWN (REV NEW-M1)
+ok 272 - REM02-B1-P1 passive_adapter segment pointing at a separate device with model UNKNOWN → UNKNOWN (REV NEW-M1)
+  ---
+  duration_ms: 0.482898
+  type: 'test'
+  ...
+# Subtest: REM02-B1-P1 mst_hub segment pointing at a separate device with model UNKNOWN → UNKNOWN (REV NEW-M1, NEW-L2)
+ok 273 - REM02-B1-P1 mst_hub segment pointing at a separate device with model UNKNOWN → UNKNOWN (REV NEW-M1, NEW-L2)
+  ---
+  duration_ms: 2.851531
+  type: 'test'
+  ...
+# Subtest: REM02-M24 a DERIVED identity model is not VERIFIED → UNKNOWN
+ok 274 - REM02-M24 a DERIVED identity model is not VERIFIED → UNKNOWN
+  ---
+  duration_ms: 0.559633
+  type: 'test'
+  ...
+# Subtest: REM02-B2-P3 dock segment with in/out port ids null → UNKNOWN
+ok 275 - REM02-B2-P3 dock segment with in/out port ids null → UNKNOWN
+  ---
+  duration_ms: 0.762319
+  type: 'test'
+  ...
+# Subtest: REM02-B2-P3b converter out_port_id null does not drop its HBR (1.62×4) output limit → UNKNOWN; control FAIL
+ok 276 - REM02-B2-P3b converter out_port_id null does not drop its HBR (1.62×4) output limit → UNKNOWN; control FAIL
+  ---
+  duration_ms: 0.718761
+  type: 'test'
+  ...
+# Subtest: REM02-P6 HDMI Ultra High Speed cable (48 Gbit/s total) on a DisplayPort path → UNKNOWN; DP cable on an HDMI path → UNKNOWN
+ok 277 - REM02-P6 HDMI Ultra High Speed cable (48 Gbit/s total) on a DisplayPort path → UNKNOWN; DP cable on an HDMI path → UNKNOWN
+  ---
+  duration_ms: 0.986791
+  type: 'test'
+  ...
+# Subtest: REM02-P7 cable rated_link with an unknown unit ("Gbps") or a missing unit → UNKNOWN, never uncapped; control per-lane → FAIL
+ok 278 - REM02-P7 cable rated_link with an unknown unit ("Gbps") or a missing unit → UNKNOWN, never uncapped; control per-lane → FAIL
+  ---
+  duration_ms: 1.677368
+  type: 'test'
+  ...
+# Subtest: REBASE01-G18 cable rated_link.value that is non-numeric, NaN or Infinity → UNKNOWN, never PASS
+ok 279 - REBASE01-G18 cable rated_link.value that is non-numeric, NaN or Infinity → UNKNOWN, never PASS
+  ---
+  duration_ms: 1.784113
+  type: 'test'
+  ...
+# Subtest: REM02-M15 cable certification UNKNOWN (rated link VERIFIED) → not PASS
+ok 280 - REM02-M15 cable certification UNKNOWN (rated link VERIFIED) → not PASS
+  ---
+  duration_ms: 0.389517
+  type: 'test'
+  ...
+# Subtest: REM02-P4 VERIFIED fields with evidence_ids [] (validateDocument errors) → UNKNOWN
+ok 281 - REM02-P4 VERIFIED fields with evidence_ids [] (validateDocument errors) → UNKNOWN
+  ---
+  duration_ms: 0.440538
+  type: 'test'
+  ...
+# Subtest: REM02-P4b VERIFIED fields citing a retailer listing (lint L3 errors) → UNKNOWN
+ok 282 - REM02-P4b VERIFIED fields citing a retailer listing (lint L3 errors) → UNKNOWN
+  ---
+  duration_ms: 2.920524
+  type: 'test'
+  ...
+# Subtest: REM02-P11b duplicate device_id (first copy model UNKNOWN, last VERIFIED) → linted and UNKNOWN
+ok 283 - REM02-P11b duplicate device_id (first copy model UNKNOWN, last VERIFIED) → linted and UNKNOWN
+  ---
+  duration_ms: 0.826976
+  type: 'test'
+  ...
+# Subtest: REM02-P10 documented usable_payload above the standard for its rate × lanes → UNKNOWN (conflict), not a capability
+ok 284 - REM02-P10 documented usable_payload above the standard for its rate × lanes → UNKNOWN (conflict), not a capability
+  ---
+  duration_ms: 0.49028
+  type: 'test'
+  ...
+# Subtest: REM02-NEW-L1 (M03) no cable, full VERIFIED timing that fits, no verified mode → UNKNOWN, not rule-3 CONDITIONAL
+ok 285 - REM02-NEW-L1 (M03) no cable, full VERIFIED timing that fits, no verified mode → UNKNOWN, not rule-3 CONDITIONAL
+  ---
+  duration_ms: 0.581536
+  type: 'test'
+  ...
+# Subtest: REM02-M34 two displays exceed a VERIFIED shared tunnel payload while every per-port link fits → FAIL (shared group limit)
+ok 286 - REM02-M34 two displays exceed a VERIFIED shared tunnel payload while every per-port link fits → FAIL (shared group limit)
+  ---
+  duration_ms: 2.606184
+  type: 'test'
+  ...
+# Subtest: REM02-M08 final PASS safety net: PASS with arithmetic UNKNOWN, or EXCEEDS outside a documented DSC mode, is refused
+ok 287 - REM02-M08 final PASS safety net: PASS with arithmetic UNKNOWN, or EXCEEDS outside a documented DSC mode, is refused
+  ---
+  duration_ms: 0.105347
+  type: 'test'
+  ...
+# Subtest: REM02-M27 quickSolve cap: an overall PASS is reported as CONDITIONAL; other verdicts unchanged
+ok 288 - REM02-M27 quickSolve cap: an overall PASS is reported as CONDITIONAL; other verdicts unchanged
+  ---
+  duration_ms: 0.994991
+  type: 'test'
+  ...
+# Subtest: REM02-E13 verified_operating_modes entry with status UNKNOWN (manufacturer-cited) is not a verified mode → not PASS
+ok 289 - REM02-E13 verified_operating_modes entry with status UNKNOWN (manufacturer-cited) is not a verified mode → not PASS
+  ---
+  duration_ms: 0.293132
+  type: 'test'
+  ...
+# Subtest: REM02-M22 passive DP→HDMI adapter with source DP++ UNKNOWN → UNKNOWN (not PASS)
+ok 290 - REM02-M22 passive DP→HDMI adapter with source DP++ UNKNOWN → UNKNOWN (not PASS)
+  ---
+  duration_ms: 0.50867
+  type: 'test'
+  ...
+# Subtest: REM02-E12 two displays over one HBR2 source link without a shared group: the per-display sum exceeds the source → FAIL
+ok 291 - REM02-E12 two displays over one HBR2 source link without a shared group: the per-display sum exceeds the source → FAIL
+  ---
+  duration_ms: 6.856753
+  type: 'test'
+  ...
+# Subtest: REM02-M26 timing labelled CVT/CTA counts as DERIVED even when its fields say VERIFIED (prerequisite names the timing)
+ok 292 - REM02-M26 timing labelled CVT/CTA counts as DERIVED even when its fields say VERIFIED (prerequisite names the timing)
+  ---
+  duration_ms: 0.319592
+  type: 'test'
+  ...
+# Subtest: REM02-M28 quickSolve: a Thunderbolt 3 class (DERIVED) that the mode exceeds is UNKNOWN, not FAIL
+ok 293 - REM02-M28 quickSolve: a Thunderbolt 3 class (DERIVED) that the mode exceeds is UNKNOWN, not FAIL
+  ---
+  duration_ms: 0.126954
+  type: 'test'
+  ...
+# Subtest: REM02-M32 fits_tight label: required/payload above 0.95 is FITS_TIGHT, below is FITS_WITH_MARGIN
+ok 294 - REM02-M32 fits_tight label: required/payload above 0.95 is FITS_TIGHT, below is FITS_WITH_MARGIN
+  ---
+  duration_ms: 0.064248
+  type: 'test'
+  ...
+# Subtest: REM02-M32 evaluate(): required/payload above 0.95 is labelled FITS_TIGHT (label only; verdict unchanged)
+ok 295 - REM02-M32 evaluate(): required/payload above 0.95 is labelled FITS_TIGHT (label only; verdict unchanged)
+  ---
+  duration_ms: 0.263287
+  type: 'test'
+  ...
+# Subtest: embedded standards equal display/standards.json (run display/build-engine.mjs)
+ok 296 - embedded standards equal display/standards.json (run display/build-engine.mjs)
+  ---
+  duration_ms: 2.739868
+  type: 'test'
+  ...
+# Subtest: every source is primary-attributed, https, time-zoned and quoted
+ok 297 - every source is primary-attributed, https, time-zoned and quoted
+  ---
+  duration_ms: 0.583394
+  type: 'test'
+  ...
+# Subtest: link table arithmetic: raw = rate × lanes; payload ≤ raw; 8b/10b payload = 0.8 × raw
+ok 298 - link table arithmetic: raw = rate × lanes; payload ≤ raw; 8b/10b payload = 0.8 × raw
+  ---
+  duration_ms: 0.163427
+  type: 'test'
+  ...
+# Subtest: schema copy parses and carries the REM-02 constraints
+ok 299 - schema copy parses and carries the REM-02 constraints
+  ---
+  duration_ms: 1.728523
+  type: 'test'
+  ...
+# Subtest: acceptance matrix copy is byte-exact to REV-passed REM-01 (a6ca7e87…)
+ok 300 - acceptance matrix copy is byte-exact to REV-passed REM-01 (a6ca7e87…)
+  ---
+  duration_ms: 0.545497
+  type: 'test'
+  ...
+# Subtest: every acceptance-matrix row id has a named engine test
+ok 301 - every acceptance-matrix row id has a named engine test
+  ---
+  duration_ms: 0.94772
+  type: 'test'
+  ...
+# Subtest: quickSolve never returns PASS across the page option grid
+ok 302 - quickSolve never returns PASS across the page option grid
+  ---
+  duration_ms: 75.096581
+  type: 'test'
+  ...
+# Subtest: pages exist with matching canonical, title, description and lang
+ok 303 - pages exist with matching canonical, title, description and lang
+  ---
+  duration_ms: 1.575821
+  type: 'test'
+  ...
+# Subtest: pages are in sitemap.xml (with lastmod 2026-10-18) and linked from the guides hub
+ok 304 - pages are in sitemap.xml (with lastmod 2026-10-18) and linked from the guides hub
+  ---
+  duration_ms: 0.468352
+  type: 'test'
+  ...
+# Subtest: JSON-LD parses; FAQPage questions/answers equal the visible FAQ
+ok 305 - JSON-LD parses; FAQPage questions/answers equal the visible FAQ
+  ---
+  duration_ms: 2.59516
+  type: 'test'
+  ...
+# Subtest: generated tables and source lists are up to date
+ok 306 - generated tables and source lists are up to date
+  ---
+  duration_ms: 3.241048
+  type: 'test'
+  ...
+# Subtest: every in-page source citation resolves to a listed source
+ok 307 - every in-page source citation resolves to a listed source
+  ---
+  duration_ms: 4.150339
+  type: 'test'
+  ...
+# Subtest: REM01-HIGH-1 / REM02-NEW-L3 every relative href/src (any quoting) in the 4 new pages and guides/index.html resolves to a file in the tree
+ok 308 - REM01-HIGH-1 / REM02-NEW-L3 every relative href/src (any quoting) in the 4 new pages and guides/index.html resolves to a file in the tree
+  ---
+  duration_ms: 2.565877
+  type: 'test'
+  ...
+# Subtest: no search-volume or traffic claims, no affiliate patterns
+ok 309 - no search-volume or traffic claims, no affiliate patterns
+  ---
+  duration_ms: 1.101923
+  type: 'test'
+  ...
+# Subtest: accessibility: skip link, labelled controls, no-JS fallback, live region
+ok 310 - accessibility: skip link, labelled controls, no-JS fallback, live region
+  ---
+  duration_ms: 1.034079
+  type: 'test'
+  ...
+# Subtest: DC-1 every page with <select> has dark color-scheme and option background/color
+ok 311 - DC-1 every page with <select> has dark color-scheme and option background/color
+  ---
+  duration_ms: 12.79842
+  type: 'test'
+  ...
+# Subtest: DC-2 homepage select\#a/\#b keep transparent field but gain Windows-safe option styles
+ok 312 - DC-2 homepage select\#a/\#b keep transparent field but gain Windows-safe option styles
+  ---
+  duration_ms: 0.329023
+  type: 'test'
+  ...
+# Subtest: index.html has interactive intent chips (button + data-intent + aria-pressed)
+ok 313 - index.html has interactive intent chips (button + data-intent + aria-pressed)
+  ---
+  duration_ms: 2.399149
+  type: 'test'
+  ...
+# Subtest: new sources and destinations present
+ok 314 - new sources and destinations present
+  ---
+  duration_ms: 0.364619
+  type: 'test'
+  ...
+# Subtest: normalizeIntents defaults
+ok 315 - normalizeIntents defaults
+  ---
+  duration_ms: 0.311464
+  type: 'test'
+  ...
+# Subtest: PS5 → HDMI play-only never CAPTURE
+ok 316 - PS5 → HDMI play-only never CAPTURE
+  ---
+  duration_ms: 0.617291
+  type: 'test'
+  ...
+# Subtest: Xbox → HDMI play-only never CAPTURE
+ok 317 - Xbox → HDMI play-only never CAPTURE
+  ---
+  duration_ms: 0.360186
+  type: 'test'
+  ...
+# Subtest: capture intent forces CAPTURE
+ok 318 - capture intent forces CAPTURE
+  ---
+  duration_ms: 0.585108
+  type: 'test'
+  ...
+# Subtest: laptop → TB/USB-C monitor one-cable → DIRECT or KEEP
+ok 319 - laptop → TB/USB-C monitor one-cable → DIRECT or KEEP
+  ---
+  duration_ms: 0.108499
+  type: 'test'
+  ...
+# Subtest: phone → HDMI → ADAPTER
+ok 320 - phone → HDMI → ADAPTER
+  ---
+  duration_ms: 0.120429
+  type: 'test'
+  ...
+# Subtest: laptop → dock destination → DOCK
+ok 321 - laptop → dock destination → DOCK
+  ---
+  duration_ms: 0.272168
+  type: 'test'
+  ...
+# Subtest: laptop → PD charger → KEEP YOURS
+ok 322 - laptop → PD charger → KEEP YOURS
+  ---
+  duration_ms: 0.316501
+  type: 'test'
+  ...
+# Subtest: buildResult always has outcome, path, spec, keepYours, guides≤2
+ok 323 - buildResult always has outcome, path, spec, keepYours, guides≤2
+  ---
+  duration_ms: 0.184411
+  type: 'test'
+  ...
+# Subtest: Steam Deck → HDMI classifies without inventing capture
+ok 324 - Steam Deck → HDMI classifies without inventing capture
+  ---
+  duration_ms: 0.078298
+  type: 'test'
+  ...
+# Subtest: selected intents influence copy (charging / oneCable / refresh / data)
+ok 325 - selected intents influence copy (charging / oneCable / refresh / data)
+  ---
+  duration_ms: 0.317238
+  type: 'test'
+  ...
+# Subtest: no awin / sca_ref affiliate patterns in repo HTML
+ok 326 - no awin / sca_ref affiliate patterns in repo HTML
+  ---
+  duration_ms: 6.265851
+  type: 'test'
+  ...
+# Subtest: TB one-cable guide for laptop→dock+oneCable
+ok 327 - TB one-cable guide for laptop→dock+oneCable
+  ---
+  duration_ms: 0.18193
+  type: 'test'
+  ...
+# Subtest: BN-4 default laptop→dock without oneCable surfaces TB (hub peer kept)
+ok 328 - BN-4 default laptop→dock without oneCable surfaces TB (hub peer kept)
+  ---
+  duration_ms: 0.202384
+  type: 'test'
+  ...
+# Subtest: BN-1 laptop→dock+data surfaces dual-monitor guide
+ok 329 - BN-1 laptop→dock+data surfaces dual-monitor guide
+  ---
+  duration_ms: 0.088529
+  type: 'test'
+  ...
+# Subtest: BN-1 laptop→dock+oneCable still prioritizes TB over dual-monitor
+ok 330 - BN-1 laptop→dock+oneCable still prioritizes TB over dual-monitor
+  ---
+  duration_ms: 0.067335
+  type: 'test'
+  ...
+# Subtest: capture intent returns capture guide not play-only primary
+ok 331 - capture intent returns capture guide not play-only primary
+  ---
+  duration_ms: 0.059717
+  type: 'test'
+  ...
+# Subtest: Xbox primary guide preference + neutral HDMI secondary label
+ok 332 - Xbox primary guide preference + neutral HDMI secondary label
+  ---
+  duration_ms: 0.257027
+  type: 'test'
+  ...
+# Subtest: port capability warn appears for USB-C laptop paths in buildResult spec
+ok 333 - port capability warn appears for USB-C laptop paths in buildResult spec
+  ---
+  duration_ms: 0.148549
+  type: 'test'
+  ...
+# Subtest: sitemap loc count updated and all files exist
+ok 334 - sitemap loc count updated and all files exist
+  ---
+  duration_ms: 0.508806
+  type: 'test'
+  ...
+# Subtest: new BUILD NOW pages exist
+ok 335 - new BUILD NOW pages exist
+  ---
+  duration_ms: 0.118882
+  type: 'test'
+  ...
+# Subtest: og:image default present on homepage
+ok 336 - og:image default present on homepage
+  ---
+  duration_ms: 0.209531
+  type: 'test'
+  ...
+# Subtest: index auto-solve helpers present (applyQueryPicks + replaceState)
+ok 337 - index auto-solve helpers present (applyQueryPicks + replaceState)
+  ---
+  duration_ms: 0.176491
+  type: 'test'
+  ...
+# Subtest: DEF-B-001 DisplayPort guide Engine CTA includes src + dst + intents
+ok 338 - DEF-B-001 DisplayPort guide Engine CTA includes src + dst + intents
+  ---
+  duration_ms: 0.140223
+  type: 'test'
+  ...
+# Subtest: DEF-N-001 \#portWarn element exists in homepage markup
+ok 339 - DEF-N-001 \#portWarn element exists in homepage markup
+  ---
+  duration_ms: 0.187622
+  type: 'test'
+  ...
+# Subtest: BN-2/3 Switch 2 × HDMI → KEEP/DIRECT + Switch guide
+ok 340 - BN-2/3 Switch 2 × HDMI → KEEP/DIRECT + Switch guide
+  ---
+  duration_ms: 0.284623
+  type: 'test'
+  ...
+# Subtest: BN-3 Switch 2 × USB-C monitor does not claim DIRECT Alt Mode
+ok 341 - BN-3 Switch 2 × USB-C monitor does not claim DIRECT Alt Mode
+  ---
+  duration_ms: 0.194928
+  type: 'test'
+  ...
+# Subtest: BN-3 Deck regression unchanged sample
+ok 342 - BN-3 Deck regression unchanged sample
+  ---
+  duration_ms: 0.098071
+  type: 'test'
+  ...
+# Subtest: BN-3 capture early-return for Switch 2
+ok 343 - BN-3 capture early-return for Switch 2
+  ---
+  duration_ms: 0.071963
+  type: 'test'
+  ...
+# Subtest: BN-7 compat BreadcrumbList has no \#verified
+ok 344 - BN-7 compat BreadcrumbList has no \#verified
+  ---
+  duration_ms: 0.531758
+  type: 'test'
+  ...
+# Subtest: BN-2 Switch guide has Nintendo sources and no affiliate patterns
+ok 345 - BN-2 Switch guide has Nintendo sources and no affiliate patterns
+  ---
+  duration_ms: 0.290465
+  type: 'test'
+  ...
+# Subtest: BN-6 AVR guide differentiated from capture
+ok 346 - BN-6 AVR guide differentiated from capture
+  ---
+  duration_ms: 0.209923
+  type: 'test'
+  ...
+# Subtest: engine.js contains dual-monitor href (BN-1 orphan closed)
+ok 347 - engine.js contains dual-monitor href (BN-1 orphan closed)
+  ---
+  duration_ms: 0.228034
+  type: 'test'
+  ...
+# Subtest: BC-1 AVR guideLinksFor orphan closed for console×HDMI
+ok 348 - BC-1 AVR guideLinksFor orphan closed for console×HDMI
+  ---
+  duration_ms: 0.142459
+  type: 'test'
+  ...
+# Subtest: BC-2 Switch2 never pairs laptop USB-C→4K guide
+ok 349 - BC-2 Switch2 never pairs laptop USB-C→4K guide
+  ---
+  duration_ms: 0.106466
+  type: 'test'
+  ...
+# Subtest: BC-3 four siblings link to AVR guide
+ok 350 - BC-3 four siblings link to AVR guide
+  ---
+  duration_ms: 0.362846
+  type: 'test'
+  ...
+# Subtest: BC-4 iPad matrix cites Apple Support tiers
+ok 351 - BC-4 iPad matrix cites Apple Support tiers
+  ---
+  duration_ms: 0.323622
+  type: 'test'
+  ...
+# Subtest: BC-5 phone failure tree KEEP + OEM sources
+ok 352 - BC-5 phone failure tree KEEP + OEM sources
+  ---
+  duration_ms: 0.44591
+  type: 'test'
+  ...
+# Subtest: BC-7 favicon present at repo root
+ok 353 - BC-7 favicon present at repo root
+  ---
+  duration_ms: 0.218251
+  type: 'test'
+  ...
+# Subtest: BC-6 charge-only diagnostic on methodology or ≥2 guides
+ok 354 - BC-6 charge-only diagnostic on methodology or ≥2 guides
+  ---
+  duration_ms: 0.298943
+  type: 'test'
+  ...
+# Subtest: BN-3 AVR destination option exact + PS5 primary AVR guide + KEEP/direct TV language
+ok 355 - BN-3 AVR destination option exact + PS5 primary AVR guide + KEEP/direct TV language
+  ---
+  duration_ms: 0.231371
+  type: 'test'
+  ...
+# Subtest: BN-3 Xbox / Switch2 × AVR destination include AVR guide; Switch2 dock-HDMI
+ok 356 - BN-3 Xbox / Switch2 × AVR destination include AVR guide; Switch2 dock-HDMI
+  ---
+  duration_ms: 0.169311
+  type: 'test'
+  ...
+# Subtest: BN-3 capture intent still early-returns capture guide only
+ok 357 - BN-3 capture intent still early-returns capture guide only
+  ---
+  duration_ms: 0.058592
+  type: 'test'
+  ...
+# Subtest: BN-3 console × HDMI display still gets AVR as secondary
+ok 358 - BN-3 console × HDMI display still gets AVR as secondary
+  ---
+  duration_ms: 0.070495
+  type: 'test'
+  ...
+# Subtest: BN-4 oneCable+data still prioritizes TB first
+ok 359 - BN-4 oneCable+data still prioritizes TB first
+  ---
+  duration_ms: 0.052057
+  type: 'test'
+  ...
+# Subtest: M006 BN-1 guide AVR deep-links exact-match KEEP YOURS with AVR in two slots
+ok 360 - M006 BN-1 guide AVR deep-links exact-match KEEP YOURS with AVR in two slots
+  ---
+  duration_ms: 0.938656
+  type: 'test'
+  ...
+# Subtest: BN-4 MacBook × dock default intents include TB or dual-monitor; outcome not flipped solely to upsell
+ok 361 - BN-4 MacBook × dock default intents include TB or dual-monitor; outcome not flipped solely to upsell
+  ---
+  duration_ms: 0.14243
+  type: 'test'
+  ...
+# Subtest: guides/bios-fast-boot-troubleshooter.html: FAQPage JSON-LD matches visible FAQ word for word
+ok 362 - guides/bios-fast-boot-troubleshooter.html: FAQPage JSON-LD matches visible FAQ word for word
+  ---
+  duration_ms: 3.882996
+  type: 'test'
+  ...
+# Subtest: guides/display-connection-solver.html: FAQPage JSON-LD matches visible FAQ word for word
+ok 363 - guides/display-connection-solver.html: FAQPage JSON-LD matches visible FAQ word for word
+  ---
+  duration_ms: 0.620422
+  type: 'test'
+  ...
+# Subtest: BIOS common wrong advice cites Dell 000126121, ASUS 1008829/1044641, Microsoft shutdown
+ok 364 - BIOS common wrong advice cites Dell 000126121, ASUS 1008829/1044641, Microsoft shutdown
+  ---
+  duration_ms: 0.568109
+  type: 'test'
+  ...
+# Subtest: internal-link mesh: required tool links exist and point at real files
+ok 365 - internal-link mesh: required tool links exist and point at real files
+  ---
+  duration_ms: 4.338207
+  type: 'test'
+  ...
+# Subtest: internal-link mesh: Solver guides CTA mentions no picture until Windows loads → BIOS
+ok 366 - internal-link mesh: Solver guides CTA mentions no picture until Windows loads → BIOS
+  ---
+  duration_ms: 1.554984
+  type: 'test'
+  ...
+# Subtest: ps5-1440p T3 P1: SEO fields unchanged shape
+ok 367 - ps5-1440p T3 P1: SEO fields unchanged shape
+  ---
+  duration_ms: 1.31123
+  type: 'test'
+  ...
+# Subtest: ps5-1440p T3 P1: unique 1440p answer cites PlayStation 1440p setting
+ok 368 - ps5-1440p T3 P1: unique 1440p answer cites PlayStation 1440p setting
+  ---
+  duration_ms: 1.180939
+  type: 'test'
+  ...
+# Subtest: ps5-1440p T3 P1: descriptive links to cable, Dell, Display Solver console branch
+ok 369 - ps5-1440p T3 P1: descriptive links to cable, Dell, Display Solver console branch
+  ---
+  duration_ms: 0.427579
+  type: 'test'
+  ...
+# Subtest: t3p2 guides/ps5-hdmi-2-1-cable-path.html: title/H1/canonical/meta/FAQ invariant
+ok 370 - t3p2 guides/ps5-hdmi-2-1-cable-path.html: title/H1/canonical/meta/FAQ invariant
+  ---
+  duration_ms: 1.767012
+  type: 'test'
+  ...
+# Subtest: t3p2 compatibility/ps5-dell-u2725qe.html: title/H1/canonical/meta/FAQ invariant
+ok 371 - t3p2 compatibility/ps5-dell-u2725qe.html: title/H1/canonical/meta/FAQ invariant
+  ---
+  duration_ms: 0.308785
+  type: 'test'
+  ...
+# Subtest: t3p2 cable hub: descriptive links to 1440p, Dell, console hub and Display Solver
+ok 372 - t3p2 cable hub: descriptive links to 1440p, Dell, console hub and Display Solver
+  ---
+  duration_ms: 0.701901
+  type: 'test'
+  ...
+# Subtest: t3p2 Dell: generic cable section collapsed into link to primary cable page + 1440p link
+ok 373 - t3p2 Dell: generic cable section collapsed into link to primary cable page + 1440p link
+  ---
+  duration_ms: 0.443483
+  type: 'test'
+  ...
+# Subtest: t3p2 sitemap lastmod 2026-10-23 exactly for changed URLs
+ok 374 - t3p2 sitemap lastmod 2026-10-23 exactly for changed URLs
+  ---
+  duration_ms: 0.709096
+  type: 'test'
+  ...
+# Subtest: t3p2 Dell: visible Updated 2026-10-23 (T3P2-QA-001)
+ok 375 - t3p2 Dell: visible Updated 2026-10-23 (T3P2-QA-001)
+  ---
+  duration_ms: 0.320367
+  type: 'test'
+  ...
+# Subtest: release-date gate: declared date is a real date, not a placeholder
+ok 376 - release-date gate: declared date is a real date, not a placeholder
+  ---
+  duration_ms: 1.084555
+  type: 'test'
+  ...
+# Subtest: release-date gate: dateModified, visible Updated and sitemap lastmod equal each page declared date
+ok 377 - release-date gate: dateModified, visible Updated and sitemap lastmod equal each page declared date
+  ---
+  duration_ms: 4.38291
+  type: 'test'
+  ...
+# Subtest: release-date gate: detects divergence in any of the three signals
+ok 378 - release-date gate: detects divergence in any of the three signals
+  ---
+  duration_ms: 6.03652
+  type: 'test'
+  ...
+# Subtest: release-date gate: mismatched BIOS page date fails consistency
+ok 379 - release-date gate: mismatched BIOS page date fails consistency
+  ---
+  duration_ms: 1.742842
+  type: 'test'
+  ...
+# Subtest: release-date gate: unset or placeholder declared date fails
+ok 380 - release-date gate: unset or placeholder declared date fails
+  ---
+  duration_ms: 4.594118
+  type: 'test'
+  ...
+# Subtest: release-date gate: release mode blocks until owner-confirmed and date = ship date
+ok 381 - release-date gate: release mode blocks until owner-confirmed and date = ship date
+  ---
+  duration_ms: 0.341259
+  type: 'test'
+  ...
+# Subtest: release-date gate: null page intendedReleaseDate fails (no top-level fallback) — QA F2
+ok 382 - release-date gate: null page intendedReleaseDate fails (no top-level fallback) — QA F2
+  ---
+  duration_ms: 1.497575
+  type: 'test'
+  ...
+# Subtest: release-date gate: per-page date after ship date fails release mode — QA F1
+ok 383 - release-date gate: per-page date after ship date fails release mode — QA F1
+  ---
+  duration_ms: 0.237626
+  type: 'test'
+  ...
+# Subtest: sitemap is non-empty, unique, and every loc maps to a file
+ok 384 - sitemap is non-empty, unique, and every loc maps to a file
+  ---
+  duration_ms: 2.130964
+  type: 'test'
+  ...
+# Subtest: index.html: one self-canonical, indexable, valid JSON-LD
+ok 385 - index.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 1.079595
+  type: 'test'
+  ...
+# Subtest: index.html: internal links resolve
+ok 386 - index.html: internal links resolve
+  ---
+  duration_ms: 1.111441
+  type: 'test'
+  ...
+# Subtest: about.html: one self-canonical, indexable, valid JSON-LD
+ok 387 - about.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.287053
+  type: 'test'
+  ...
+# Subtest: about.html: internal links resolve
+ok 388 - about.html: internal links resolve
+  ---
+  duration_ms: 0.285399
+  type: 'test'
+  ...
+# Subtest: about.html: FAQPage markup equals the visible FAQ
+ok 389 - about.html: FAQPage markup equals the visible FAQ
+  ---
+  duration_ms: 0.231079
+  type: 'test'
+  ...
+# Subtest: about.html: visible Updated date, dateModified and sitemap lastmod agree
+ok 390 - about.html: visible Updated date, dateModified and sitemap lastmod agree
+  ---
+  duration_ms: 0.207249
+  type: 'test'
+  ...
+# Subtest: methodology.html: one self-canonical, indexable, valid JSON-LD
+ok 391 - methodology.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.168075
+  type: 'test'
+  ...
+# Subtest: methodology.html: internal links resolve
+ok 392 - methodology.html: internal links resolve
+  ---
+  duration_ms: 0.412135
+  type: 'test'
+  ...
+# Subtest: methodology.html: FAQPage markup equals the visible FAQ
+ok 393 - methodology.html: FAQPage markup equals the visible FAQ
+  ---
+  duration_ms: 0.481114
+  type: 'test'
+  ...
+# Subtest: methodology.html: visible Updated date, dateModified and sitemap lastmod agree
+ok 394 - methodology.html: visible Updated date, dateModified and sitemap lastmod agree
+  ---
+  duration_ms: 0.179414
+  type: 'test'
+  ...
+# Subtest: disclosure.html: one self-canonical, indexable, valid JSON-LD
+ok 395 - disclosure.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.113218
+  type: 'test'
+  ...
+# Subtest: disclosure.html: internal links resolve
+ok 396 - disclosure.html: internal links resolve
+  ---
+  duration_ms: 0.170938
+  type: 'test'
+  ...
+# Subtest: disclosure.html: FAQPage markup equals the visible FAQ
+ok 397 - disclosure.html: FAQPage markup equals the visible FAQ
+  ---
+  duration_ms: 0.075853
+  type: 'test'
+  ...
+# Subtest: disclosure.html: visible Updated date, dateModified and sitemap lastmod agree
+ok 398 - disclosure.html: visible Updated date, dateModified and sitemap lastmod agree
+  ---
+  duration_ms: 0.128277
+  type: 'test'
+  ...
+# Subtest: guides/index.html: one self-canonical, indexable, valid JSON-LD
+ok 399 - guides/index.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.107985
+  type: 'test'
+  ...
+# Subtest: guides/index.html: internal links resolve
+ok 400 - guides/index.html: internal links resolve
+  ---
+  duration_ms: 0.277574
+  type: 'test'
+  ...
+# Subtest: guides/index.html: FAQPage markup equals the visible FAQ
+ok 401 - guides/index.html: FAQPage markup equals the visible FAQ
+  ---
+  duration_ms: 0.053448
+  type: 'test'
+  ...
+# Subtest: guides/index.html: visible Updated date, dateModified and sitemap lastmod agree
+ok 402 - guides/index.html: visible Updated date, dateModified and sitemap lastmod agree
+  ---
+  duration_ms: 0.126524
+  type: 'test'
+  ...
+# Subtest: guides/display-connection-solver.html: one self-canonical, indexable, valid JSON-LD
+ok 403 - guides/display-connection-solver.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.1618
+  type: 'test'
+  ...
+# Subtest: guides/display-connection-solver.html: internal links resolve
+ok 404 - guides/display-connection-solver.html: internal links resolve
+  ---
+  duration_ms: 0.318851
+  type: 'test'
+  ...
+# Subtest: guides/display-connection-solver.html: FAQPage markup equals the visible FAQ
+ok 405 - guides/display-connection-solver.html: FAQPage markup equals the visible FAQ
+  ---
+  duration_ms: 0.866989
+  type: 'test'
+  ...
+# Subtest: guides/display-connection-solver.html: visible Updated date, dateModified and sitemap lastmod agree
+ok 406 - guides/display-connection-solver.html: visible Updated date, dateModified and sitemap lastmod agree
+  ---
+  duration_ms: 0.146344
+  type: 'test'
+  ...
+# Subtest: guides/external-monitor-not-detected.html: one self-canonical, indexable, valid JSON-LD
+ok 407 - guides/external-monitor-not-detected.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.13466
+  type: 'test'
+  ...
+# Subtest: guides/external-monitor-not-detected.html: internal links resolve
+ok 408 - guides/external-monitor-not-detected.html: internal links resolve
+  ---
+  duration_ms: 0.372335
+  type: 'test'
+  ...
+# Subtest: guides/external-monitor-not-detected.html: FAQPage markup equals the visible FAQ
+ok 409 - guides/external-monitor-not-detected.html: FAQPage markup equals the visible FAQ
+  ---
+  duration_ms: 0.300111
+  type: 'test'
+  ...
+# Subtest: guides/external-monitor-not-detected.html: visible Updated date, dateModified and sitemap lastmod agree
+ok 410 - guides/external-monitor-not-detected.html: visible Updated date, dateModified and sitemap lastmod agree
+  ---
+  duration_ms: 0.111628
+  type: 'test'
+  ...
+# Subtest: guides/monitor-stuck-at-60hz.html: one self-canonical, indexable, valid JSON-LD
+ok 411 - guides/monitor-stuck-at-60hz.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.084852
+  type: 'test'
+  ...
+# Subtest: guides/monitor-stuck-at-60hz.html: internal links resolve
+ok 412 - guides/monitor-stuck-at-60hz.html: internal links resolve
+  ---
+  duration_ms: 0.229534
+  type: 'test'
+  ...
+# Subtest: guides/monitor-stuck-at-60hz.html: FAQPage markup equals the visible FAQ
+ok 413 - guides/monitor-stuck-at-60hz.html: FAQPage markup equals the visible FAQ
+  ---
+  duration_ms: 0.294889
+  type: 'test'
+  ...
+# Subtest: guides/monitor-stuck-at-60hz.html: visible Updated date, dateModified and sitemap lastmod agree
+ok 414 - guides/monitor-stuck-at-60hz.html: visible Updated date, dateModified and sitemap lastmod agree
+  ---
+  duration_ms: 0.105077
+  type: 'test'
+  ...
+# Subtest: guides/usb-c-dock-display-limits.html: one self-canonical, indexable, valid JSON-LD
+ok 415 - guides/usb-c-dock-display-limits.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.146998
+  type: 'test'
+  ...
+# Subtest: guides/usb-c-dock-display-limits.html: internal links resolve
+ok 416 - guides/usb-c-dock-display-limits.html: internal links resolve
+  ---
+  duration_ms: 0.341771
+  type: 'test'
+  ...
+# Subtest: guides/usb-c-dock-display-limits.html: FAQPage markup equals the visible FAQ
+ok 417 - guides/usb-c-dock-display-limits.html: FAQPage markup equals the visible FAQ
+  ---
+  duration_ms: 0.920952
+  type: 'test'
+  ...
+# Subtest: guides/usb-c-dock-display-limits.html: visible Updated date, dateModified and sitemap lastmod agree
+ok 418 - guides/usb-c-dock-display-limits.html: visible Updated date, dateModified and sitemap lastmod agree
+  ---
+  duration_ms: 0.160989
+  type: 'test'
+  ...
+# Subtest: guides/usb-c-laptop-to-4k-monitor.html: one self-canonical, indexable, valid JSON-LD
+ok 419 - guides/usb-c-laptop-to-4k-monitor.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.169923
+  type: 'test'
+  ...
+# Subtest: guides/usb-c-laptop-to-4k-monitor.html: internal links resolve
+ok 420 - guides/usb-c-laptop-to-4k-monitor.html: internal links resolve
+  ---
+  duration_ms: 0.282925
+  type: 'test'
+  ...
+# Subtest: guides/laptop-to-docking-station.html: one self-canonical, indexable, valid JSON-LD
+ok 421 - guides/laptop-to-docking-station.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.086926
+  type: 'test'
+  ...
+# Subtest: guides/laptop-to-docking-station.html: internal links resolve
+ok 422 - guides/laptop-to-docking-station.html: internal links resolve
+  ---
+  duration_ms: 0.259078
+  type: 'test'
+  ...
+# Subtest: guides/laptop-to-docking-station.html: FAQPage markup equals the visible FAQ
+ok 423 - guides/laptop-to-docking-station.html: FAQPage markup equals the visible FAQ
+  ---
+  duration_ms: 0.158892
+  type: 'test'
+  ...
+# Subtest: guides/laptop-to-docking-station.html: visible Updated date, dateModified and sitemap lastmod agree
+ok 424 - guides/laptop-to-docking-station.html: visible Updated date, dateModified and sitemap lastmod agree
+  ---
+  duration_ms: 0.116122
+  type: 'test'
+  ...
+# Subtest: guides/ps5-to-1440p-monitor.html: one self-canonical, indexable, valid JSON-LD
+ok 425 - guides/ps5-to-1440p-monitor.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.104418
+  type: 'test'
+  ...
+# Subtest: guides/ps5-to-1440p-monitor.html: internal links resolve
+ok 426 - guides/ps5-to-1440p-monitor.html: internal links resolve
+  ---
+  duration_ms: 0.28579
+  type: 'test'
+  ...
+# Subtest: guides/ps5-to-1440p-monitor.html: FAQPage markup equals the visible FAQ
+ok 427 - guides/ps5-to-1440p-monitor.html: FAQPage markup equals the visible FAQ
+  ---
+  duration_ms: 0.146951
+  type: 'test'
+  ...
+# Subtest: guides/ps5-to-1440p-monitor.html: visible Updated date, dateModified and sitemap lastmod agree
+ok 428 - guides/ps5-to-1440p-monitor.html: visible Updated date, dateModified and sitemap lastmod agree
+  ---
+  duration_ms: 0.098024
+  type: 'test'
+  ...
+# Subtest: guides/usb-c-to-hdmi-adapter-path.html: one self-canonical, indexable, valid JSON-LD
+ok 429 - guides/usb-c-to-hdmi-adapter-path.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.069498
+  type: 'test'
+  ...
+# Subtest: guides/usb-c-to-hdmi-adapter-path.html: internal links resolve
+ok 430 - guides/usb-c-to-hdmi-adapter-path.html: internal links resolve
+  ---
+  duration_ms: 0.198331
+  type: 'test'
+  ...
+# Subtest: guides/thunderbolt-dock-one-cable-4k-120.html: one self-canonical, indexable, valid JSON-LD
+ok 431 - guides/thunderbolt-dock-one-cable-4k-120.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.097089
+  type: 'test'
+  ...
+# Subtest: guides/thunderbolt-dock-one-cable-4k-120.html: internal links resolve
+ok 432 - guides/thunderbolt-dock-one-cable-4k-120.html: internal links resolve
+  ---
+  duration_ms: 0.227172
+  type: 'test'
+  ...
+# Subtest: guides/thunderbolt-dock-one-cable-4k-120.html: FAQPage markup equals the visible FAQ
+ok 433 - guides/thunderbolt-dock-one-cable-4k-120.html: FAQPage markup equals the visible FAQ
+  ---
+  duration_ms: 0.141535
+  type: 'test'
+  ...
+# Subtest: guides/thunderbolt-dock-one-cable-4k-120.html: visible Updated date, dateModified and sitemap lastmod agree
+ok 434 - guides/thunderbolt-dock-one-cable-4k-120.html: visible Updated date, dateModified and sitemap lastmod agree
+  ---
+  duration_ms: 0.084209
+  type: 'test'
+  ...
+# Subtest: guides/ps5-hdmi-2-1-cable-path.html: one self-canonical, indexable, valid JSON-LD
+ok 435 - guides/ps5-hdmi-2-1-cable-path.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.076651
+  type: 'test'
+  ...
+# Subtest: guides/ps5-hdmi-2-1-cable-path.html: internal links resolve
+ok 436 - guides/ps5-hdmi-2-1-cable-path.html: internal links resolve
+  ---
+  duration_ms: 0.245123
+  type: 'test'
+  ...
+# Subtest: guides/usb4-vs-thunderbolt-4-monitor.html: one self-canonical, indexable, valid JSON-LD
+ok 437 - guides/usb4-vs-thunderbolt-4-monitor.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.135373
+  type: 'test'
+  ...
+# Subtest: guides/usb4-vs-thunderbolt-4-monitor.html: internal links resolve
+ok 438 - guides/usb4-vs-thunderbolt-4-monitor.html: internal links resolve
+  ---
+  duration_ms: 0.2259
+  type: 'test'
+  ...
+# Subtest: guides/usb4-vs-thunderbolt-4-monitor.html: FAQPage markup equals the visible FAQ
+ok 439 - guides/usb4-vs-thunderbolt-4-monitor.html: FAQPage markup equals the visible FAQ
+  ---
+  duration_ms: 0.12013
+  type: 'test'
+  ...
+# Subtest: guides/usb4-vs-thunderbolt-4-monitor.html: visible Updated date, dateModified and sitemap lastmod agree
+ok 440 - guides/usb4-vs-thunderbolt-4-monitor.html: visible Updated date, dateModified and sitemap lastmod agree
+  ---
+  duration_ms: 0.077697
+  type: 'test'
+  ...
+# Subtest: guides/usb-c-phone-to-monitor.html: one self-canonical, indexable, valid JSON-LD
+ok 441 - guides/usb-c-phone-to-monitor.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.097533
+  type: 'test'
+  ...
+# Subtest: guides/usb-c-phone-to-monitor.html: internal links resolve
+ok 442 - guides/usb-c-phone-to-monitor.html: internal links resolve
+  ---
+  duration_ms: 0.215457
+  type: 'test'
+  ...
+# Subtest: guides/usb-c-phone-to-monitor.html: FAQPage markup equals the visible FAQ
+ok 443 - guides/usb-c-phone-to-monitor.html: FAQPage markup equals the visible FAQ
+  ---
+  duration_ms: 0.164511
+  type: 'test'
+  ...
+# Subtest: guides/usb-c-phone-to-monitor.html: visible Updated date, dateModified and sitemap lastmod agree
+ok 444 - guides/usb-c-phone-to-monitor.html: visible Updated date, dateModified and sitemap lastmod agree
+  ---
+  duration_ms: 0.086884
+  type: 'test'
+  ...
+# Subtest: guides/usb-c-pd-charger-compatibility.html: one self-canonical, indexable, valid JSON-LD
+ok 445 - guides/usb-c-pd-charger-compatibility.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.089552
+  type: 'test'
+  ...
+# Subtest: guides/usb-c-pd-charger-compatibility.html: internal links resolve
+ok 446 - guides/usb-c-pd-charger-compatibility.html: internal links resolve
+  ---
+  duration_ms: 0.20747
+  type: 'test'
+  ...
+# Subtest: guides/usb-c-pd-charger-compatibility.html: FAQPage markup equals the visible FAQ
+ok 447 - guides/usb-c-pd-charger-compatibility.html: FAQPage markup equals the visible FAQ
+  ---
+  duration_ms: 0.156258
+  type: 'test'
+  ...
+# Subtest: guides/usb-c-pd-charger-compatibility.html: visible Updated date, dateModified and sitemap lastmod agree
+ok 448 - guides/usb-c-pd-charger-compatibility.html: visible Updated date, dateModified and sitemap lastmod agree
+  ---
+  duration_ms: 0.082196
+  type: 'test'
+  ...
+# Subtest: guides/macbook-to-hdmi-display.html: one self-canonical, indexable, valid JSON-LD
+ok 449 - guides/macbook-to-hdmi-display.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.066449
+  type: 'test'
+  ...
+# Subtest: guides/macbook-to-hdmi-display.html: internal links resolve
+ok 450 - guides/macbook-to-hdmi-display.html: internal links resolve
+  ---
+  duration_ms: 0.194458
+  type: 'test'
+  ...
+# Subtest: guides/macbook-to-hdmi-display.html: FAQPage markup equals the visible FAQ
+ok 451 - guides/macbook-to-hdmi-display.html: FAQPage markup equals the visible FAQ
+  ---
+  duration_ms: 0.141308
+  type: 'test'
+  ...
+# Subtest: guides/macbook-to-hdmi-display.html: visible Updated date, dateModified and sitemap lastmod agree
+ok 452 - guides/macbook-to-hdmi-display.html: visible Updated date, dateModified and sitemap lastmod agree
+  ---
+  duration_ms: 0.12255
+  type: 'test'
+  ...
+# Subtest: guides/usb-c-hub-vs-dock.html: one self-canonical, indexable, valid JSON-LD
+ok 453 - guides/usb-c-hub-vs-dock.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.079025
+  type: 'test'
+  ...
+# Subtest: guides/usb-c-hub-vs-dock.html: internal links resolve
+ok 454 - guides/usb-c-hub-vs-dock.html: internal links resolve
+  ---
+  duration_ms: 0.372486
+  type: 'test'
+  ...
+# Subtest: guides/usb-c-hub-vs-dock.html: FAQPage markup equals the visible FAQ
+ok 455 - guides/usb-c-hub-vs-dock.html: FAQPage markup equals the visible FAQ
+  ---
+  duration_ms: 0.186365
+  type: 'test'
+  ...
+# Subtest: guides/usb-c-hub-vs-dock.html: visible Updated date, dateModified and sitemap lastmod agree
+ok 456 - guides/usb-c-hub-vs-dock.html: visible Updated date, dateModified and sitemap lastmod agree
+  ---
+  duration_ms: 0.099287
+  type: 'test'
+  ...
+# Subtest: guides/ipad-usbc-to-monitor-hdmi.html: one self-canonical, indexable, valid JSON-LD
+ok 457 - guides/ipad-usbc-to-monitor-hdmi.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.111802
+  type: 'test'
+  ...
+# Subtest: guides/ipad-usbc-to-monitor-hdmi.html: internal links resolve
+ok 458 - guides/ipad-usbc-to-monitor-hdmi.html: internal links resolve
+  ---
+  duration_ms: 0.265563
+  type: 'test'
+  ...
+# Subtest: guides/ipad-usbc-to-monitor-hdmi.html: FAQPage markup equals the visible FAQ
+ok 459 - guides/ipad-usbc-to-monitor-hdmi.html: FAQPage markup equals the visible FAQ
+  ---
+  duration_ms: 0.237941
+  type: 'test'
+  ...
+# Subtest: guides/ipad-usbc-to-monitor-hdmi.html: visible Updated date, dateModified and sitemap lastmod agree
+ok 460 - guides/ipad-usbc-to-monitor-hdmi.html: visible Updated date, dateModified and sitemap lastmod agree
+  ---
+  duration_ms: 0.100669
+  type: 'test'
+  ...
+# Subtest: guides/steam-deck-external-display.html: one self-canonical, indexable, valid JSON-LD
+ok 461 - guides/steam-deck-external-display.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.09977
+  type: 'test'
+  ...
+# Subtest: guides/steam-deck-external-display.html: internal links resolve
+ok 462 - guides/steam-deck-external-display.html: internal links resolve
+  ---
+  duration_ms: 0.287361
+  type: 'test'
+  ...
+# Subtest: guides/steam-deck-external-display.html: FAQPage markup equals the visible FAQ
+ok 463 - guides/steam-deck-external-display.html: FAQPage markup equals the visible FAQ
+  ---
+  duration_ms: 0.157599
+  type: 'test'
+  ...
+# Subtest: guides/steam-deck-external-display.html: visible Updated date, dateModified and sitemap lastmod agree
+ok 464 - guides/steam-deck-external-display.html: visible Updated date, dateModified and sitemap lastmod agree
+  ---
+  duration_ms: 0.088071
+  type: 'test'
+  ...
+# Subtest: guides/displayport-monitor-connection-path.html: one self-canonical, indexable, valid JSON-LD
+ok 465 - guides/displayport-monitor-connection-path.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.097853
+  type: 'test'
+  ...
+# Subtest: guides/displayport-monitor-connection-path.html: internal links resolve
+ok 466 - guides/displayport-monitor-connection-path.html: internal links resolve
+  ---
+  duration_ms: 0.242432
+  type: 'test'
+  ...
+# Subtest: guides/displayport-monitor-connection-path.html: FAQPage markup equals the visible FAQ
+ok 467 - guides/displayport-monitor-connection-path.html: FAQPage markup equals the visible FAQ
+  ---
+  duration_ms: 0.155462
+  type: 'test'
+  ...
+# Subtest: guides/displayport-monitor-connection-path.html: visible Updated date, dateModified and sitemap lastmod agree
+ok 468 - guides/displayport-monitor-connection-path.html: visible Updated date, dateModified and sitemap lastmod agree
+  ---
+  duration_ms: 0.246445
+  type: 'test'
+  ...
+# Subtest: guides/xbox-series-display-compatibility.html: one self-canonical, indexable, valid JSON-LD
+ok 469 - guides/xbox-series-display-compatibility.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.129527
+  type: 'test'
+  ...
+# Subtest: guides/xbox-series-display-compatibility.html: internal links resolve
+ok 470 - guides/xbox-series-display-compatibility.html: internal links resolve
+  ---
+  duration_ms: 0.173053
+  type: 'test'
+  ...
+# Subtest: guides/xbox-series-display-compatibility.html: FAQPage markup equals the visible FAQ
+ok 471 - guides/xbox-series-display-compatibility.html: FAQPage markup equals the visible FAQ
+  ---
+  duration_ms: 0.102044
+  type: 'test'
+  ...
+# Subtest: guides/xbox-series-display-compatibility.html: visible Updated date, dateModified and sitemap lastmod agree
+ok 472 - guides/xbox-series-display-compatibility.html: visible Updated date, dateModified and sitemap lastmod agree
+  ---
+  duration_ms: 0.068901
+  type: 'test'
+  ...
+# Subtest: guides/hdmi-capture-passthrough-path.html: one self-canonical, indexable, valid JSON-LD
+ok 473 - guides/hdmi-capture-passthrough-path.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.072265
+  type: 'test'
+  ...
+# Subtest: guides/hdmi-capture-passthrough-path.html: internal links resolve
+ok 474 - guides/hdmi-capture-passthrough-path.html: internal links resolve
+  ---
+  duration_ms: 0.159332
+  type: 'test'
+  ...
+# Subtest: guides/hdmi-capture-passthrough-path.html: FAQPage markup equals the visible FAQ
+ok 475 - guides/hdmi-capture-passthrough-path.html: FAQPage markup equals the visible FAQ
+  ---
+  duration_ms: 0.087565
+  type: 'test'
+  ...
+# Subtest: guides/hdmi-capture-passthrough-path.html: visible Updated date, dateModified and sitemap lastmod agree
+ok 476 - guides/hdmi-capture-passthrough-path.html: visible Updated date, dateModified and sitemap lastmod agree
+  ---
+  duration_ms: 0.048972
+  type: 'test'
+  ...
+# Subtest: guides/dual-monitor-dock-mst-vs-thunderbolt.html: one self-canonical, indexable, valid JSON-LD
+ok 477 - guides/dual-monitor-dock-mst-vs-thunderbolt.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.058062
+  type: 'test'
+  ...
+# Subtest: guides/dual-monitor-dock-mst-vs-thunderbolt.html: internal links resolve
+ok 478 - guides/dual-monitor-dock-mst-vs-thunderbolt.html: internal links resolve
+  ---
+  duration_ms: 0.126241
+  type: 'test'
+  ...
+# Subtest: guides/dual-monitor-dock-mst-vs-thunderbolt.html: FAQPage markup equals the visible FAQ
+ok 479 - guides/dual-monitor-dock-mst-vs-thunderbolt.html: FAQPage markup equals the visible FAQ
+  ---
+  duration_ms: 0.083203
+  type: 'test'
+  ...
+# Subtest: guides/dual-monitor-dock-mst-vs-thunderbolt.html: visible Updated date, dateModified and sitemap lastmod agree
+ok 480 - guides/dual-monitor-dock-mst-vs-thunderbolt.html: visible Updated date, dateModified and sitemap lastmod agree
+  ---
+  duration_ms: 0.056105
+  type: 'test'
+  ...
+# Subtest: guides/nintendo-switch-2-display-path.html: one self-canonical, indexable, valid JSON-LD
+ok 481 - guides/nintendo-switch-2-display-path.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.11276
+  type: 'test'
+  ...
+# Subtest: guides/nintendo-switch-2-display-path.html: internal links resolve
+ok 482 - guides/nintendo-switch-2-display-path.html: internal links resolve
+  ---
+  duration_ms: 0.154827
+  type: 'test'
+  ...
+# Subtest: guides/nintendo-switch-2-display-path.html: FAQPage markup equals the visible FAQ
+ok 483 - guides/nintendo-switch-2-display-path.html: FAQPage markup equals the visible FAQ
+  ---
+  duration_ms: 0.099956
+  type: 'test'
+  ...
+# Subtest: guides/nintendo-switch-2-display-path.html: visible Updated date, dateModified and sitemap lastmod agree
+ok 484 - guides/nintendo-switch-2-display-path.html: visible Updated date, dateModified and sitemap lastmod agree
+  ---
+  duration_ms: 0.053806
+  type: 'test'
+  ...
+# Subtest: guides/console-hdmi-avr-passthrough-path.html: one self-canonical, indexable, valid JSON-LD
+ok 485 - guides/console-hdmi-avr-passthrough-path.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.068253
+  type: 'test'
+  ...
+# Subtest: guides/console-hdmi-avr-passthrough-path.html: internal links resolve
+ok 486 - guides/console-hdmi-avr-passthrough-path.html: internal links resolve
+  ---
+  duration_ms: 0.19579
+  type: 'test'
+  ...
+# Subtest: guides/console-hdmi-avr-passthrough-path.html: FAQPage markup equals the visible FAQ
+ok 487 - guides/console-hdmi-avr-passthrough-path.html: FAQPage markup equals the visible FAQ
+  ---
+  duration_ms: 0.098916
+  type: 'test'
+  ...
+# Subtest: guides/console-hdmi-avr-passthrough-path.html: visible Updated date, dateModified and sitemap lastmod agree
+ok 488 - guides/console-hdmi-avr-passthrough-path.html: visible Updated date, dateModified and sitemap lastmod agree
+  ---
+  duration_ms: 0.094625
+  type: 'test'
+  ...
+# Subtest: compatibility/macbook-air-m5-dell-u2725qe.html: one self-canonical, indexable, valid JSON-LD
+ok 489 - compatibility/macbook-air-m5-dell-u2725qe.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.074425
+  type: 'test'
+  ...
+# Subtest: compatibility/macbook-air-m5-dell-u2725qe.html: internal links resolve
+ok 490 - compatibility/macbook-air-m5-dell-u2725qe.html: internal links resolve
+  ---
+  duration_ms: 0.21309
+  type: 'test'
+  ...
+# Subtest: compatibility/macbook-air-m5-dell-u2725qe.html: FAQPage markup equals the visible FAQ
+ok 491 - compatibility/macbook-air-m5-dell-u2725qe.html: FAQPage markup equals the visible FAQ
+  ---
+  duration_ms: 0.115283
+  type: 'test'
+  ...
+# Subtest: compatibility/macbook-air-m5-dell-u2725qe.html: visible Updated date, dateModified and sitemap lastmod agree
+ok 492 - compatibility/macbook-air-m5-dell-u2725qe.html: visible Updated date, dateModified and sitemap lastmod agree
+  ---
+  duration_ms: 0.053596
+  type: 'test'
+  ...
+# Subtest: compatibility/ps5-dell-u2725qe.html: one self-canonical, indexable, valid JSON-LD
+ok 493 - compatibility/ps5-dell-u2725qe.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.060844
+  type: 'test'
+  ...
+# Subtest: compatibility/ps5-dell-u2725qe.html: internal links resolve
+ok 494 - compatibility/ps5-dell-u2725qe.html: internal links resolve
+  ---
+  duration_ms: 0.143531
+  type: 'test'
+  ...
+# Subtest: guides/bios-fast-boot-troubleshooter.html: one self-canonical, indexable, valid JSON-LD
+ok 495 - guides/bios-fast-boot-troubleshooter.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.117455
+  type: 'test'
+  ...
+# Subtest: guides/bios-fast-boot-troubleshooter.html: internal links resolve
+ok 496 - guides/bios-fast-boot-troubleshooter.html: internal links resolve
+  ---
+  duration_ms: 0.162183
+  type: 'test'
+  ...
+# Subtest: guides/bios-fast-boot-troubleshooter.html: FAQPage markup equals the visible FAQ
+ok 497 - guides/bios-fast-boot-troubleshooter.html: FAQPage markup equals the visible FAQ
+  ---
+  duration_ms: 0.288706
+  type: 'test'
+  ...
+# Subtest: guides/bios-fast-boot-troubleshooter.html: visible Updated date, dateModified and sitemap lastmod agree
+ok 498 - guides/bios-fast-boot-troubleshooter.html: visible Updated date, dateModified and sitemap lastmod agree
+  ---
+  duration_ms: 0.098093
+  type: 'test'
+  ...
+# Subtest: guides/console-handheld-display-hub.html: one self-canonical, indexable, valid JSON-LD
+ok 499 - guides/console-handheld-display-hub.html: one self-canonical, indexable, valid JSON-LD
+  ---
+  duration_ms: 0.113721
+  type: 'test'
+  ...
+# Subtest: guides/console-handheld-display-hub.html: internal links resolve
+ok 500 - guides/console-handheld-display-hub.html: internal links resolve
+  ---
+  duration_ms: 0.347563
+  type: 'test'
+  ...
+# Subtest: guides/console-handheld-display-hub.html: FAQPage markup equals the visible FAQ
+ok 501 - guides/console-handheld-display-hub.html: FAQPage markup equals the visible FAQ
+  ---
+  duration_ms: 0.272073
+  type: 'test'
+  ...
+# Subtest: guides/console-handheld-display-hub.html: visible Updated date, dateModified and sitemap lastmod agree
+ok 502 - guides/console-handheld-display-hub.html: visible Updated date, dateModified and sitemap lastmod agree
+  ---
+  duration_ms: 0.104604
+  type: 'test'
+  ...
+# Subtest: tbdock: title, og:title, headline and single H1
+ok 503 - tbdock: title, og:title, headline and single H1
+  ---
+  duration_ms: 0.845359
+  type: 'test'
+  ...
+# Subtest: tbdock: Updated, Last reviewed, dateModified, sitemap lastmod and gate agree
+ok 504 - tbdock: Updated, Last reviewed, dateModified, sitemap lastmod and gate agree
+  ---
+  duration_ms: 0.95247
+  type: 'test'
+  ...
+# Subtest: tbdock: every source is primary, listed once and cited; every citation resolves
+ok 505 - tbdock: every source is primary, listed once and cited; every citation resolves
+  ---
+  duration_ms: 0.651656
+  type: 'test'
+  ...
+# Subtest: tbdock: choosing section, capability table, USB-C monitor section and internal links
+ok 506 - tbdock: choosing section, capability table, USB-C monitor section and internal links
+  ---
+  duration_ms: 0.220765
+  type: 'test'
+  ...
+# Subtest: tbdock: exactly one theme stylesheet (visual refresh) and no other stylesheet
+ok 507 - tbdock: exactly one theme stylesheet (visual refresh) and no other stylesheet
+  ---
+  duration_ms: 0.145982
+  type: 'test'
+  ...
+# Subtest: site-origin.json declares a https origin without a trailing slash
+ok 508 - site-origin.json declares a https origin without a trailing slash
+  ---
+  duration_ms: 1.888703
+  type: 'test'
+  ...
+# Subtest: no tracked source still uses the previous github.io origin (except site-origin.json)
+ok 509 - no tracked source still uses the previous github.io origin (except site-origin.json)
+  ---
+  duration_ms: 23.655951
+  type: 'test'
+  ...
+# Subtest: CQ-TECH-02 skip-set paths are separator-independent (Windows backslashes normalize to /)
+ok 510 - CQ-TECH-02 skip-set paths are separator-independent (Windows backslashes normalize to /)
+  ---
+  duration_ms: 0.244078
+  type: 'test'
+  ...
+# Subtest: CQ-TECH-02 a retired origin in a runtime file is still detected; skipped files are not
+ok 511 - CQ-TECH-02 a retired origin in a runtime file is still detected; skipped files are not
+  ---
+  duration_ms: 1.514798
+  type: 'test'
+  ...
+# Subtest: no hard-coded project-pages base path remains in HTML
+ok 512 - no hard-coded project-pages base path remains in HTML
+  ---
+  duration_ms: 2.205214
+  type: 'test'
+  ...
+# Subtest: sitemap.xml locs all use the declared origin
+ok 513 - sitemap.xml locs all use the declared origin
+  ---
+  duration_ms: 0.332167
+  type: 'test'
+  ...
+# Subtest: analytics script uses root-absolute /analytics.js
+ok 514 - analytics script uses root-absolute /analytics.js
+  ---
+  duration_ms: 0.203269
+  type: 'test'
+  ...
+# Subtest: VRF-0 same HTML page set as main baseline
+ok 515 - VRF-0 same HTML page set as main baseline
+  ---
+  duration_ms: 4.73501
+  type: 'test'
+  ...
+# Subtest: VRF about.html: SEO fields byte-identical to main and only the theme link added
+ok 516 - VRF about.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 1.72579
+  type: 'test'
+  ...
+# Subtest: VRF compatibility/macbook-air-m5-dell-u2725qe.html: SEO fields byte-identical to main and only the theme link added
+ok 517 - VRF compatibility/macbook-air-m5-dell-u2725qe.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.651438
+  type: 'test'
+  ...
+# Subtest: VRF compatibility/ps5-dell-u2725qe.html: SEO fields byte-identical to main and only the theme link added
+ok 518 - VRF compatibility/ps5-dell-u2725qe.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.511175
+  type: 'test'
+  ...
+# Subtest: VRF disclosure.html: SEO fields byte-identical to main and only the theme link added
+ok 519 - VRF disclosure.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.347821
+  type: 'test'
+  ...
+# Subtest: VRF google387f44b87908ecac.html: SEO fields byte-identical to main and only the theme link added
+ok 520 - VRF google387f44b87908ecac.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.742815
+  type: 'test'
+  ...
+# Subtest: VRF guides/bios-fast-boot-troubleshooter.html: SEO fields byte-identical to main and only the theme link added
+ok 521 - VRF guides/bios-fast-boot-troubleshooter.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 1.775579
+  type: 'test'
+  ...
+# Subtest: VRF guides/console-handheld-display-hub.html: SEO fields byte-identical to main and only the theme link added
+ok 522 - VRF guides/console-handheld-display-hub.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.925517
+  type: 'test'
+  ...
+# Subtest: VRF guides/console-hdmi-avr-passthrough-path.html: SEO fields byte-identical to main and only the theme link added
+ok 523 - VRF guides/console-hdmi-avr-passthrough-path.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.623847
+  type: 'test'
+  ...
+# Subtest: VRF guides/display-connection-solver.html: SEO fields byte-identical to main and only the theme link added
+ok 524 - VRF guides/display-connection-solver.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 1.756286
+  type: 'test'
+  ...
+# Subtest: VRF guides/displayport-monitor-connection-path.html: SEO fields byte-identical to main and only the theme link added
+ok 525 - VRF guides/displayport-monitor-connection-path.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.438332
+  type: 'test'
+  ...
+# Subtest: VRF guides/dual-monitor-dock-mst-vs-thunderbolt.html: SEO fields byte-identical to main and only the theme link added
+ok 526 - VRF guides/dual-monitor-dock-mst-vs-thunderbolt.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.36076
+  type: 'test'
+  ...
+# Subtest: VRF guides/external-monitor-not-detected.html: SEO fields byte-identical to main and only the theme link added
+ok 527 - VRF guides/external-monitor-not-detected.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.439242
+  type: 'test'
+  ...
+# Subtest: VRF guides/hdmi-capture-passthrough-path.html: SEO fields byte-identical to main and only the theme link added
+ok 528 - VRF guides/hdmi-capture-passthrough-path.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.285191
+  type: 'test'
+  ...
+# Subtest: VRF guides/index.html: SEO fields byte-identical to main and only the theme link added
+ok 529 - VRF guides/index.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.249455
+  type: 'test'
+  ...
+# Subtest: VRF guides/ipad-usbc-to-monitor-hdmi.html: SEO fields byte-identical to main and only the theme link added
+ok 530 - VRF guides/ipad-usbc-to-monitor-hdmi.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.394095
+  type: 'test'
+  ...
+# Subtest: VRF guides/laptop-to-docking-station.html: SEO fields byte-identical to main and only the theme link added
+ok 531 - VRF guides/laptop-to-docking-station.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.31278
+  type: 'test'
+  ...
+# Subtest: VRF guides/macbook-to-hdmi-display.html: SEO fields byte-identical to main and only the theme link added
+ok 532 - VRF guides/macbook-to-hdmi-display.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.323524
+  type: 'test'
+  ...
+# Subtest: VRF guides/monitor-stuck-at-60hz.html: SEO fields byte-identical to main and only the theme link added
+ok 533 - VRF guides/monitor-stuck-at-60hz.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.851348
+  type: 'test'
+  ...
+# Subtest: VRF guides/nintendo-switch-2-display-path.html: SEO fields byte-identical to main and only the theme link added
+ok 534 - VRF guides/nintendo-switch-2-display-path.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.349225
+  type: 'test'
+  ...
+# Subtest: VRF guides/ps5-hdmi-2-1-cable-path.html: SEO fields byte-identical to main and only the theme link added
+ok 535 - VRF guides/ps5-hdmi-2-1-cable-path.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.346354
+  type: 'test'
+  ...
+# Subtest: VRF guides/ps5-to-1440p-monitor.html: SEO fields byte-identical to main and only the theme link added
+ok 536 - VRF guides/ps5-to-1440p-monitor.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.340127
+  type: 'test'
+  ...
+# Subtest: VRF guides/steam-deck-external-display.html: SEO fields byte-identical to main and only the theme link added
+ok 537 - VRF guides/steam-deck-external-display.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.286209
+  type: 'test'
+  ...
+# Subtest: VRF guides/thunderbolt-dock-one-cable-4k-120.html: SEO fields byte-identical to main and only the theme link added
+ok 538 - VRF guides/thunderbolt-dock-one-cable-4k-120.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.531745
+  type: 'test'
+  ...
+# Subtest: VRF guides/usb-c-dock-display-limits.html: SEO fields byte-identical to main and only the theme link added
+ok 539 - VRF guides/usb-c-dock-display-limits.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.465056
+  type: 'test'
+  ...
+# Subtest: VRF guides/usb-c-hub-vs-dock.html: SEO fields byte-identical to main and only the theme link added
+ok 540 - VRF guides/usb-c-hub-vs-dock.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.536109
+  type: 'test'
+  ...
+# Subtest: VRF guides/usb-c-laptop-to-4k-monitor.html: SEO fields byte-identical to main and only the theme link added
+ok 541 - VRF guides/usb-c-laptop-to-4k-monitor.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.363626
+  type: 'test'
+  ...
+# Subtest: VRF guides/usb-c-pd-charger-compatibility.html: SEO fields byte-identical to main and only the theme link added
+ok 542 - VRF guides/usb-c-pd-charger-compatibility.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.260907
+  type: 'test'
+  ...
+# Subtest: VRF guides/usb-c-phone-to-monitor.html: SEO fields byte-identical to main and only the theme link added
+ok 543 - VRF guides/usb-c-phone-to-monitor.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.43736
+  type: 'test'
+  ...
+# Subtest: VRF guides/usb-c-to-hdmi-adapter-path.html: SEO fields byte-identical to main and only the theme link added
+ok 544 - VRF guides/usb-c-to-hdmi-adapter-path.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.342954
+  type: 'test'
+  ...
+# Subtest: VRF guides/usb4-vs-thunderbolt-4-monitor.html: SEO fields byte-identical to main and only the theme link added
+ok 545 - VRF guides/usb4-vs-thunderbolt-4-monitor.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.280304
+  type: 'test'
+  ...
+# Subtest: VRF guides/xbox-series-display-compatibility.html: SEO fields byte-identical to main and only the theme link added
+ok 546 - VRF guides/xbox-series-display-compatibility.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.298381
+  type: 'test'
+  ...
+# Subtest: VRF index.html: SEO fields byte-identical to main and only the theme link added
+ok 547 - VRF index.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.399271
+  type: 'test'
+  ...
+# Subtest: VRF methodology.html: SEO fields byte-identical to main and only the theme link added
+ok 548 - VRF methodology.html: SEO fields byte-identical to main and only the theme link added
+  ---
+  duration_ms: 0.178712
+  type: 'test'
+  ...
+# Subtest: VRF-CSS theme stylesheet is local, lightweight, no external fonts/CDNs/imports
+ok 549 - VRF-CSS theme stylesheet is local, lightweight, no external fonts/CDNs/imports
+  ---
+  duration_ms: 0.323124
+  type: 'test'
+  ...
+# Subtest: VRF-MUT guard detects a changed title, href and body copy
+ok 550 - VRF-MUT guard detects a changed title, href and body copy
+  ---
+  duration_ms: 1.941202
+  type: 'test'
+  ...
+1..550
+# tests 550
+# suites 0
+# pass 550
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 346.25243

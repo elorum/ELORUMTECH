@@ -1,0 +1,7 @@
+fresh git clone into /tmp/tmp.y6PJJLzzvl/c; git checkout -B main 41087ce8d41e0d3374f6e8d3d45b191b6e7c8bc0 (origin/main = 41087ce8d41e0d3374f6e8d3d45b191b6e7c8bc0); generator + extractor copied from REBASE01 head 03b9e547 (not yet pushed when regenerated)
+$ git rev-parse HEAD -> 41087ce8d41e0d3374f6e8d3d45b191b6e7c8bc0
+$ git rev-parse main -> 41087ce8d41e0d3374f6e8d3d45b191b6e7c8bc0
+$ node tools/make-seo-freeze-baseline.mjs main
+33 pages from 41087ce8d41e0d3374f6e8d3d45b191b6e7c8bc0
+$ cmp docs/seo-freeze-baseline.json <REBASE01 head>:docs/seo-freeze-baseline.json
+BYTE-IDENTICAL (regenerated == committed)
