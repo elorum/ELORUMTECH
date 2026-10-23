@@ -1,0 +1,15 @@
+{
+ "schema": "elorumtech-site-author/1",
+ "note": "Single source of truth for the visible byline and JSON-LD author. Owner-confirmed display name (Nicki, 2026-10-23). Do not add job title, credentials, location, photo or social links without the owner.",
+ "name": "Nicki A.",
+ "jsonLd": {
+  "@type": "Person",
+  "name": "Nicki A."
+ },
+ "bylineHtml": "By <a href=\"../about.html#editor\">Nicki A.</a>",
+ "aboutAnchor": "about.html#editor",
+ "publisher": {
+  "@type": "Organization",
+  "name": "ELORUMTECH"
+ }
+}
