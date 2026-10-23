@@ -1,0 +1,50 @@
+{
+  "schema": "elorumtech-guide-sources/1",
+  "job": "ELORUMTECH-IDX-QUALITY-02B-20261024-01",
+  "page": "guides/steam-deck-external-display.html",
+  "note": "Sources for the IDX-QUALITY-02B data table on this page. Every quote is verbatim from the live page, re-fetched by DEV-01 on the checked_at time (CEST; whitespace normalised). Every figure in the table carries [ID] and must appear in that source's quotes (tests/seo-idx-quality-02b.test.mjs). MI-SOLV-043..052 (unverified console items) are excluded.",
+  "sources": [
+    {
+      "id": "VLV1",
+      "url": "https://www.steamdeck.com/en/tech/deck",
+      "title": "Valve — Steam Deck LCD tech specs",
+      "publisher": "Valve",
+      "kind": "manufacturer_spec",
+      "vendor_claim": false,
+      "checked_at": "2026-10-24T01:43:15+02:00",
+      "quotes": [
+        "USB-C with DisplayPort 1.4 Alt-mode support; up to 8K @60Hz or 4K @120Hz, USB 3.2 Gen 2"
+      ]
+    },
+    {
+      "id": "VLV2",
+      "url": "https://www.steamdeck.com/en/tech",
+      "title": "Valve — Steam Deck OLED tech specs",
+      "publisher": "Valve",
+      "kind": "manufacturer_spec",
+      "vendor_claim": false,
+      "checked_at": "2026-10-24T01:43:16+02:00",
+      "quotes": [
+        "Display port over Type C; up to 8K @60Hz or 4K @120Hz, USB3 gen 2",
+        "PD3.0 Type C power supply, 45W"
+      ]
+    },
+    {
+      "id": "VLV3",
+      "url": "https://www.steamdeck.com/en/tech/dock",
+      "title": "Valve — Steam Deck Docking Station tech specs",
+      "publisher": "Valve",
+      "kind": "manufacturer_spec",
+      "vendor_claim": false,
+      "checked_at": "2026-10-24T01:43:16+02:00",
+      "quotes": [
+        "DisplayPort 1.4",
+        "HDMI 2.0",
+        "Supports up to 4k 60hz, or 1440p 120hz",
+        "FreeSync (VRR) support",
+        "* MST support currently requires both the HDMI and DisplayPort ports to be in use, update is forthcoming",
+        "USB-C power delivery passthrough input"
+      ]
+    }
+  ]
+}

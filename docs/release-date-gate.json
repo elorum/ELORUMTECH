@@ -9,7 +9,7 @@
       "file": "guides/ps5-to-1440p-monitor.html",
       "url": "https://elorumtech.elorum.world/guides/ps5-to-1440p-monitor.html",
       "visibleUpdated": true,
-      "intendedReleaseDate": "2026-10-17"
+      "intendedReleaseDate": "2026-10-24"
     },
     {
       "file": "compatibility/ps5-dell-u2725qe.html",
@@ -75,7 +75,7 @@
       "file": "guides/ps5-hdmi-2-1-cable-path.html",
       "url": "https://elorumtech.elorum.world/guides/ps5-hdmi-2-1-cable-path.html",
       "visibleUpdated": true,
-      "intendedReleaseDate": "2026-10-23"
+      "intendedReleaseDate": "2026-10-24"
     },
     {
       "file": "guides/thunderbolt-dock-one-cable-4k-120.html",
@@ -146,6 +146,30 @@
     {
       "file": "guides/dual-monitor-dock-mst-vs-thunderbolt.html",
       "url": "https://elorumtech.elorum.world/guides/dual-monitor-dock-mst-vs-thunderbolt.html",
+      "visibleUpdated": true,
+      "intendedReleaseDate": "2026-10-24"
+    },
+    {
+      "file": "guides/xbox-series-display-compatibility.html",
+      "url": "https://elorumtech.elorum.world/guides/xbox-series-display-compatibility.html",
+      "visibleUpdated": true,
+      "intendedReleaseDate": "2026-10-24"
+    },
+    {
+      "file": "guides/nintendo-switch-2-display-path.html",
+      "url": "https://elorumtech.elorum.world/guides/nintendo-switch-2-display-path.html",
+      "visibleUpdated": true,
+      "intendedReleaseDate": "2026-10-24"
+    },
+    {
+      "file": "guides/steam-deck-external-display.html",
+      "url": "https://elorumtech.elorum.world/guides/steam-deck-external-display.html",
+      "visibleUpdated": true,
+      "intendedReleaseDate": "2026-10-24"
+    },
+    {
+      "file": "guides/console-hdmi-avr-passthrough-path.html",
+      "url": "https://elorumtech.elorum.world/guides/console-hdmi-avr-passthrough-path.html",
       "visibleUpdated": true,
       "intendedReleaseDate": "2026-10-24"
     }
