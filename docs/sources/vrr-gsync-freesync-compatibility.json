@@ -1,0 +1,305 @@
+{
+ "schema": "elorumtech-guide-sources/1",
+ "job": "ELORUMTECH-SEO-VRR-20261023-01",
+ "page": "guides/vrr-gsync-freesync-compatibility.html",
+ "note": "Primary sources for the VRR / G-SYNC / FreeSync compatibility guide. Every quote is verbatim from the fetched page (whitespace normalised). checked_at = when DEV-01 fetched it (CEST). Every figure on the page is cited with [ID] and must appear in that source's quotes (tests/seo-vrr.test.mjs). NV3/NV4 are NVIDIA support articles last updated 09/29/2021; for HDMI 2.1 VRR GPU generation the page shows both NV2 (GeForce 30 series and higher, G-SYNC Compatible list footnote) and NV3 (GTX 16/RTX 20 and higher) side by side rather than picking one. VRR through docks, DP-to-HDMI adapters and MST hubs is not documented by these sources and is labelled as such on the page.",
+ "sources": [
+  {
+   "id": "HL1",
+   "url": "https://www.hdmi.org/spec2sub/variablerefreshrate",
+   "title": "HDMI LA — Variable Refresh Rate (VRR)",
+   "publisher": "HDMI Licensing Administrator",
+   "kind": "standard_body",
+   "checked_at": "2026-10-23T10:41:10+02:00",
+   "quotes": [
+    "VRR enables a gaming source such as a console or computer to deliver video frames as fast as it can, which in many cases is slower than the normal static refresh rate.",
+    "VRR reduces or eliminates lag, judder and frame tearing for more fluid and better detailed gameplay.",
+    "By waiting until the next frame is ready to transport it, a smoother gaming experience can be provided to the user."
+   ]
+  },
+  {
+   "id": "HL2",
+   "url": "https://www.hdmi.org/spec2sub/gaming",
+   "title": "HDMI LA — HDMI gaming features (VRR, ALLM, QFT)",
+   "publisher": "HDMI Licensing Administrator",
+   "kind": "standard_body",
+   "checked_at": "2026-10-23T10:41:10+02:00",
+   "quotes": [
+    "Gaming-specific features include Variable Refresh Rate (VRR), Auto Low Latency Mode (ALLM) and Quick Frame Transport (QFT).",
+    "The Xbox Series X and Sony PS5 consoles were the first to support the latest HDMI-enabled gaming features"
+   ]
+  },
+  {
+   "id": "HF1",
+   "url": "https://hdmiforum.org/hdmi-forum-releases-version-2-1-hdmi-specification/",
+   "title": "HDMI Forum — HDMI Forum releases Version 2.1 of the HDMI Specification",
+   "publisher": "HDMI Forum",
+   "kind": "standard_body",
+   "checked_at": "2026-10-23T10:41:12+02:00",
+   "quotes": [
+    "Variable Refresh Rate (VRR) reduces or eliminates lag, stutter and frame tearing for more fluid and better detailed gameplay."
+   ]
+  },
+  {
+   "id": "V1",
+   "url": "https://www.displayport.org/faq/",
+   "title": "VESA DisplayPort — FAQ (Adaptive-Sync, docks, adapters)",
+   "publisher": "VESA",
+   "kind": "standard_body",
+   "checked_at": "2026-10-23T10:41:12+02:00",
+   "quotes": [
+    "AdaptiveSync was first supported by DisplayPort 1.2a",
+    "This is also branded as “Free-Sync” from AMD, which is based on VESA’s AdaptiveSync Standard.",
+    "The dock can also include a DisplayPort branch device to support one or more downstream display devices"
+   ]
+  },
+  {
+   "id": "V2",
+   "url": "https://www.adaptivesync.org/",
+   "title": "VESA — AdaptiveSync Display and MediaSync Display certification",
+   "publisher": "VESA",
+   "kind": "standard_body",
+   "checked_at": "2026-10-23T10:41:13+02:00",
+   "quotes": [
+    "A component of the VESA DisplayPort video interface standard, VESA’s Adaptive-Sync protocols enable smoother, tear-free images for gaming and jitter-free video playback.",
+    "is now supported by all major GPU chipset vendors",
+    "PCs and laptop monitors must pass a comprehensive and rigorous set of more than 50 test criteria"
+   ]
+  },
+  {
+   "id": "NV1",
+   "url": "https://www.nvidia.com/en-us/geforce/products/g-sync-monitors/",
+   "title": "NVIDIA — G-SYNC monitors (G-SYNC, G-SYNC ULTIMATE, G-SYNC Compatible)",
+   "publisher": "NVIDIA",
+   "kind": "manufacturer_spec",
+   "checked_at": "2026-10-23T10:41:14+02:00",
+   "quotes": [
+    "Doesn’t use NVIDIA processors but is validated by NVIDIA to deliver a good, basic variable refresh rate (VRR) experience for tear-free, stutter-free gaming."
+   ]
+  },
+  {
+   "id": "NV2",
+   "url": "https://www.nvidia.com/en-us/geforce/products/g-sync-monitors/specs/",
+   "title": "NVIDIA — G-SYNC monitor list and specs (footnote 2)",
+   "publisher": "NVIDIA",
+   "kind": "manufacturer_spec",
+   "checked_at": "2026-10-23T10:43:51+02:00",
+   "quotes": [
+    "G-SYNC Compatible monitors support variable refresh rate on GeForce 10 series and higher GPUs on Display Port and GeForce 30 series and higher GPUs on HDMI 2.1."
+   ]
+  },
+  {
+   "id": "NV3",
+   "url": "https://nvidia.custhelp.com/app/answers/detail/a_id/4764",
+   "title": "NVIDIA Support — Do G-SYNC Compatible displays work on both DisplayPort and HDMI with GeForce GPUs? (updated 09/29/2021)",
+   "publisher": "NVIDIA",
+   "kind": "manufacturer_support",
+   "checked_at": "2026-10-23T10:42:06+02:00",
+   "quotes": [
+    "NVIDIA GeForce GTX 10 series (Pascal) and higher GPUs supports VESA Adaptive-Sync variable refresh rate over the DisplayPort 1.2a standard.",
+    "If you have a G-SYNC Compatible monitor, VRR features will be enabled automatically giving you an improved experience in games.",
+    "It may work, it may work partly, or it may not work at all.",
+    "NVIDA GeForce GTX 16 series/RTX 20 series (Turing) and higher will support variable refresh rate over HDMI on displays which support this feature over HDMI 2.1."
+   ]
+  },
+  {
+   "id": "NV4",
+   "url": "https://nvidia.custhelp.com/app/answers/detail/a_id/4767",
+   "title": "NVIDIA Support — What are the system requirements for G-SYNC Compatible display technology? (updated 09/29/2021)",
+   "publisher": "NVIDIA",
+   "kind": "manufacturer_support",
+   "checked_at": "2026-10-23T10:42:06+02:00",
+   "quotes": [
+    "G-Sync Compatible monitor connected natively via DisplayPort v1.2",
+    "Some Adaptive Sync monitors will ship with the variable refresh rate setting set to disabled.",
+    "The monitor must be configured as a DisplayPort 1.2a or higher to support Adaptive Sync."
+   ]
+  },
+  {
+   "id": "NV5",
+   "url": "https://www.nvidia.com/content/Control-Panel-Help/vLatest/en-us/mergedProjects/Display/To_use_variable_refresh_rates.htm",
+   "title": "NVIDIA Control Panel Help — To use variable refresh rates",
+   "publisher": "NVIDIA",
+   "kind": "manufacturer_support",
+   "checked_at": "2026-10-23T10:41:15+02:00",
+   "quotes": [
+    "This step applies to either G-SYNC Compatible displays or VRR displays that have not been validated by NVIDIA as G-SYNC Compatible."
+   ]
+  },
+  {
+   "id": "AMD1",
+   "url": "https://www.amd.com/en/products/graphics/technologies/freesync.html",
+   "title": "AMD — AMD FreeSync technology (tiers, FAQ, compatible docks)",
+   "publisher": "AMD",
+   "kind": "manufacturer_spec",
+   "checked_at": "2026-10-23T10:41:15+02:00",
+   "quotes": [
+    "leverages industry standards such as DisplayPort™ Adaptive-Sync and HDMI Variable Refresh Rate",
+    "AMD FreeSync technology can be delivered through DisplayPort and HDMI® connections.",
+    "VESA AdaptiveSync certification may not necessarily equate to AMD FreeSync certification.",
+    "categorizes displays into three tiers – AMD FreeSync, AMD FreeSync Premium, and AMD FreeSync Premium Pro",
+    "All displays in the AMD FreeSync Premium and FreeSync Premium Pro tier are certified to meet mandatory LFC requirements.",
+    "Yes, FreeSync technology has supported HDMI since its inception.",
+    "Buying a FreeSync certified display that supports FreeSync over HDMI, provides the immediate benefit of variable refresh rate, even if the display does not support HDMI 2.1.",
+    "Make sure you enable AMD FreeSync technology in your display’s settings.",
+    "If your game FPS is regularly exceeding your display’s refresh rate, you can turn on V-Sync or cap your framerate for the best tear-free visual experience.",
+    "Other GPUs, such as the Nvidia GeForce 10 series and newer, that support DisplayPort Adaptive-Sync, are also expected to work with AMD FreeSync technology; please check with your GPU manufacturer.",
+    "Featured AMD FreeSync Compatible Docks",
+    "Enabling smooth gaming experiences when using supported AMD Ryzen™ AI 400 Series powered devices with external displays."
+   ]
+  },
+  {
+   "id": "AMD2",
+   "url": "https://www.amd.com/en/resources/support-articles/faqs/DH3-013.html",
+   "title": "AMD Support — How to enable and configure AMD FreeSync (DH3-013)",
+   "publisher": "AMD",
+   "kind": "manufacturer_support",
+   "checked_at": "2026-10-23T10:41:15+02:00",
+   "quotes": [
+    "AMD Software should automatically enable AMD FreeSync on systems with compatible AMD graphics and certified displays.",
+    "ensure that the display panel is configured using manufacturer recommended settings for AMD FreeSync."
+   ]
+  },
+  {
+   "id": "IN1",
+   "url": "https://www.intel.com/content/www/us/en/support/articles/000098241/graphics.html",
+   "title": "Intel Support — VRR over HDMI shows Not supported in Intel Arc Control (000098241)",
+   "publisher": "Intel",
+   "kind": "manufacturer_support",
+   "checked_at": "2026-10-23T10:41:34+02:00",
+   "quotes": [
+    "Verify the HDMI input on the Display is HDMI 2.1 standard.",
+    "The display must also support VESA Adaptive Sync since this is the VRR supported by Intel Arc A-Series / B-Series GPUs.",
+    "Once you have verified your display supports the standard, contact your display manufacturer."
+   ]
+  },
+  {
+   "id": "IN2",
+   "url": "https://www.intel.com/content/www/us/en/developer/articles/technical/enabling-intel-adaptive-sync-with-11th-generation-intel-processor-graphics-and-microsoft.html",
+   "title": "Intel Developer — Enabling Intel Adaptive Sync with 11th-generation Intel Processor Graphics",
+   "publisher": "Intel",
+   "kind": "manufacturer_support",
+   "checked_at": "2026-10-23T10:41:36+02:00",
+   "quotes": [
+    "11th-generation Intel Processor Graphics",
+    "A monitor that supports VESA* Adaptive Sync",
+    "Adaptive Sync enabled in the Intel® Graphics Control Panel",
+    "A DisplayPort* cable must be used (HDMI* is not currently being supported)"
+   ]
+  },
+  {
+   "id": "PS1",
+   "url": "https://www.playstation.com/en-us/support/hardware/ps5-4k-resolution-guide/",
+   "title": "PlayStation Support — How to change PS5 console resolution (VRR, 120 Hz, ALLM settings)",
+   "publisher": "Sony Interactive Entertainment",
+   "kind": "manufacturer_support",
+   "checked_at": "2026-10-23T10:41:15+02:00",
+   "quotes": [
+    "Go to Settings > Screen and Video",
+    "Allow the refresh rate to adjust in real time while using TVs and games that support VRR (variable refresh rate).",
+    "Turn on Apply to Unsupported Games to stabilize the frame rate for games even if they don't support VRR.",
+    "VRR is disabled during 8K output.",
+    "Is the PS5 console connected to an appropriate HDMI port (2.1) on the TV?",
+    "To completely turn off ALLM, you must also set VRR to Off"
+   ]
+  },
+  {
+   "id": "PS2",
+   "url": "https://blog.playstation.com/2022/04/25/variable-refresh-rate-support-for-ps5-is-rolling-out-this-week/",
+   "title": "PlayStation Blog — Variable Refresh Rate support for PS5 is rolling out this week",
+   "publisher": "Sony Interactive Entertainment",
+   "kind": "manufacturer_support",
+   "checked_at": "2026-10-23T10:41:17+02:00",
+   "quotes": [
+    "On HDMI 2.1 VRR-compatible TVs and PC monitors, VRR dynamically syncs the refresh rate of the display to the PS5 console’s graphical output.",
+    "VRR will automatically be enabled for supported games if your PS5 console is connected to an HDMI 2.1 VRR-compatible TV or PC monitor."
+   ]
+  },
+  {
+   "id": "XB1",
+   "url": "https://www.xbox.com/en-US/consoles/xbox-series-x",
+   "title": "Xbox — Xbox Series X tech specs",
+   "publisher": "Microsoft",
+   "kind": "manufacturer_spec",
+   "checked_at": "2026-10-23T10:43:24+02:00",
+   "quotes": [
+    "HDMI Variable Refresh Rate. AMD FreeSync.",
+    "1x HDMI 2.1 port"
+   ]
+  },
+  {
+   "id": "XB2",
+   "url": "https://www.xbox.com/en-US/consoles/xbox-series-s",
+   "title": "Xbox — Xbox Series S tech specs",
+   "publisher": "Microsoft",
+   "kind": "manufacturer_spec",
+   "checked_at": "2026-10-23T10:43:29+02:00",
+   "quotes": [
+    "HDMI Variable Refresh Rate. AMD FreeSync.",
+    "1x HDMI 2.1 port"
+   ]
+  },
+  {
+   "id": "XB3",
+   "url": "https://news.xbox.com/en-us/2020/11/06/is-your-tv-ready-to-power-your-dreams/",
+   "title": "Xbox Wire — You’re ready to power your dreams: is your TV?",
+   "publisher": "Microsoft",
+   "kind": "manufacturer_support",
+   "checked_at": "2026-10-23T10:43:37+02:00",
+   "quotes": [
+    "its most advanced features require HDMI 2.1 connection.",
+    "On some TVs, only specific HDMI ports support HDMI 2.1",
+    "Many TV manufacturers have added support for some of these features via firmware updates"
+   ]
+  },
+  {
+   "id": "XB4",
+   "url": "https://news.xbox.com/en-us/2023/09/05/xbox-september-2023-update/",
+   "title": "Xbox Wire — The Xbox September Update (VRR options)",
+   "publisher": "Microsoft",
+   "kind": "manufacturer_support",
+   "checked_at": "2026-10-23T10:41:17+02:00",
+   "quotes": [
+    "You can select if you want VRR to be “Always On,” “Gaming Only,” or “Off.”"
+   ]
+  },
+  {
+   "id": "AP1",
+   "url": "https://support.apple.com/en-us/102144",
+   "title": "Apple Support — Use an Adaptive Sync external display with your Mac",
+   "publisher": "Apple",
+   "kind": "manufacturer_support",
+   "checked_at": "2026-10-23T10:41:17+02:00",
+   "quotes": [
+    "you need macOS Monterey 12 or later",
+    "Any Mac with Apple silicon",
+    "connect your Adaptive Sync display to the Thunderbolt port of your Mac using a Thunderbolt, USB-C, or other DisplayPort-enabled cable. Do not use an HDMI cable or adapter.",
+    "Choose Variable or Adaptive from the Refresh Rate pop-up menu.",
+    "Turn off variable refresh rate."
+   ]
+  },
+  {
+   "id": "AP2",
+   "url": "https://support.apple.com/en-us/102236",
+   "title": "Apple Support — Use an 8K or 4K display with your Mac (HDMI VRR)",
+   "publisher": "Apple",
+   "kind": "manufacturer_support",
+   "checked_at": "2026-10-23T10:41:17+02:00",
+   "quotes": [
+    "These Mac models support 8K resolution, 4K resolution with refresh rates of up to 240Hz, and VRR on a compatible external display:",
+    "On some TVs, these settings appear under different names such as “game mode” for VRR"
+   ]
+  },
+  {
+   "id": "AP3",
+   "url": "https://support.apple.com/guide/mac-help/use-adaptive-sync-with-your-mac-mchld453162e/mac",
+   "title": "Apple Mac User Guide — Use Adaptive Sync with your Mac",
+   "publisher": "Apple",
+   "kind": "manufacturer_support",
+   "checked_at": "2026-10-23T10:41:18+02:00",
+   "quotes": [
+    "If you’re not gaming or if you’re using a display that’s not validated, Adaptive Sync may cause the screen to flicker."
+   ]
+  }
+ ]
+}

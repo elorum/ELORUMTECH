@@ -88,6 +88,12 @@
       "url": "https://elorumtech.elorum.world/guides/displayport-vs-hdmi.html",
       "visibleUpdated": true,
       "intendedReleaseDate": "2026-10-23"
+    },
+    {
+      "file": "guides/vrr-gsync-freesync-compatibility.html",
+      "url": "https://elorumtech.elorum.world/guides/vrr-gsync-freesync-compatibility.html",
+      "visibleUpdated": true,
+      "intendedReleaseDate": "2026-10-23"
     }
   ]
 }
