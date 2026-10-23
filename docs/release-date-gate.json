@@ -1,6 +1,6 @@
 {
   "schema": "elorumtech-release-date-gate/1",
-  "intendedReleaseDate": "2026-10-23",
+  "intendedReleaseDate": "2026-10-24",
   "status": "CONFIRMED",
   "confirmedBy": "Nicki",
   "note": "intendedReleaseDate is the default / current ship date for release mode. Each page may set its own intendedReleaseDate; omitted pages use the top-level value. A page intendedReleaseDate set to null fails (does not fall back). In release mode each per-page date must be <= the ship date. Consistency checks dateModified, visible 'Updated:' (where visibleUpdated) and sitemap lastmod against that page's declared date. Nicki confirms release dates. Before release set status to CONFIRMED and confirmedBy, then run: npm run release-gate (uses today Europe/Copenhagen) or npm run release-gate -- --ship-date=YYYY-MM-DD. Unrelated historical dates are out of scope.",
@@ -45,7 +45,7 @@
       "file": "guides/monitor-stuck-at-60hz.html",
       "url": "https://elorumtech.elorum.world/guides/monitor-stuck-at-60hz.html",
       "visibleUpdated": true,
-      "intendedReleaseDate": "2026-10-18"
+      "intendedReleaseDate": "2026-10-24"
     },
     {
       "file": "guides/usb-c-dock-display-limits.html",
@@ -69,7 +69,7 @@
       "file": "guides/laptop-to-docking-station.html",
       "url": "https://elorumtech.elorum.world/guides/laptop-to-docking-station.html",
       "visibleUpdated": true,
-      "intendedReleaseDate": "2026-10-18"
+      "intendedReleaseDate": "2026-10-24"
     },
     {
       "file": "guides/ps5-hdmi-2-1-cable-path.html",
@@ -129,13 +129,25 @@
       "file": "guides/usb-c-laptop-to-4k-monitor.html",
       "url": "https://elorumtech.elorum.world/guides/usb-c-laptop-to-4k-monitor.html",
       "visibleUpdated": true,
-      "intendedReleaseDate": "2026-10-18"
+      "intendedReleaseDate": "2026-10-24"
     },
     {
       "file": "about.html",
       "url": "https://elorumtech.elorum.world/about.html",
       "visibleUpdated": true,
       "intendedReleaseDate": "2026-10-23"
+    },
+    {
+      "file": "guides/usb4-vs-thunderbolt-4-monitor.html",
+      "url": "https://elorumtech.elorum.world/guides/usb4-vs-thunderbolt-4-monitor.html",
+      "visibleUpdated": true,
+      "intendedReleaseDate": "2026-10-24"
+    },
+    {
+      "file": "guides/dual-monitor-dock-mst-vs-thunderbolt.html",
+      "url": "https://elorumtech.elorum.world/guides/dual-monitor-dock-mst-vs-thunderbolt.html",
+      "visibleUpdated": true,
+      "intendedReleaseDate": "2026-10-24"
     }
   ]
 }

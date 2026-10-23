@@ -1,0 +1,93 @@
+{
+  "schema": "elorumtech-guide-sources/1",
+  "job": "ELORUMTECH-IDX-QUALITY-02A-20261024-01",
+  "page": "guides/monitor-stuck-at-60hz.html",
+  "note": "Sources for the IDX-QUALITY-02A data table on this page. Every quote is verbatim from the live page, re-fetched by DEV-01 on the checked_at time (CEST; whitespace normalised; PDFs via pdftotext). Every figure in the table carries [ID] and must appear in that source's quotes (tests/seo-idx-quality-02a.test.mjs). vendor_claim=true marks dock-maker statements, labelled as vendor claims on the page.",
+  "sources": [
+    {
+      "id": "LG1",
+      "url": "https://www.lg.com/us/support/help-library/lg-ultragear-gaming-monitor-how-to-enable-higher-refresh-rates--20154629827365",
+      "title": "LG Support — [LG UltraGear Gaming Monitor] How to enable Higher Refresh Rates (120Hz and Above)",
+      "publisher": "LG Electronics",
+      "kind": "manufacturer_support",
+      "vendor_claim": false,
+      "checked_at": "2026-10-24T00:39:20+02:00",
+      "quotes": [
+        "Higher refresh rates (such as 120Hz, 144Hz, 165Hz, 240Hz, 350Hz, 480Hz, etc.) may or may not be supported depending on the cable connection (a DP 1.4 or HDMI 2.0 or higher cable is required)",
+        "To support higher refresh rates, make sure to use a DP 1.4 or HDMI 2.0 (or higher) cable included with the monitor.",
+        "In the settings menu, check if the input refresh rate (120Hz and above) is displayed correctly.",
+        "07/09/2025"
+      ]
+    },
+    {
+      "id": "H1",
+      "url": "https://hdmiforum.org/hdmi-forum-releases-version-2-0-hdmi-specification/",
+      "title": "HDMI Forum — HDMI Specification 2.0 release",
+      "publisher": "HDMI Forum",
+      "kind": "standard_body",
+      "vendor_claim": false,
+      "checked_at": "2026-10-24T00:39:22+02:00",
+      "quotes": [
+        "today announced the release of Version 2.0 of the HDMI Specification.",
+        "offers a significant increase in bandwidth (up to 18Gbps) to support new features such as 4K@50/60 (2160p)"
+      ]
+    },
+    {
+      "id": "PL2",
+      "url": "https://kb.plugable.com/general-support-articles/how-to-determine-your-usb-c-port-video-capabilities",
+      "title": "Plugable KB — How to determine your USB-C port video capabilities",
+      "publisher": "Plugable",
+      "kind": "manufacturer_support",
+      "vendor_claim": true,
+      "checked_at": "2026-10-24T00:39:17+02:00",
+      "quotes": [
+        "DisplayPort video data is transmitted directly from the USB-C port, taking up two or four of the USB SuperSpeed data lines.",
+        "DisplayPort 1.4 capable hosts can support a single 8K 30Hz/4K 120Hz display and USB 2.0 data, or a single 4K 60Hz display and USB 10Gbps data.",
+        "Not all USB-C ports support video output."
+      ]
+    },
+    {
+      "id": "MS3",
+      "url": "https://support.microsoft.com/en-us/windows/hardware/display-graphics/change-the-refresh-rate-on-your-monitor-in-windows",
+      "title": "Microsoft Support — Change the refresh rate on your monitor in Windows",
+      "publisher": "Microsoft",
+      "kind": "manufacturer_support",
+      "vendor_claim": false,
+      "checked_at": "2026-10-24T00:39:22+02:00",
+      "quotes": [
+        "Windows 11 introduced a new feature called Dynamic Refresh Rate (DRR) that automatically adjusts the refresh rate based on what you are doing at the time.",
+        "DRR requires that a display supports VRR and a refresh rate of at least 120 Hz.",
+        "DRR should not affect games designed for VRR, but it can limit the maximum refresh rate of other games.",
+        "Use the Dynamic refresh rate toggle to turn DRR on or off."
+      ]
+    },
+    {
+      "id": "CDG2",
+      "url": "https://www.caldigit.com/adding-a-high-refresh-rate-monitor-up-to-4k-144hz/",
+      "title": "CalDigit KB — Adding a High Refresh Rate Monitor Up to 4K/144Hz",
+      "publisher": "CalDigit",
+      "kind": "manufacturer_support",
+      "vendor_claim": true,
+      "checked_at": "2026-10-24T00:39:22+02:00",
+      "quotes": [
+        "Some 4K/144Hz monitors do not have DSC (Display Stream Compression) feature turned on by default.",
+        "You will need to enable DSC support from monitor’s OSD menu manually."
+      ]
+    },
+    {
+      "id": "PS1",
+      "url": "https://www.playstation.com/en-us/support/hardware/ps5-4k-resolution-guide/",
+      "title": "PlayStation Support — PS5 4K resolution guide (Video Transfer Rate)",
+      "publisher": "Sony Interactive Entertainment",
+      "kind": "manufacturer_support",
+      "vendor_claim": false,
+      "checked_at": "2026-10-24T00:39:22+02:00",
+      "quotes": [
+        "Adjust the transfer rate for 4K resolution video.",
+        "If you experience flickering on the screen, try selecting -1 or -2 to limit output.",
+        "When you select -1 the following output is limited: 4K 120 Hz",
+        "When you select -2 the following output is limited: 4K 120 Hz"
+      ]
+    }
+  ]
+}
