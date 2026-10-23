@@ -107,3 +107,12 @@ footer :focus-visible{outline-color:var(--amber)!important}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
 }
+/* REM02: dynamically rendered solver states (display/solver-ui.js) on cream/chalk */
+.verdict{color:var(--ink)!important;border-color:var(--line)}
+.v-pass{border-color:var(--forest)!important}.v-fail{border-color:var(--wine)!important}
+.v-unknown{border-color:var(--warn-ink)!important}.v-conditional{border-color:var(--cobalt)!important}
+.err{color:var(--wine)!important}
+/* REM02: focus ring inside the navy consent banner (analytics.js untouched) */
+#elorumtech-analytics-consent :focus-visible{outline-color:var(--amber)!important}
+/* REM02: keep focus rings inside clipping boxes (breadcrumb band clip-path, scrolling tables) */
+nav[aria-label="Breadcrumb"] :focus-visible,.tbl :focus-visible,.tablewrap a:focus-visible{outline-offset:-2px!important}
