@@ -1,0 +1,1334 @@
+{
+  "schema_version": "0.2.0-impl",
+  "note": "Real-device library for the Display & Connection Solver (job ELORUMTECH-SOLVER-ADDITIONS-20261023-01). Evidence EV-DF01..EV-DF42 = docs/sources/display-connection-solver.json facts DF01..DF42. Device records carry only what those quotes state; every other field is UNKNOWN, so these devices alone never produce PASS. Named link tiers (HBR3, UHBR 20) converted to numbers are DERIVED, never VERIFIED.",
+  "evidence": [
+    {
+      "id": "EV-DF01",
+      "source_url": "https://www.nintendo.com/us/gaming-systems/switch-2/tech-specs/",
+      "source_title": "Nintendo of America — Nintendo Switch 2 Tech Specs",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "Maximum of 3840x2160 (4K) resolution at 60 fps (TV mode)",
+      "checked_at": "2026-10-23T23:07:03+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-001; Nintendo Switch 2 (TV mode, in the Nintendo Switch 2 Dock) / HDMI out (dock). Further quotes: docs/sources/display-connection-solver.json DF01."
+    },
+    {
+      "id": "EV-DF02",
+      "source_url": "https://www.nintendo.com/us/gaming-systems/switch-2/tech-specs/",
+      "source_title": "Nintendo of America — Nintendo Switch 2 Tech Specs",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "Supports 120 fps when 1920x1080/2560x1440 resolutions are selected",
+      "checked_at": "2026-10-23T23:07:03+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-002; Nintendo Switch 2 (TV mode) / HDMI out (dock). Further quotes: docs/sources/display-connection-solver.json DF02."
+    },
+    {
+      "id": "EV-DF03",
+      "source_url": "https://support.nintendo.com/sg/switch2/play/use/playmode/tvmode/index.html",
+      "source_title": "Nintendo — Playing in TV Mode | Nintendo Switch 2 Support",
+      "source_kind": "manufacturer_support",
+      "relevant_evidence": "The length of both the Ultra High Speed HDMI® cable, and USB-C® charging cable is 1.5 meters.",
+      "checked_at": "2026-10-23T23:07:04+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-003; Nintendo Switch 2 (TV mode) / HDMI cable. Further quotes: docs/sources/display-connection-solver.json DF03."
+    },
+    {
+      "id": "EV-DF04",
+      "source_url": "https://www.nintendo.com/en-gb/Hardware/Nintendo-Switch-2/Nintendo-Switch-2-Specifications-2785627.html",
+      "source_title": "Nintendo UK — Nintendo Switch 2 – Specifications",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "Capacitive touch screen / 7.9 inch wide colour gamut LCD screen / 1920x1080 resolution / HDR10 support / VRR up to 120 Hz",
+      "checked_at": "2026-10-23T23:07:04+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-004; Nintendo Switch 2 / Built-in screen (not the TV output). Further quotes: docs/sources/display-connection-solver.json DF04."
+    },
+    {
+      "id": "EV-DF05",
+      "source_url": "https://www.steamdeck.com/en/tech/deck",
+      "source_title": "Valve — Steam Deck Tech Specs (LCD)",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "USB-C with DisplayPort 1.4 Alt-mode support; up to 8K @60Hz or 4K @120Hz, USB 3.2 Gen 2",
+      "checked_at": "2026-10-23T23:07:04+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-005; Valve Steam Deck LCD / USB-C. Further quotes: docs/sources/display-connection-solver.json DF05."
+    },
+    {
+      "id": "EV-DF06",
+      "source_url": "https://www.steamdeck.com/en/tech",
+      "source_title": "Valve — Steam Deck Tech Specs (OLED)",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "Display port over Type C; up to 8K @60Hz or 4K @120Hz, USB3 gen 2",
+      "checked_at": "2026-10-23T23:07:05+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-006; Valve Steam Deck OLED / USB-C. Further quotes: docs/sources/display-connection-solver.json DF06."
+    },
+    {
+      "id": "EV-DF07",
+      "source_url": "https://www.steamdeck.com/en/tech/dock",
+      "source_title": "Valve — Steam Deck Docking Station Tech Specs",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "Supports up to 4k 60hz, or 1440p 120hz",
+      "checked_at": "2026-10-23T23:07:05+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-007; Valve Steam Deck Docking Station / DisplayPort 1.4 and HDMI 2.0 outputs. Further quotes: docs/sources/display-connection-solver.json DF07."
+    },
+    {
+      "id": "EV-DF08",
+      "source_url": "https://www.steamdeck.com/en/tech/dock",
+      "source_title": "Valve — Steam Deck Docking Station Tech Specs",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "* MST support currently requires both the HDMI and DisplayPort ports to be in use, update is forthcoming",
+      "checked_at": "2026-10-23T23:07:05+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-008; Valve Steam Deck Docking Station / HDMI and DisplayPort. Further quotes: docs/sources/display-connection-solver.json DF08."
+    },
+    {
+      "id": "EV-DF09",
+      "source_url": "https://www.steamdeck.com/en/tech/dock",
+      "source_title": "Valve — Steam Deck Docking Station Tech Specs",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "FreeSync (VRR) support",
+      "checked_at": "2026-10-23T23:07:05+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-009; Valve Steam Deck Docking Station / Display outputs. Further quotes: docs/sources/display-connection-solver.json DF09."
+    },
+    {
+      "id": "EV-DF10",
+      "source_url": "https://www.playstation.com/en-ph/local/news/playstation5-launch-day/",
+      "source_title": "Sony Interactive Entertainment — PlayStation 5 launches in the Philippines (spec sheet)",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "Support of 4K 120Hz TVs, 8K TVs, VRR (specified by HDMI ver.2.1)",
+      "checked_at": "2026-10-23T23:07:06+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-010; Sony PlayStation 5 (launch spec sheet) / HDMI out. Further quotes: docs/sources/display-connection-solver.json DF10."
+    },
+    {
+      "id": "EV-DF11",
+      "source_url": "https://www.playstation.com/en-us/ps5/ps5-features/",
+      "source_title": "Sony Interactive Entertainment — PS5 features",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "*1440p video output on PS5 requires a TV or PC monitor that supports 1440p/60Hz, or 1440p/60Hz and 120Hz.",
+      "checked_at": "2026-10-23T23:07:06+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-011; Sony PlayStation 5 / HDMI out. Further quotes: docs/sources/display-connection-solver.json DF11."
+    },
+    {
+      "id": "EV-DF12",
+      "source_url": "https://www.playstation.com/en-us/ps5/ps5-features/",
+      "source_title": "Sony Interactive Entertainment — PS5 features",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "ALLM is only available on compatible TVs with HDMI 2.1",
+      "checked_at": "2026-10-23T23:07:06+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-012; Sony PlayStation 5 / HDMI out. Further quotes: docs/sources/display-connection-solver.json DF12."
+    },
+    {
+      "id": "EV-DF13",
+      "source_url": "https://www.xbox.com/en-US/consoles/xbox-series-s",
+      "source_title": "Microsoft — Xbox Series S",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "Gaming Resolution. 1440p",
+      "checked_at": "2026-10-23T23:07:07+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-013; Microsoft Xbox Series S / HDMI out. Further quotes: docs/sources/display-connection-solver.json DF13."
+    },
+    {
+      "id": "EV-DF14",
+      "source_url": "https://www.xbox.com/en-US/consoles/xbox-series-x",
+      "source_title": "Microsoft — Xbox Series X",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "High Dynamic Range. Up to 8K HDR",
+      "checked_at": "2026-10-23T23:07:07+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-014; Microsoft Xbox Series X / HDMI out. Further quotes: docs/sources/display-connection-solver.json DF14."
+    },
+    {
+      "id": "EV-DF15",
+      "source_url": "https://www.apple.com/macbook-air/specs/",
+      "source_title": "Apple — MacBook Air - Tech Specs",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "Thunderbolt 4 (USB‑C) ports support native DisplayPort 1.4 speeds (up to HBR3) with DSC capability",
+      "checked_at": "2026-10-23T23:07:07+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-015; Apple MacBook Air (M5) / Thunderbolt 4 (USB-C). Further quotes: docs/sources/display-connection-solver.json DF15."
+    },
+    {
+      "id": "EV-DF16",
+      "source_url": "https://www.apple.com/macbook-air/specs/",
+      "source_title": "Apple — MacBook Air - Tech Specs",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "Supports up to two external displays",
+      "checked_at": "2026-10-23T23:07:07+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-016; Apple MacBook Air (M5) / Thunderbolt 4 (USB-C). Further quotes: docs/sources/display-connection-solver.json DF16."
+    },
+    {
+      "id": "EV-DF17",
+      "source_url": "https://www.apple.com/macbook-pro/specs/",
+      "source_title": "Apple — MacBook Pro - Tech Specs",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "Thunderbolt 5 (USB-C) ports support native DisplayPort 2.1 speeds",
+      "checked_at": "2026-10-23T23:40:32+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-017; Apple MacBook Pro (M5 Max) / Thunderbolt 5 (USB-C). Further quotes: docs/sources/display-connection-solver.json DF17."
+    },
+    {
+      "id": "EV-DF18",
+      "source_url": "https://www.apple.com/macbook-pro/specs/",
+      "source_title": "Apple — MacBook Pro - Tech Specs",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "Thunderbolt 4 (USB-C) ports support native DisplayPort 1.4 speeds",
+      "checked_at": "2026-10-23T23:40:32+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-018; Apple MacBook Pro (M5) / Thunderbolt 4 (USB-C). Further quotes: docs/sources/display-connection-solver.json DF18."
+    },
+    {
+      "id": "EV-DF19",
+      "source_url": "https://support.apple.com/en-us/101571",
+      "source_title": "Apple Support — How many displays can be connected to MacBook Pro",
+      "source_kind": "manufacturer_support",
+      "relevant_evidence": "Three displays up to a native resolution of 6K (6144 x 3456) at 60Hz or 4K (3840 x 2160) at 144Hz over Thunderbolt or HDMI",
+      "checked_at": "2026-10-23T23:07:07+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-019; Apple MacBook Pro (M5 Pro) / Thunderbolt or HDMI. Further quotes: docs/sources/display-connection-solver.json DF19."
+    },
+    {
+      "id": "EV-DF20",
+      "source_url": "https://support.apple.com/en-us/101571",
+      "source_title": "Apple Support — How many displays can be connected to MacBook Pro",
+      "source_kind": "manufacturer_support",
+      "relevant_evidence": "Four displays up to a native resolution of 6K (6144 x 3456) at 60Hz or 4K (3840 x 2160) at 144Hz over Thunderbolt or HDMI",
+      "checked_at": "2026-10-23T23:07:07+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-020; Apple MacBook Pro (M5 Max) / Thunderbolt or HDMI. Further quotes: docs/sources/display-connection-solver.json DF20."
+    },
+    {
+      "id": "EV-DF21",
+      "source_url": "https://support.apple.com/en-us/101571",
+      "source_title": "Apple Support — How many displays can be connected to MacBook Pro",
+      "source_kind": "manufacturer_support",
+      "relevant_evidence": "MacBook Pro models with the M4 chip or M4 Pro chip support up to two external displays simultaneously with the built-in display",
+      "checked_at": "2026-10-23T23:07:07+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-021; Apple MacBook Pro (M4 or M4 Pro) / Thunderbolt or HDMI. Further quotes: docs/sources/display-connection-solver.json DF21."
+    },
+    {
+      "id": "EV-DF22",
+      "source_url": "https://support.apple.com/en-us/101571",
+      "source_title": "Apple Support — How many displays can be connected to MacBook Pro",
+      "source_kind": "manufacturer_support",
+      "relevant_evidence": "MacBook Pro models introduced in 2023 or later with the M3 chip support up to two external displays simultaneously with lid closed",
+      "checked_at": "2026-10-23T23:07:07+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-022; Apple MacBook Pro (M3, 2023 or later) / Thunderbolt or HDMI. Further quotes: docs/sources/display-connection-solver.json DF22."
+    },
+    {
+      "id": "EV-DF23",
+      "source_url": "https://support.apple.com/en-us/101571",
+      "source_title": "Apple Support — How many displays can be connected to MacBook Pro",
+      "source_kind": "manufacturer_support",
+      "relevant_evidence": "Using a supported hub or daisy-chaining displays can enable up to 3 displays over a single Thunderbolt port, but does not increase the maximum number of displays that you can connect.",
+      "checked_at": "2026-10-23T23:07:07+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-023; Apple MacBook Pro (M5 Pro) / Thunderbolt. Further quotes: docs/sources/display-connection-solver.json DF23."
+    },
+    {
+      "id": "EV-DF24",
+      "source_url": "https://www.apple.com/studio-display/specs/",
+      "source_title": "Apple — Studio Display - Technical Specifications",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "for host (with 96W host charging)",
+      "checked_at": "2026-10-23T23:07:07+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-024; Apple Studio Display (Thunderbolt 5 model) / Thunderbolt 5 upstream and downstream. Further quotes: docs/sources/display-connection-solver.json DF24."
+    },
+    {
+      "id": "EV-DF25",
+      "source_url": "https://www.dell.com/support/contents/en-us/article/product-support/self-support-knowledgebase/monitor-screen-video/guide-daisy-chain-monitors",
+      "source_title": "Dell — How to Daisy Chain Monitors for a Multi-Display Setup",
+      "source_kind": "manufacturer_support",
+      "relevant_evidence": "macOS only allows monitor daisy chaining via Thunderbolt.",
+      "checked_at": "2026-10-23T23:07:07+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-025; Dell monitors (Dell daisy-chain guide) / DisplayPort, USB-C DP Alt Mode, Thunderbolt. Further quotes: docs/sources/display-connection-solver.json DF25."
+    },
+    {
+      "id": "EV-DF26",
+      "source_url": "https://www.caldigit.com/thunderbolt-5-dock-ts5-plus/",
+      "source_title": "CalDigit — Thunderbolt 5 Dock | TS5 Plus",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "M1-M4 Pro, M1-M4 Max, M4, M5 base, and Ultra Mac users can connect dual displays to the TS5 Plus.",
+      "checked_at": "2026-10-23T23:07:07+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-026; CalDigit TS5 Plus / Thunderbolt 5 host. Further quotes: docs/sources/display-connection-solver.json DF26."
+    },
+    {
+      "id": "EV-DF27",
+      "source_url": "https://www.caldigit.com/thunderbolt-5-dock-ts5-plus/",
+      "source_title": "CalDigit — Thunderbolt 5 Dock | TS5 Plus",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "Thunderbolt 4 Windows or Mac host computers do not support triple displays.",
+      "checked_at": "2026-10-23T23:07:07+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-027; CalDigit TS5 Plus / Thunderbolt host. Further quotes: docs/sources/display-connection-solver.json DF27."
+    },
+    {
+      "id": "EV-DF28",
+      "source_url": "https://www.caldigit.com/thunderbolt-5-dock-ts5-plus/",
+      "source_title": "CalDigit — Thunderbolt 5 Dock | TS5 Plus",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "Base M1-M3 Macs only support a single display through the Thunderbolt connection.",
+      "checked_at": "2026-10-23T23:07:07+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-028; CalDigit TS5 Plus / Thunderbolt host. Further quotes: docs/sources/display-connection-solver.json DF28."
+    },
+    {
+      "id": "EV-DF29",
+      "source_url": "https://www.caldigit.com/thunderbolt-5-dock-ts5-plus/",
+      "source_title": "CalDigit — Thunderbolt 5 Dock | TS5 Plus",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "140W Power Delivery",
+      "checked_at": "2026-10-23T23:07:07+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-029; CalDigit TS5 Plus / Thunderbolt 5 host. Further quotes: docs/sources/display-connection-solver.json DF29."
+    },
+    {
+      "id": "EV-DF30",
+      "source_url": "https://www.caldigit.com/thunderbolt-5-dock-ts5-plus/",
+      "source_title": "CalDigit — Thunderbolt 5 Dock | TS5 Plus",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "Higher refresh-rates (above 60Hz) may require DSC (Display Stream Compression) support on the monitors and host GPU.",
+      "checked_at": "2026-10-23T23:07:07+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-030; CalDigit TS5 Plus / Display outputs. Further quotes: docs/sources/display-connection-solver.json DF30."
+    },
+    {
+      "id": "EV-DF31",
+      "source_url": "https://www.caldigit.com/thunderbolt-5-dock-ts5/",
+      "source_title": "CalDigit — Thunderbolt 5 Dock | TS5",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "The two downstream Thunderbolt 5 ports charge at 15W each.",
+      "checked_at": "2026-10-23T23:07:07+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-031; CalDigit TS5 / Downstream Thunderbolt 5. Further quotes: docs/sources/display-connection-solver.json DF31."
+    },
+    {
+      "id": "EV-DF32",
+      "source_url": "https://www.owc.com/solutions/thunderbolt-5-dock",
+      "source_title": "OWC — OWC Thunderbolt 5 Dock",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "Connect up to three 8K displays on Windows or dual 6K displays on Mac",
+      "checked_at": "2026-10-23T23:07:08+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-032; OWC Thunderbolt 5 Dock / Thunderbolt 5 downstream. Further quotes: docs/sources/display-connection-solver.json DF32."
+    },
+    {
+      "id": "EV-DF33",
+      "source_url": "https://www.lg.com/us/monitors/lg-32gs95ue-b-gaming-monitor",
+      "source_title": "LG Electronics USA — 32-Inch UltraGear OLED Gaming Monitor - 32GS95UE-B",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "Graphics card that supports DisplayPort 1.4 or HDMI 2.1 are required to achieve up to 240Hz refresh rate support.",
+      "checked_at": "2026-10-23T23:07:08+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-033; LG UltraGear 32GS95UE-B / DisplayPort and HDMI inputs. Further quotes: docs/sources/display-connection-solver.json DF33."
+    },
+    {
+      "id": "EV-DF34",
+      "source_url": "https://www.lg.com/us/monitors/lg-32gs95ue-b-gaming-monitor",
+      "source_title": "LG Electronics USA — 32-Inch UltraGear OLED Gaming Monitor - 32GS95UE-B",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "NVIDIA® G-SYNC® Compatible supports variable refresh rate on GeForce GTX 10 Series and higher GPUs on Display Port, and GeForce RTX 30 Series and higher GPUs on HDMI 2.1.",
+      "checked_at": "2026-10-23T23:07:08+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-034; LG UltraGear 32GS95UE-B / DisplayPort and HDMI 2.1. Further quotes: docs/sources/display-connection-solver.json DF34."
+    },
+    {
+      "id": "EV-DF35",
+      "source_url": "https://www.msi.com/Monitor/MPG-321URX-QD-OLED/Specification",
+      "source_title": "MSI — MPG 321URX QD-OLED Specification",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "Type C(DP alt.): 3840 x 2160 (Up to 240Hz) and 90W PD charging",
+      "checked_at": "2026-10-23T23:07:08+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-035; MSI MPG 321URX QD-OLED / DP 1.4a, 2x HDMI 2.1, USB-C (DP alt.). Further quotes: docs/sources/display-connection-solver.json DF35."
+    },
+    {
+      "id": "EV-DF36",
+      "source_url": "https://www.gigabyte.com/Monitor/AORUS-FO32U2P/sp",
+      "source_title": "GIGABYTE — AORUS FO32U2P Specifications",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "1 x Displayport 2.1 (UHBR 20) in",
+      "checked_at": "2026-10-23T23:07:08+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-036; GIGABYTE AORUS FO32U2P / DisplayPort 2.1 (UHBR 20) input, USB-C. Further quotes: docs/sources/display-connection-solver.json DF36."
+    },
+    {
+      "id": "EV-DF37",
+      "source_url": "https://www.amd.com/en/products/graphics/desktops/radeon/9000-series/amd-radeon-rx-9070xt.html",
+      "source_title": "AMD — AMD Radeon RX 9070 XT",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "DisplayPort™ 2.1a HDMI™ 2.1b",
+      "checked_at": "2026-10-23T23:07:08+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-037; AMD Radeon RX 9070 XT / Display outputs. Further quotes: docs/sources/display-connection-solver.json DF37."
+    },
+    {
+      "id": "EV-DF38",
+      "source_url": "https://www.intel.com/content/www/us/en/products/sku/241598/intel-arc-b580-graphics/specifications.html",
+      "source_title": "Intel — Intel Arc B580 Graphics Specifications",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "HDMI* 2.1, DP2.1 up to UHBR 13.5, DP2.1 up to UHBR 10",
+      "checked_at": "2026-10-23T23:07:09+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-038; Intel Arc B580 / Display outputs. Further quotes: docs/sources/display-connection-solver.json DF38."
+    },
+    {
+      "id": "EV-DF39",
+      "source_url": "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5080/",
+      "source_title": "NVIDIA — GeForce RTX 5080 Graphics Cards",
+      "source_kind": "manufacturer_spec",
+      "relevant_evidence": "4 independent displays at 4K 165Hz using DP or HDMI",
+      "checked_at": "2026-10-23T23:07:09+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-039; NVIDIA GeForce RTX 5080 (Founders Edition spec page) / DisplayPort and HDMI. Further quotes: docs/sources/display-connection-solver.json DF39."
+    },
+    {
+      "id": "EV-DF40",
+      "source_url": "https://vesa.org/featured-articles/vesa-releases-updated-displayport-alt-mode-spec-to-bring-displayport-2-0-performance-to-usb4-and-new-usb-type-c-devices/",
+      "source_title": "VESA — VESA Releases Updated DisplayPort Alt Mode Spec to Bring DisplayPort 2.0 Performance to USB4 and New USB Type-C Devices",
+      "source_kind": "standard_body",
+      "relevant_evidence": "With DisplayPort Alt Mode, the USB-C connector can transmit up to 80 Gigabits per second (Gbps) of DisplayPort video data utilizing all four high-speed lanes in the cable, or up to 40 Gbps with simultaneous SuperSpeed USB data delivery.",
+      "checked_at": "2026-10-23T23:07:09+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-040; VESA DisplayPort Alt Mode 2.0 / USB-C. Further quotes: docs/sources/display-connection-solver.json DF40."
+    },
+    {
+      "id": "EV-DF41",
+      "source_url": "https://www.usb.org/sites/default/files/2022-09/USB%20PG%20USB4%20Version%202.0%2080Gbps%20Announcement_FINAL.pdf",
+      "source_title": "USB Promoter Group — USB Promoter Group Announces USB4 Version 2.0 (80Gbps announcement, PDF)",
+      "source_kind": "standard_body",
+      "relevant_evidence": "Up to 80 Gbps operation, based on a new physical layer architecture, using existing 40 Gbps USB Type-C passive cables and newly-defined 80 Gbps USB Type-C active cables.",
+      "checked_at": "2026-10-23T23:07:09+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-041; USB4 Version 2.0 (USB Promoter Group) / USB-C. Further quotes: docs/sources/display-connection-solver.json DF41."
+    },
+    {
+      "id": "EV-DF42",
+      "source_url": "https://www.adaptivesync.org/",
+      "source_title": "VESA — VESA Adaptive-Sync Display (AdaptiveSync Display and MediaSync Display)",
+      "source_kind": "standard_body",
+      "relevant_evidence": "AdaptiveSync Display guarantees higher refresh rates and low latency, optimized for gaming, plus a lab-certified max refresh rate so you know your display’s full potential.",
+      "checked_at": "2026-10-23T23:07:09+02:00",
+      "page_date": null,
+      "confidence": "VERIFIED",
+      "notes": "MI-SOLV-042; VESA AdaptiveSync Display and MediaSync Display / DisplayPort Adaptive-Sync. Further quotes: docs/sources/display-connection-solver.json DF42."
+    }
+  ],
+  "devices": [
+    {
+      "device_id": "APPLE-MACBOOK-AIR-M5",
+      "role": "source",
+      "identity": {
+        "manufacturer": {
+          "value": "Apple",
+          "status": "VERIFIED",
+          "evidence_ids": [
+            "EV-DF15"
+          ]
+        },
+        "model": {
+          "value": "MacBook Air (M5)",
+          "status": "VERIFIED",
+          "evidence_ids": [
+            "EV-DF15"
+          ]
+        },
+        "revision": {
+          "value": null,
+          "status": "UNKNOWN"
+        }
+      },
+      "ports": [
+        {
+          "port_id": "Thunderbolt 4 (USB-C)",
+          "physical_connector": "USB-C",
+          "direction": "output",
+          "link": {
+            "protocol": "UNKNOWN",
+            "version_label": {
+              "value": "DisplayPort 1.4",
+              "status": "VERIFIED",
+              "evidence_ids": [
+                "EV-DF15"
+              ]
+            },
+            "max_link_rate_per_lane": {
+              "value": 8.1,
+              "status": "DERIVED",
+              "derived_from": [
+                "EV-DF15 \"up to HBR3\"",
+                "display/standards.json HBR3 = 8.1 Gbit/s per lane (DERIVED: tier name to number)"
+              ],
+              "unit": "Gbit/s per lane"
+            },
+            "lane_count": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "encoding": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "raw_bitrate": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "usable_payload": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "dsc": {
+              "value": true,
+              "status": "VERIFIED",
+              "evidence_ids": [
+                "EV-DF15"
+              ]
+            }
+          },
+          "features": {
+            "hdr": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "max_bit_depth_bpc": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "chroma_formats": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "vrr": {
+              "value": null,
+              "status": "UNKNOWN"
+            }
+          }
+        }
+      ],
+      "max_displays": {
+        "value": 2,
+        "status": "VERIFIED",
+        "evidence_ids": [
+          "EV-DF16"
+        ]
+      }
+    },
+    {
+      "device_id": "APPLE-MACBOOK-PRO-M5",
+      "role": "source",
+      "identity": {
+        "manufacturer": {
+          "value": "Apple",
+          "status": "VERIFIED",
+          "evidence_ids": [
+            "EV-DF18"
+          ]
+        },
+        "model": {
+          "value": "MacBook Pro (M5)",
+          "status": "VERIFIED",
+          "evidence_ids": [
+            "EV-DF18"
+          ]
+        },
+        "revision": {
+          "value": null,
+          "status": "UNKNOWN"
+        }
+      },
+      "ports": [
+        {
+          "port_id": "Thunderbolt 4 (USB-C)",
+          "physical_connector": "USB-C",
+          "direction": "output",
+          "link": {
+            "protocol": "UNKNOWN",
+            "version_label": {
+              "value": "DisplayPort 1.4",
+              "status": "VERIFIED",
+              "evidence_ids": [
+                "EV-DF18"
+              ]
+            },
+            "max_link_rate_per_lane": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "lane_count": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "encoding": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "raw_bitrate": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "usable_payload": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "dsc": {
+              "value": null,
+              "status": "UNKNOWN"
+            }
+          },
+          "features": {
+            "hdr": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "max_bit_depth_bpc": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "chroma_formats": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "vrr": {
+              "value": null,
+              "status": "UNKNOWN"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "device_id": "APPLE-MACBOOK-PRO-M5-MAX",
+      "role": "source",
+      "identity": {
+        "manufacturer": {
+          "value": "Apple",
+          "status": "VERIFIED",
+          "evidence_ids": [
+            "EV-DF17"
+          ]
+        },
+        "model": {
+          "value": "MacBook Pro (M5 Max)",
+          "status": "VERIFIED",
+          "evidence_ids": [
+            "EV-DF17"
+          ]
+        },
+        "revision": {
+          "value": null,
+          "status": "UNKNOWN"
+        }
+      },
+      "ports": [
+        {
+          "port_id": "Thunderbolt 5 (USB-C)",
+          "physical_connector": "USB-C",
+          "direction": "output",
+          "link": {
+            "protocol": "UNKNOWN",
+            "version_label": {
+              "value": "DisplayPort 2.1",
+              "status": "VERIFIED",
+              "evidence_ids": [
+                "EV-DF17"
+              ]
+            },
+            "max_link_rate_per_lane": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "lane_count": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "encoding": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "raw_bitrate": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "usable_payload": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "dsc": {
+              "value": null,
+              "status": "UNKNOWN"
+            }
+          },
+          "features": {
+            "hdr": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "max_bit_depth_bpc": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "chroma_formats": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "vrr": {
+              "value": null,
+              "status": "UNKNOWN"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "device_id": "VALVE-STEAM-DECK-LCD",
+      "role": "source",
+      "identity": {
+        "manufacturer": {
+          "value": "Valve",
+          "status": "VERIFIED",
+          "evidence_ids": [
+            "EV-DF05"
+          ]
+        },
+        "model": {
+          "value": "Steam Deck LCD",
+          "status": "VERIFIED",
+          "evidence_ids": [
+            "EV-DF05"
+          ]
+        },
+        "revision": {
+          "value": null,
+          "status": "UNKNOWN"
+        }
+      },
+      "ports": [
+        {
+          "port_id": "USB-C",
+          "physical_connector": "USB-C",
+          "direction": "output",
+          "link": {
+            "protocol": "USB-C_DP_AltMode",
+            "version_label": {
+              "value": "DisplayPort 1.4 Alt-mode",
+              "status": "VERIFIED",
+              "evidence_ids": [
+                "EV-DF05"
+              ]
+            },
+            "max_link_rate_per_lane": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "lane_count": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "encoding": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "raw_bitrate": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "usable_payload": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "dsc": {
+              "value": null,
+              "status": "UNKNOWN"
+            }
+          },
+          "features": {
+            "hdr": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "max_bit_depth_bpc": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "chroma_formats": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "vrr": {
+              "value": null,
+              "status": "UNKNOWN"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "device_id": "VALVE-STEAM-DECK-OLED",
+      "role": "source",
+      "identity": {
+        "manufacturer": {
+          "value": "Valve",
+          "status": "VERIFIED",
+          "evidence_ids": [
+            "EV-DF06"
+          ]
+        },
+        "model": {
+          "value": "Steam Deck OLED",
+          "status": "VERIFIED",
+          "evidence_ids": [
+            "EV-DF06"
+          ]
+        },
+        "revision": {
+          "value": null,
+          "status": "UNKNOWN"
+        }
+      },
+      "ports": [
+        {
+          "port_id": "USB-C",
+          "physical_connector": "USB-C",
+          "direction": "output",
+          "link": {
+            "protocol": "UNKNOWN",
+            "version_label": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "max_link_rate_per_lane": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "lane_count": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "encoding": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "raw_bitrate": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "usable_payload": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "dsc": {
+              "value": null,
+              "status": "UNKNOWN"
+            }
+          },
+          "features": {
+            "hdr": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "max_bit_depth_bpc": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "chroma_formats": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "vrr": {
+              "value": null,
+              "status": "UNKNOWN"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "device_id": "VALVE-STEAM-DECK-DOCK",
+      "role": "dock",
+      "identity": {
+        "manufacturer": {
+          "value": "Valve",
+          "status": "VERIFIED",
+          "evidence_ids": [
+            "EV-DF07"
+          ]
+        },
+        "model": {
+          "value": "Steam Deck Docking Station",
+          "status": "VERIFIED",
+          "evidence_ids": [
+            "EV-DF07"
+          ]
+        },
+        "revision": {
+          "value": null,
+          "status": "UNKNOWN"
+        }
+      },
+      "ports": [
+        {
+          "port_id": "USB-C (to Steam Deck)",
+          "physical_connector": "USB-C",
+          "direction": "input",
+          "link": {
+            "protocol": "UNKNOWN",
+            "version_label": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "max_link_rate_per_lane": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "lane_count": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "encoding": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "raw_bitrate": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "usable_payload": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "dsc": {
+              "value": null,
+              "status": "UNKNOWN"
+            }
+          },
+          "features": {
+            "hdr": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "max_bit_depth_bpc": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "chroma_formats": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "vrr": {
+              "value": null,
+              "status": "UNKNOWN"
+            }
+          }
+        },
+        {
+          "port_id": "HDMI 2.0",
+          "physical_connector": "HDMI",
+          "direction": "output",
+          "link": {
+            "protocol": "UNKNOWN",
+            "version_label": {
+              "value": "HDMI 2.0",
+              "status": "VERIFIED",
+              "evidence_ids": [
+                "EV-DF07"
+              ]
+            },
+            "max_link_rate_per_lane": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "lane_count": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "encoding": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "raw_bitrate": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "usable_payload": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "dsc": {
+              "value": null,
+              "status": "UNKNOWN"
+            }
+          },
+          "features": {
+            "hdr": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "max_bit_depth_bpc": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "chroma_formats": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "vrr": {
+              "value": null,
+              "status": "UNKNOWN"
+            }
+          }
+        },
+        {
+          "port_id": "DisplayPort 1.4",
+          "physical_connector": "DP",
+          "direction": "output",
+          "link": {
+            "protocol": "DisplayPort",
+            "version_label": {
+              "value": "DisplayPort 1.4",
+              "status": "VERIFIED",
+              "evidence_ids": [
+                "EV-DF07"
+              ]
+            },
+            "max_link_rate_per_lane": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "lane_count": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "encoding": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "raw_bitrate": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "usable_payload": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "dsc": {
+              "value": null,
+              "status": "UNKNOWN"
+            }
+          },
+          "features": {
+            "hdr": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "max_bit_depth_bpc": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "chroma_formats": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "vrr": {
+              "value": null,
+              "status": "UNKNOWN"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "device_id": "MSI-MPG-321URX-QD-OLED",
+      "role": "sink",
+      "identity": {
+        "manufacturer": {
+          "value": "MSI",
+          "status": "VERIFIED",
+          "evidence_ids": [
+            "EV-DF35"
+          ]
+        },
+        "model": {
+          "value": "MPG 321URX QD-OLED",
+          "status": "VERIFIED",
+          "evidence_ids": [
+            "EV-DF35"
+          ]
+        },
+        "revision": {
+          "value": null,
+          "status": "UNKNOWN"
+        }
+      },
+      "ports": [
+        {
+          "port_id": "Type-C (DP alt.)",
+          "physical_connector": "USB-C",
+          "direction": "input",
+          "link": {
+            "protocol": "USB-C_DP_AltMode",
+            "version_label": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "max_link_rate_per_lane": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "lane_count": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "encoding": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "raw_bitrate": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "usable_payload": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "dsc": {
+              "value": null,
+              "status": "UNKNOWN"
+            }
+          },
+          "features": {
+            "hdr": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "max_bit_depth_bpc": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "chroma_formats": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "vrr": {
+              "value": null,
+              "status": "UNKNOWN"
+            }
+          },
+          "verified_operating_modes": [
+            {
+              "h_active": 3840,
+              "v_active": 2160,
+              "refresh_hz": 240,
+              "bit_depth_bpc": null,
+              "chroma": null,
+              "hdr": null,
+              "vrr": null,
+              "dsc_required": null,
+              "status": "VERIFIED",
+              "evidence_ids": [
+                "EV-DF35"
+              ]
+            }
+          ]
+        },
+        {
+          "port_id": "DisplayPort",
+          "physical_connector": "DP",
+          "direction": "input",
+          "link": {
+            "protocol": "DisplayPort",
+            "version_label": {
+              "value": "DisplayPort 1.4a",
+              "status": "VERIFIED",
+              "evidence_ids": [
+                "EV-DF35"
+              ]
+            },
+            "max_link_rate_per_lane": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "lane_count": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "encoding": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "raw_bitrate": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "usable_payload": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "dsc": {
+              "value": null,
+              "status": "UNKNOWN"
+            }
+          },
+          "features": {
+            "hdr": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "max_bit_depth_bpc": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "chroma_formats": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "vrr": {
+              "value": null,
+              "status": "UNKNOWN"
+            }
+          },
+          "verified_operating_modes": []
+        }
+      ]
+    },
+    {
+      "device_id": "GIGABYTE-AORUS-FO32U2P",
+      "role": "sink",
+      "identity": {
+        "manufacturer": {
+          "value": "GIGABYTE",
+          "status": "VERIFIED",
+          "evidence_ids": [
+            "EV-DF36"
+          ]
+        },
+        "model": {
+          "value": "AORUS FO32U2P",
+          "status": "VERIFIED",
+          "evidence_ids": [
+            "EV-DF36"
+          ]
+        },
+        "revision": {
+          "value": null,
+          "status": "UNKNOWN"
+        }
+      },
+      "ports": [
+        {
+          "port_id": "DisplayPort 2.1 (UHBR 20) in",
+          "physical_connector": "DP",
+          "direction": "input",
+          "link": {
+            "protocol": "DisplayPort",
+            "version_label": {
+              "value": "Displayport 2.1 (UHBR 20)",
+              "status": "VERIFIED",
+              "evidence_ids": [
+                "EV-DF36"
+              ]
+            },
+            "max_link_rate_per_lane": {
+              "value": 20,
+              "status": "DERIVED",
+              "derived_from": [
+                "EV-DF36 \"UHBR 20\"",
+                "display/standards.json UHBR20 = 20 Gbit/s per lane (DERIVED: tier name to number)"
+              ],
+              "unit": "Gbit/s per lane"
+            },
+            "lane_count": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "encoding": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "raw_bitrate": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "usable_payload": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "dsc": {
+              "value": null,
+              "status": "UNKNOWN"
+            }
+          },
+          "features": {
+            "hdr": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "max_bit_depth_bpc": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "chroma_formats": {
+              "value": null,
+              "status": "UNKNOWN"
+            },
+            "vrr": {
+              "value": null,
+              "status": "UNKNOWN"
+            }
+          },
+          "verified_operating_modes": []
+        }
+      ]
+    }
+  ]
+}

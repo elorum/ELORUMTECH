@@ -49,6 +49,27 @@ export function sourcesList(ids) {
   }).join('\n') + '\n</ul>';
 }
 
+// Verified device facts (job ELORUMTECH-SOLVER-ADDITIONS-20261023-01): rows and sources come from
+// docs/sources/display-connection-solver.json; display/devices.json holds the matching EV-DF* evidence records.
+export const DEVICE_FACTS = JSON.parse(fs.readFileSync(path.join(root, 'docs/sources/display-connection-solver.json'), 'utf8'));
+export const FACT_GROUPS = [
+  ['consoles', 'Consoles and handhelds'],
+  ['mac', 'Mac laptops and Apple displays'],
+  ['docks', 'Docks and daisy-chaining'],
+  ['monitors', 'Monitors'],
+  ['gpus', 'Graphics cards'],
+  ['standards', 'Standards']
+];
+export function deviceFacts(data = DEVICE_FACTS) {
+  return FACT_GROUPS.map(([g, label]) => {
+    const rows = data.facts.filter((f) => f.group === g).map((f) => '<tr id="' + f.id.toLowerCase() + '"><th scope="row">' + esc(f.device) + '</th><td>' + esc(f.port) + '</td><td>' + esc(f.claim) + ' <a class="srcs" href="#src-' + f.source + '">[' + f.source + ']</a></td></tr>').join('\n');
+    return '<h3 id="devices-' + g + '">' + label + '</h3>\n<div class="tablewrap" role="region" aria-label="Verified device facts: ' + label + '" tabindex="0"><table>\n<thead><tr><th scope="col">Device</th><th scope="col">Port or part</th><th scope="col">What the source states</th></tr></thead>\n<tbody>\n' + rows + '\n</tbody></table></div>';
+  }).join('\n');
+}
+export function deviceSourcesList(data = DEVICE_FACTS) {
+  return '<ul class="srclist">\n' + data.sources.map((s) => '<li id="src-' + s.id + '"><a href="' + esc(s.url) + '" rel="noopener">' + esc(s.title) + '</a> — ' + esc(s.publisher) + ', checked ' + s.checked_at.replace('T', ' ').slice(0, 16) + ' CEST</li>').join('\n') + '\n</ul>';
+}
+
 export const GENERATORS = {
   'link-table-8': () => linkTable(8),
   'link-table-10': () => linkTable(10),
@@ -57,6 +78,8 @@ export const GENERATORS = {
   'sources-solver': () => sourcesList(['V1', 'V2', 'V3', 'V4', 'A1', 'A2', 'H1', 'H2', 'MS1', 'MS2', 'MS3', 'MS4', 'MS5', 'PL1', 'PL2', 'PL3', 'PL4', 'PL5']),
   'sources-nosignal': () => sourcesList(['MS1', 'MS5', 'MS2', 'MS4', 'PL1', 'PL2', 'PL3', 'PL4', 'DL1', 'DL2', 'DL3', 'DL4', 'HP1', 'IN1', 'IN2', 'NV1', 'NV2', 'HL1']),
   'sources-usbc': () => sourcesList(['A1', 'A2', 'V2', 'V3', 'MS2', 'PL1', 'PL2', 'PL3', 'PL5']),
+  'device-facts': () => deviceFacts(),
+  'sources-devices': () => deviceSourcesList(),
   'sources-60hz': () => sourcesList(['MS3', 'PL1', 'PL2', 'PL4', 'PL5', 'V1', 'V3', 'H1', 'H2', 'V4'])
 };
 export const PAGES = ['guides/display-connection-solver.html', 'guides/external-monitor-not-detected.html', 'guides/usb-c-dock-display-limits.html', 'guides/monitor-stuck-at-60hz.html'];
