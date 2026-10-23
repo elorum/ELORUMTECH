@@ -57,7 +57,8 @@ test('t3p2 Dell: generic cable section collapsed into link to primary cable page
 test('t3p2 sitemap lastmod 2026-10-23 exactly for changed URLs', () => {
   const sm = read('sitemap.xml');
   const at = [...sm.matchAll(/<loc>([^<]+)<\/loc>\s*<lastmod>2026-10-23<\/lastmod>/g)].map((m) => m[1]).sort();
-  assert.deepEqual(at, [BASE + DELL, BASE + CABLE].sort());
+  // SEO-TBDOCK-01 also ships the Thunderbolt dock guide on 2026-10-23 (registered in docs/release-date-gate.json).
+  assert.deepEqual(at, [BASE + DELL, BASE + CABLE, BASE + 'guides/thunderbolt-dock-one-cable-4k-120.html'].sort());
   assert.match(sm, new RegExp(`<loc>${BASE}${P1440}</loc>\\s*<lastmod>2026-10-17</lastmod>`));
 });
 
