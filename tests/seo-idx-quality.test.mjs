@@ -4,6 +4,9 @@
 // FAQ JSON-LD, visible FAQ) hashed against main 275cdd8, and on the four thin guides a sourced table: every figure
 // sits next to its [ID] and appears in that source's verbatim quote in docs/sources/<page>.json (mutants below).
 // Plus hub → guide links (cards + reference-table anchors that exist), one theme link, .tablewrap convention.
+// REM01 (ELORUMTECH-SEO-IDXQUALITY-20261023-01-REM01, owner-approved fix of QA-01 F1–F4): the MacBook lead + FAQ
+// (visible and JSON-LD) no longer say most MacBooks lack HDMI, the A2119 60 Hz row lists every MacBook Apple names,
+// the adapter page's FAQ JSON-LD equals its visible answers, and the hub's reference block links only table sections.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -42,12 +45,26 @@ const FROZEN = {
   'guides/index.html': '5824f9d90aaa22901d3cdcdb3a52065385c7d7259158ff69472d9b1af58c0edd',
 };
 const PAGES = Object.keys(FROZEN);
+// REM01 deliberately changes the FAQ on these two pages; their title, meta description, H1 and canonical stay frozen
+// (sha256 of those four fields only, computed on main 275cdd8) and the FAQ is pinned by text in the REM01 tests below.
+const frozenHead = (h) => {
+  const g = (re) => (h.match(re) || [, ''])[1];
+  return crypto.createHash('sha256').update([g(/<title>([^<]*)<\/title>/), g(/<meta name="description" content="([^"]*)">/), g(/<h1[^>]*>([\s\S]*?)<\/h1>/), g(/rel="canonical" href="([^"]*)"/)].join('\u0000')).digest('hex');
+};
+const REM01_FAQ = {
+  'guides/macbook-to-hdmi-display.html': 'f64c9db82f0c34c05553441da081368103f91798c3e46b3135424b37d6722973',
+  'guides/usb-c-to-hdmi-adapter-path.html': '7ac9bd90c27d0d921de5ae0607a344b4a52ab290933ebbcfa23a6447586d6389',
+};
 // Pages this job edits (the other two already shipped the same treatment in SEO-NOSIGNAL-01 / SEO-TBDOCK-01).
 const EDITED = PAGES.filter((f) => !/external-monitor-not-detected|thunderbolt-dock-one-cable/.test(f));
 const urlOf = (f) => BASE + (f === 'guides/index.html' ? 'guides/' : f);
 
 // Standards bodies (HDMI Forum, HDMI LA, VESA, USB-IF), Intel and device-maker pages only.
 const PRIMARY = /^https:\/\/(hdmiforum\.org|www\.hdmi\.org|vesa\.org|www\.displayport\.org|www\.usb\.org|www\.thunderbolttechnology\.net\/sites\/default\/files|www\.intel\.com\/content\/dam|support\.apple\.com|www\.xbox\.com\/en-US\/consoles)\//;
+
+// MacBook models Apple names for the A2119 adapter (AP2), in Apple's order (REM01 F2: quoted in full, none dropped).
+const A2119_60 = ['16-inch MacBook Pro introduced in 2019 or later', '15-inch MacBook Pro introduced in 2017 or later', '14-inch MacBook Pro introduced in 2021 or later', '13-inch MacBook Pro with Apple silicon introduced in 2020 or later', '13-inch MacBook Pro with four Thunderbolt 3 ports introduced in 2020', 'MacBook Air introduced in 2020 or later'];
+const A2119_30 = ['13-inch MacBook Pro introduced in 2016 or later', 'MacBook introduced in 2015 or later'];
 
 // [value on page, source id cited in the same element, value as it appears in the source quote]
 const SOURCED = {
@@ -123,7 +140,7 @@ const SOURCED = {
   },
   'guides/macbook-to-hdmi-display.html': {
     ids: ['AP1', 'AP2', 'HL1'],
-    rows: ['MacBook Pro introduced in 2021 or later, built-in HDMI port', 'MacBook Pro introduced in 2012 through 2015, built-in HDMI port', 'USB-C Mac with the older adapter (macOS Sierra 10.12 or later)'],
+    rows: ['MacBook Pro introduced in 2021 or later, built-in HDMI port', 'MacBook Pro introduced in 2012 through 2015, built-in HDMI port', 'USB-C Mac with the older adapter (macOS Sierra 10.12 or later)', `${A2119_60.join(', ')}; over USB-C`, `${A2119_30.join(', ')}; over USB-C`],
     figures: [
       ['MacBook Pro models introduced in 2021 or later have their own HDMI port', 'AP1', 'to the HDMI port on these Mac models: Mac Studio introduced in 2022 or later Mac mini introduced in 2018 or later Mac Pro introduced in 2019 or later MacBook Pro introduced in 2021 or later'],
       ['connect directly with an HDMI cable', 'AP1', 'Connect directly to HDMI with an HDMI cable'],
@@ -139,6 +156,9 @@ const SOURCED = {
       ['3840 x 2160 at 30Hz; up to 1080p at 60Hz', 'AP2', 'iOS 12 or later: 3840 x 2160 at 30Hz Up to 1080p at 60Hz'],
       ['model A1621', 'AP2', 'Model A1621 supports these resolutions'],
       ['the cable class for systems up to 48Gbps', 'HL1', 'applicable for system configurations supporting up to 48Gbps maximum bandwidth'],
+      ['Apple lists a built-in HDMI port on MacBook Pro models introduced in 2021 or later', 'AP1', 'MacBook Pro introduced in 2021 or later'],
+      ['and in 2012 through 2015; those connect directly with an HDMI cable', 'AP1', 'MacBook Pro introduced in 2012 through 2015'],
+      ['HDMI adapter (or dock HDMI out) → HDMI cable → TV or monitor', 'AP1', 'USB-C port: Connect to HDMI with an adapter'],
     ],
   },
 };
@@ -158,7 +178,10 @@ function figureOk(html, json, [onPage, id, inSource]) {
 }
 
 test('idxq: titles, meta descriptions, H1, canonical, FAQ JSON-LD and visible FAQ are unchanged from main 275cdd8', () => {
-  for (const f of PAGES) assert.equal(frozen(read(f)), FROZEN[f], f);
+  for (const f of PAGES) {
+    if (REM01_FAQ[f]) assert.equal(frozenHead(read(f)), REM01_FAQ[f], `${f}: title/meta/H1/canonical`);
+    else assert.equal(frozen(read(f)), FROZEN[f], f);
+  }
 });
 
 test('idxq: frozen-field guard catches mutants (title, meta, H1, FAQ answer, FAQ JSON-LD)', () => {
@@ -314,8 +337,8 @@ test('idxq: guides hub links every guide in scope, and each reference-table link
   for (const f of PAGES.filter((x) => x !== 'guides/index.html')) assert.match(hub, new RegExp(`<div class="card"><a href="${path.basename(f).replace(/\./g, '\\.')}"><strong>`), f);
   const sec = (hub.match(/<section class="cta" aria-labelledby="ref-tables-heading">[\s\S]*?<\/section>/) || [''])[0];
   const links = [...sec.matchAll(/<li><a href="([^"#]+)(?:#([^"]+))?">([^<]+)<\/a><\/li>/g)];
-  assert.ok(links.length >= 9);
-  const want = ['displayport-monitor-connection-path.html#dp-paths', 'usb-c-hub-vs-dock.html#link-table', 'usb-c-to-hdmi-adapter-path.html#hdmi-levels', 'macbook-to-hdmi-display.html#mac-hdmi', 'thunderbolt-dock-one-cable-4k-120.html#choose', 'external-monitor-not-detected.html#no-signal', 'display-connection-solver.html', 'bios-fast-boot-troubleshooter.html#fast-boot-vs-fast-startup'];
+  assert.ok(links.length >= 8);
+  const want = ['displayport-monitor-connection-path.html#dp-paths', 'usb-c-hub-vs-dock.html#link-table', 'usb-c-to-hdmi-adapter-path.html#hdmi-levels', 'macbook-to-hdmi-display.html#mac-hdmi', 'thunderbolt-dock-one-cable-4k-120.html#choose', 'external-monitor-not-detected.html#no-signal', 'display-connection-solver.html#table'];
   const got = links.map((m) => m[1] + (m[2] ? '#' + m[2] : ''));
   for (const w of want) assert.ok(got.includes(w), w);
   for (const [, file, anchor] of links) {
@@ -349,4 +372,107 @@ test('idxq: exactly one theme stylesheet right before </head>; internal links re
   // DisplayPort guide keeps exactly one link to the DP vs HDMI guide in Related (SEO-DPVSHDMI-01).
   const rel = (read('guides/displayport-monitor-connection-path.html').match(/<section class="related"[\s\S]*?<\/section>/) || [''])[0];
   assert.equal((rel.match(/href="displayport-vs-hdmi\.html"/g) || []).length, 1);
+});
+
+// ---- REM01 (ELORUMTECH-SEO-IDXQUALITY-20261023-01-REM01) ----
+const MAC = 'guides/macbook-to-hdmi-display.html', ADP = 'guides/usb-c-to-hdmi-adapter-path.html';
+const MAC_FAQ_Q = 'Do MacBooks need a USB-C to HDMI adapter?';
+const MAC_FAQ_A = 'Not always. Apple lists a built-in HDMI port on MacBook Pro models introduced in 2021 or later and in 2012 through 2015; those connect directly with an HDMI cable. Other MacBooks need an adapter for HDMI TVs/monitors (USB-C/Thunderbolt to HDMI on USB-C Macs)—unless you use a dock with HDMI out or a USB-C/Thunderbolt display instead.';
+const visFaq = (h) => [...((h.match(/<section class="faq"[\s\S]*?<\/section>/) || [''])[0]).matchAll(/<summary>([\s\S]*?)<\/summary><p>([\s\S]*?)<\/p>/g)].map((m) => [txt(m[1]), txt(m[2])]);
+const ldFaq = (h) => (lds(h).find((o) => o['@type'] === 'FAQPage') || { mainEntity: [] }).mainEntity.map((q) => [q.name, q.acceptedAnswer.text]);
+const AP1q = (j) => j.sources.find((s) => s.id === 'AP1').quotes.join('\n');
+const AP2q = (j) => j.sources.find((s) => s.id === 'AP2').quotes.join('\n');
+// Every MacBook claim in the FAQ answer must be in Apple's stored AP1 quotes (the FAQ carries no inline [ID]; the lead does).
+function macFaqOk(h, j) {
+  const v = visFaq(h), l = ldFaq(h);
+  if (JSON.stringify(v) !== JSON.stringify(l)) return false;
+  const a = (v.find((x) => x[0] === MAC_FAQ_Q) || [])[1];
+  if (a !== MAC_FAQ_A) return false;
+  const q = AP1q(j);
+  return /MacBook Pro introduced in 2021 or later/.test(q) && /MacBook Pro introduced in 2012 through 2015/.test(q) && /Connect directly to HDMI with an HDMI cable/.test(q) && /USB-C port: Connect to HDMI with an adapter/.test(q);
+}
+function leadOk(h, j) {
+  const lead = (h.match(/<p class="lead">([\s\S]*?)<\/p>/) || [, ''])[1];
+  if (/Most (modern|recent) MacBooks/.test(lead)) return false;
+  const first = lead.split('. ')[0];
+  return first.includes('MacBook Pro models introduced in 2021 or later and in 2012 through 2015') && lead.includes(`connect directly with an HDMI cable ${C('AP1')}`) && /MacBook Pro introduced in 2021 or later/.test(AP1q(j)) && /MacBook Pro introduced in 2012 through 2015/.test(AP1q(j));
+}
+function a2119Ok(h, j) {
+  const row = (re) => ((h.match(re) || [, ''])[1]);
+  const r60 = row(/<tr><th scope="row">([^<]*)<\/th><td>3840 x 2160 at 60Hz /), r30 = row(/<tr><th scope="row">([^<]*)<\/th><td>3840 x 2160 at 30Hz <a class="srcs" href="#src-AP2">/);
+  const models = (r) => r.replace(/; over USB-C$/, '').split(', ');
+  const q = AP2q(j);
+  const q60 = q.match(/3840 x 2160 at 60Hz with these devices: ([^\n]*)/)[1], q30 = q.match(/3840 x 2160 at 30Hz with these devices: ([^\n]*)/)[1];
+  // Apple's lists, cut to MacBooks: the on-page row must be exactly that list, in Apple's order.
+  const macs = (s, all) => all.filter((m) => s.includes(m)).sort((x, y) => s.indexOf(x) - s.indexOf(y));
+  return JSON.stringify(models(r60)) === JSON.stringify(macs(q60, A2119_60)) && macs(q60, A2119_60).length === A2119_60.length
+    && JSON.stringify(models(r30)) === JSON.stringify(macs(q30, A2119_30)) && macs(q30, A2119_30).length === A2119_30.length;
+}
+
+test('rem01 F1: MacBook FAQ (visible = JSON-LD, verbatim) and lead say MacBook Pro 2021+ / 2012–2015 have HDMI, backed by AP1', () => {
+  const h = read(MAC), j = srcOf(MAC);
+  assert.ok(macFaqOk(h, j));
+  assert.ok(leadOk(h, j));
+  assert.doesNotMatch(h, /Most recent MacBooks lack HDMI|Most modern MacBooks/);
+  assert.deepEqual(ldFaq(h).map((x) => x[0]), ['Do MacBooks need a USB-C to HDMI adapter?', 'Will I get 4K at 60 Hz or 120 Hz?', 'When should I use a Thunderbolt dock instead of a dongle?', 'Should I replace a working HDMI cable?']);
+  assert.equal(j.job, 'ELORUMTECH-SEO-IDXQUALITY-20261023-01');
+  assert.match(j.amended_by, /^ELORUMTECH-SEO-IDXQUALITY-20261023-01-REM01:/);
+});
+
+test('rem01 F1 mutants: old wording, JSON-LD drift, 2021→2019, dropped [AP1], edited AP1 quote all fail', () => {
+  const h = read(MAC), j = srcOf(MAC);
+  const ldOnly = h.replace(`"text": "${MAC_FAQ_A}"`, `"text": "${MAC_FAQ_A.replace('Not always. ', '')}"`);
+  assert.notEqual(ldOnly, h);
+  assert.equal(macFaqOk(ldOnly, j), false, 'JSON-LD answer drifted from visible');
+  const both = h.replaceAll(MAC_FAQ_A, 'Most recent MacBooks lack HDMI, so yes for HDMI TVs/monitors—unless you use a dock with HDMI out or a USB-C/Thunderbolt display instead.');
+  assert.equal(macFaqOk(both, j), false, 'old FAQ wording');
+  assert.equal(macFaqOk(h.replaceAll(MAC_FAQ_A, MAC_FAQ_A.replace('2021 or later', '2019 or later')), j), false, 'year changed');
+  assert.equal(leadOk(h.replace('<p class="lead">Apple lists a built-in HDMI port on MacBook Pro models introduced in 2021 or later', '<p class="lead">Apple lists a built-in HDMI port on MacBook Pro models introduced in 2019 or later'), j), false);
+  assert.equal(leadOk(h.replace(`connect directly with an HDMI cable ${C('AP1')}`, 'connect directly with an HDMI cable'), j), false);
+  assert.equal(leadOk(h.replace(/<p class="lead">/, '<p class="lead">Most modern MacBooks have no HDMI. '), j), false);
+  const bad = JSON.parse(JSON.stringify(j));
+  bad.sources.find((s) => s.id === 'AP1').quotes = bad.sources.find((s) => s.id === 'AP1').quotes.map((q) => q.replace('MacBook Pro introduced in 2021 or later', 'MacBook Pro introduced in 2019 or later'));
+  assert.equal(macFaqOk(h, bad), false);
+  assert.equal(leadOk(h, bad), false);
+  assert.equal(figureOk(h, bad, SOURCED[MAC].figures.find((f) => f[0].startsWith('Apple lists a built-in HDMI port'))), false);
+});
+
+test('rem01 F2: A2119 60 Hz and 30 Hz rows list exactly the MacBooks Apple names in AP2, in Apple order (incl. 15-inch 2017+)', () => {
+  const h = read(MAC), j = srcOf(MAC);
+  assert.ok(a2119Ok(h, j));
+  assert.ok(h.includes('15-inch MacBook Pro introduced in 2017 or later'));
+  for (const m of [...A2119_60, ...A2119_30]) assert.ok(AP2q(j).includes(m), m);
+  // mutants: drop 15-inch, drop four-TB3 2020, reorder, paraphrase, and a stored quote missing the 15-inch model
+  const r = `${A2119_60.join(', ')}; over USB-C`;
+  const muts = [
+    h.replace(r, r.replace('15-inch MacBook Pro introduced in 2017 or later, ', '')),
+    h.replace(r, r.replace('13-inch MacBook Pro with four Thunderbolt 3 ports introduced in 2020, ', '')),
+    h.replace(r, [A2119_60[5], ...A2119_60.slice(0, 5)].join(', ') + '; over USB-C'),
+    h.replace(r, r.replace('15-inch MacBook Pro introduced in 2017 or later', '15-inch MacBook Pro (2017 or later)')),
+    h.replace('MacBook introduced in 2015 or later; over USB-C', 'MacBook introduced in 2016 or later; over USB-C'),
+  ];
+  for (const m of muts) { assert.notEqual(m, h); assert.equal(a2119Ok(m, j), false); }
+  const bad = JSON.parse(JSON.stringify(j));
+  bad.sources.find((s) => s.id === 'AP2').quotes = bad.sources.find((s) => s.id === 'AP2').quotes.map((q) => q.replace('15-inch MacBook Pro introduced in 2017 or later ', ''));
+  assert.equal(a2119Ok(h, bad), false);
+});
+
+test('rem01 F4: adapter page FAQ JSON-LD answers are the visible answers verbatim', () => {
+  const h = read(ADP);
+  assert.equal(visFaq(h).length, 4);
+  assert.deepEqual(ldFaq(h), visFaq(h));
+  const m = h.replace('"text":"Only if host, adapter, cable and display all support 4K/120.', '"text":"Only if the host, adapter, cable and display all support 4K/120.');
+  assert.notEqual(m, h);
+  assert.notDeepEqual(ldFaq(m), visFaq(m));
+});
+
+test('rem01 F3: hub reference block links only sections with tables; solver → #table; BIOS stays a hub card', () => {
+  const hub = read('guides/index.html');
+  const sec = (hub.match(/<section class="cta" aria-labelledby="ref-tables-heading">[\s\S]*?<\/section>/) || [''])[0];
+  assert.ok(sec.includes('<li><a href="display-connection-solver.html#table">'));
+  assert.ok(read('guides/display-connection-solver.html').includes('<h2 id="table">'));
+  assert.doesNotMatch(sec, /bios-fast-boot-troubleshooter/);
+  assert.match(hub, /<div class="card"><a href="bios-fast-boot-troubleshooter\.html"><strong>/);
+  for (const [, file, anchor] of sec.matchAll(/<li><a href="([^"#]+)#([^"]+)">/g)) assert.match(read('guides/' + file), new RegExp(`<table|id="${anchor}"`));
+  assert.equal([...sec.matchAll(/<li><a href="[^"#]+">/g)].length, 0, 'every reference link is a deep link');
 });
