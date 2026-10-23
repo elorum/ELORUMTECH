@@ -1,0 +1,68 @@
+{
+  "schema": "elorumtech-guide-sources/1",
+  "job": "ELORUMTECH-IDX-QUALITY-02A-20261024-01",
+  "page": "guides/usb4-vs-thunderbolt-4-monitor.html",
+  "note": "Sources for the IDX-QUALITY-02A data table on this page. Every quote is verbatim from the live page, re-fetched by DEV-01 on the checked_at time (CEST; whitespace normalised; PDFs via pdftotext). Every figure in the table carries [ID] and must appear in that source's quotes (tests/seo-idx-quality-02a.test.mjs). vendor_claim=true marks dock-maker statements, labelled as vendor claims on the page.",
+  "sources": [
+    {
+      "id": "U1",
+      "url": "https://www.usb.org/usb4",
+      "title": "USB-IF — USB4",
+      "publisher": "USB Implementers Forum",
+      "kind": "standard_body",
+      "vendor_claim": false,
+      "checked_at": "2026-10-24T00:39:14+02:00",
+      "quotes": [
+        "Two-lane operation using existing USB Type-C cables and up to 80 Gbps operation over 80 Gbps certified cables",
+        "USB4 doubles the maximum aggregate bandwidth of USB and enables multiple simultaneous data and display protocols.",
+        "the USB4 specification provides the host the ability to optimally scale allocations for display data flow."
+      ]
+    },
+    {
+      "id": "USB1",
+      "url": "https://www.usb.org/sites/default/files/2022-09/USB%20PG%20USB4%20Version%202.0%2080Gbps%20Announcement_FINAL.pdf",
+      "title": "USB Promoter Group — USB4 Version 2.0 (80Gbps announcement, PDF)",
+      "publisher": "USB Promoter Group",
+      "kind": "standard_body",
+      "vendor_claim": false,
+      "checked_at": "2026-10-24T00:39:14+02:00",
+      "quotes": [
+        "Up to 80 Gbps operation, based on a new physical layer architecture, using existing 40 Gbps USB Type-C passive cables and newly-defined 80 Gbps USB Type-C active cables.",
+        "Updates to data and display protocols to better use the increase in available bandwidth."
+      ]
+    },
+    {
+      "id": "IN1",
+      "url": "https://www.thunderbolttechnology.net/sites/default/files/intel-thunderbolt4-announcement-press-deck.pdf",
+      "title": "Intel — Thunderbolt 4 announcement press deck (PDF)",
+      "publisher": "Intel",
+      "kind": "manufacturer_spec",
+      "vendor_claim": false,
+      "checked_at": "2026-10-24T00:39:15+02:00",
+      "quotes": [
+        "Same industry leading 40Gb/s performance and more",
+        "Video: Support for two 4K displays or one 8K display",
+        "Required PC charging on at least one computer port",
+        "For thin and light notebooks that require less than 100W to charge",
+        "Thunderbolt is a high-speed protocol that can dynamically adjust data and video bandwidth depending on the device and/or application."
+      ]
+    },
+    {
+      "id": "IN2",
+      "url": "https://www.intel.com/content/dam/www/central-libraries/us/en/documents/2023-09/thunderbolt-5-technology-brief.pdf",
+      "title": "Intel — Thunderbolt 5 technology brief (PDF)",
+      "publisher": "Intel",
+      "kind": "manufacturer_spec",
+      "vendor_claim": false,
+      "checked_at": "2026-10-24T00:39:16+02:00",
+      "quotes": [
+        "While Thunderbolt 5 delivers 80 Gbps of bidirectional bandwidth for data",
+        "increasing the transmit speed to 120 Gbps",
+        "Feature Thunderbolt™ 5 Technology Thunderbolt™ 4 Technology",
+        "PC video requirements Dual 6K Dual 4K",
+        "Required up to 140W Required up to 100W",
+        "Available up to 240W Available up to 140W"
+      ]
+    }
+  ]
+}

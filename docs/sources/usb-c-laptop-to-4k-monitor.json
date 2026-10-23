@@ -1,0 +1,61 @@
+{
+  "schema": "elorumtech-guide-sources/1",
+  "job": "ELORUMTECH-IDX-QUALITY-02A-20261024-01",
+  "page": "guides/usb-c-laptop-to-4k-monitor.html",
+  "note": "Sources for the IDX-QUALITY-02A data table on this page. Every quote is verbatim from the live page, re-fetched by DEV-01 on the checked_at time (CEST; whitespace normalised; PDFs via pdftotext). Every figure in the table carries [ID] and must appear in that source's quotes (tests/seo-idx-quality-02a.test.mjs). vendor_claim=true marks dock-maker statements, labelled as vendor claims on the page.",
+  "sources": [
+    {
+      "id": "VA1",
+      "url": "https://vesa.org/featured-articles/vesa-brings-displayport-to-new-usb-type-c-connector/",
+      "title": "VESA — VESA Brings DisplayPort to New USB Type-C Connector (DisplayPort Alt Mode)",
+      "publisher": "VESA",
+      "kind": "standard_body",
+      "vendor_claim": false,
+      "checked_at": "2026-10-24T00:39:14+02:00",
+      "quotes": [
+        "Using 5.4 Gbps across all four high-speed lanes will support up to 4K (4096 x 2160) display resolutions at a 60Hz frame rate with up to 30-bit color.",
+        "the use of two lanes for DisplayPort at 8.1 Gbps per lane would allow simultaneous transfer of SuperSpeed USB data (up to 10 Gbps in each direction) while also supporting a 4K UHD (3840 x 2160) DisplayPort monitor."
+      ]
+    },
+    {
+      "id": "VES1",
+      "url": "https://vesa.org/featured-articles/vesa-releases-updated-displayport-alt-mode-spec-to-bring-displayport-2-0-performance-to-usb4-and-new-usb-type-c-devices/",
+      "title": "VESA — VESA Releases Updated DisplayPort Alt Mode Spec to Bring DisplayPort 2.0 Performance to USB4 and New USB Type-C Devices",
+      "publisher": "VESA",
+      "kind": "standard_body",
+      "vendor_claim": false,
+      "checked_at": "2026-10-24T00:39:14+02:00",
+      "quotes": [
+        "With DisplayPort Alt Mode, the USB-C connector can transmit up to 80 Gigabits per second (Gbps) of DisplayPort video data utilizing all four high-speed lanes in the cable, or up to 40 Gbps with simultaneous SuperSpeed USB data delivery."
+      ]
+    },
+    {
+      "id": "APL1",
+      "url": "https://www.apple.com/macbook-air/specs/",
+      "title": "Apple — MacBook Air (M5) Tech Specs",
+      "publisher": "Apple",
+      "kind": "manufacturer_spec",
+      "vendor_claim": false,
+      "checked_at": "2026-10-24T00:39:14+02:00",
+      "quotes": [
+        "Apple M5 chip",
+        "Thunderbolt 4 (USB‑C) ports support native DisplayPort 1.4 speeds (up to HBR3) with DSC capability",
+        "One display up to a native resolution of 8K at 60Hz or 5K at 120Hz or 4K at 240Hz",
+        "Two displays up to a native resolution of 6K at 60Hz or 4K at 144Hz"
+      ]
+    },
+    {
+      "id": "GIG1",
+      "url": "https://www.gigabyte.com/Monitor/AORUS-FO32U2P/sp",
+      "title": "GIGABYTE — AORUS FO32U2P Specifications",
+      "publisher": "GIGABYTE",
+      "kind": "manufacturer_spec",
+      "vendor_claim": false,
+      "checked_at": "2026-10-24T00:39:14+02:00",
+      "quotes": [
+        "1 x USB Type-C (Alternate Mode; Upstream port; Power Delivery up to 65W)",
+        "1 x Displayport 2.1 (UHBR 20) in"
+      ]
+    }
+  ]
+}

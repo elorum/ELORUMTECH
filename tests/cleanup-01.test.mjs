@@ -194,26 +194,27 @@ test('CLEANUP-01 #40 F4: FAQ mutants (paraphrased answer, dropped entry, trailin
 
 const LAPTOP = 'guides/usb-c-laptop-to-4k-monitor.html';
 const LAPTOP_URL = `https://elorumtech.elorum.world/${LAPTOP}`;
-// Last visible text change on main: #24 (4597818, 2026-10-18, Solver paragraph). #8/#9 (09-25) only added links /
-// bumped dateModified; #40 only added the byline; CLEANUP-01 only touches the FAQ JSON-LD.
+// Last visible text change: IDX-QUALITY-02A (2026-10-24, sourced data table + Last reviewed). Before that #24
+// (4597818, 2026-10-18, Solver paragraph). #8/#9 (09-25) only added links / bumped dateModified; #40 only added the
+// byline; CLEANUP-01 only touches the FAQ JSON-LD.
 const datesProblems = (h, sm, gate) => {
   const out = [];
   const v = (h.match(/<p class="updated"[^>]*>Updated: (\d{4}-\d{2}-\d{2})<\/p>/) || [])[1];
   const dm = (h.match(/"dateModified":"(\d{4}-\d{2}-\d{2})"/) || [])[1];
   const lm = (sm.match(new RegExp(`<loc>${LAPTOP_URL.replace(/[.\/]/g, '\\$&')}</loc>\\s*<lastmod>([^<]+)</lastmod>`)) || [])[1];
   const g = gate.pages.filter((p) => p.file === LAPTOP);
-  for (const [k, x] of [['Updated', v], ['dateModified', dm], ['sitemap', lm]]) if (x !== '2026-10-18') out.push(`${k} ${x}`);
-  if (JSON.stringify(g) !== JSON.stringify([{ file: LAPTOP, url: LAPTOP_URL, visibleUpdated: true, intendedReleaseDate: '2026-10-18' }])) out.push('gate entry');
+  for (const [k, x] of [['Updated', v], ['dateModified', dm], ['sitemap', lm]]) if (x !== '2026-10-24') out.push(`${k} ${x}`);
+  if (JSON.stringify(g) !== JSON.stringify([{ file: LAPTOP, url: LAPTOP_URL, visibleUpdated: true, intendedReleaseDate: '2026-10-24' }])) out.push('gate entry');
   return out;
 };
-test('CLEANUP-01 #40 F4: usb-c-laptop Updated, dateModified, sitemap and gate all 2026-10-18 (last visible text change, #24)', () => {
+test('CLEANUP-01 #40 F4: usb-c-laptop Updated, dateModified, sitemap and gate all 2026-10-24 (last visible text change, IDX-QUALITY-02A)', () => {
   assert.deepEqual(datesProblems(read(LAPTOP), read('sitemap.xml'), JSON.parse(read('docs/release-date-gate.json'))), []);
 });
 test('CLEANUP-01 #40 F4: date mutants', () => {
   const h = read(LAPTOP); const sm = read('sitemap.xml'); const gate = JSON.parse(read('docs/release-date-gate.json'));
-  assert.notDeepEqual(datesProblems(h.replace('>Updated: 2026-10-18<', '>Updated: 2026-09-19<'), sm, gate), []);
-  assert.notDeepEqual(datesProblems(h.replace('"dateModified":"2026-10-18"', '"dateModified":"2026-09-25"'), sm, gate), []);
-  assert.notDeepEqual(datesProblems(h, sm.replace(`${LAPTOP_URL}</loc>\n    <lastmod>2026-10-18`, `${LAPTOP_URL}</loc>\n    <lastmod>2026-09-25`), gate), []);
+  assert.notDeepEqual(datesProblems(h.replace('>Updated: 2026-10-24<', '>Updated: 2026-10-18<'), sm, gate), []);
+  assert.notDeepEqual(datesProblems(h.replace('"dateModified":"2026-10-24"', '"dateModified":"2026-10-18"'), sm, gate), []);
+  assert.notDeepEqual(datesProblems(h, sm.replace(`${LAPTOP_URL}</loc>\n    <lastmod>2026-10-24`, `${LAPTOP_URL}</loc>\n    <lastmod>2026-10-18`), gate), []);
   assert.notDeepEqual(datesProblems(h, sm, { ...gate, pages: gate.pages.filter((p) => p.file !== LAPTOP) }), []);
   assert.notDeepEqual(datesProblems(h, sm, { ...gate, pages: gate.pages.map((p) => (p.file === LAPTOP ? { ...p, intendedReleaseDate: '2026-10-23' } : p)) }), []);
 });

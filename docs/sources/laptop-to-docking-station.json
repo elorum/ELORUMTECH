@@ -1,0 +1,92 @@
+{
+  "schema": "elorumtech-guide-sources/1",
+  "job": "ELORUMTECH-IDX-QUALITY-02A-20261024-01",
+  "page": "guides/laptop-to-docking-station.html",
+  "note": "Sources for the IDX-QUALITY-02A data table on this page. Every quote is verbatim from the live page, re-fetched by DEV-01 on the checked_at time (CEST; whitespace normalised; PDFs via pdftotext). Every figure in the table carries [ID] and must appear in that source's quotes (tests/seo-idx-quality-02a.test.mjs). vendor_claim=true marks dock-maker statements, labelled as vendor claims on the page.",
+  "sources": [
+    {
+      "id": "IN1",
+      "url": "https://www.thunderbolttechnology.net/sites/default/files/intel-thunderbolt4-announcement-press-deck.pdf",
+      "title": "Intel — Thunderbolt 4 announcement press deck (PDF)",
+      "publisher": "Intel",
+      "kind": "manufacturer_spec",
+      "vendor_claim": false,
+      "checked_at": "2026-10-24T00:39:15+02:00",
+      "quotes": [
+        "Same industry leading 40Gb/s performance and more",
+        "Video: Support for two 4K displays or one 8K display",
+        "Required PC charging on at least one computer port",
+        "For thin and light notebooks that require less than 100W to charge",
+        "Thunderbolt is a high-speed protocol that can dynamically adjust data and video bandwidth depending on the device and/or application."
+      ]
+    },
+    {
+      "id": "DEL1",
+      "url": "https://www.dell.com/support/contents/en-us/article/product-support/self-support-knowledgebase/monitor-screen-video/guide-daisy-chain-monitors",
+      "title": "Dell — How to Daisy Chain Monitors for a Multi-Display Setup",
+      "publisher": "Dell",
+      "kind": "manufacturer_support",
+      "vendor_claim": false,
+      "checked_at": "2026-10-24T00:39:16+02:00",
+      "quotes": [
+        "Display modes supported in Windows and macOS PC Output Windows Apple macOS",
+        "USB-C with DisplayPort alternate mode Extended mode or duplicate mode Duplicate mode only",
+        "DisplayPort Extended mode or duplicate mode Duplicate mode only",
+        "Thunderbolt Extended mode or duplicate mode Extended mode is supported exclusively with M1 Pro, M1 Max, M1 Ultra, M2 Pro, M2 Max, M2 Ultra, M3 Pro, or M3 Max.",
+        "macOS only allows monitor daisy chaining via Thunderbolt.",
+        "Daisy chaining is not supported over HDMI or with a USB-C port that does not support DisplayPort alternate mode or Thunderbolt (version 3 or higher)."
+      ]
+    },
+    {
+      "id": "APL3",
+      "url": "https://support.apple.com/en-us/101571",
+      "title": "Apple Support — How many displays can be connected to MacBook Pro",
+      "publisher": "Apple",
+      "kind": "manufacturer_support",
+      "vendor_claim": false,
+      "checked_at": "2026-10-24T00:39:16+02:00",
+      "quotes": [
+        "Using a supported hub or daisy-chaining displays can enable up to 3 displays over a single Thunderbolt port, but does not increase the maximum number of displays that you can connect."
+      ]
+    },
+    {
+      "id": "CDG1",
+      "url": "https://www.caldigit.com/thunderbolt-5-dock-ts5-plus/",
+      "title": "CalDigit — Thunderbolt 5 Dock TS5 Plus",
+      "publisher": "CalDigit",
+      "kind": "manufacturer_spec",
+      "vendor_claim": true,
+      "checked_at": "2026-10-24T00:39:16+02:00",
+      "quotes": [
+        "Thunderbolt 4 Windows or Mac host computers do not support triple displays.",
+        "Base M1-M3 Macs only support a single display through the Thunderbolt connection."
+      ]
+    },
+    {
+      "id": "PL1",
+      "url": "https://kb.plugable.com/docking-stations-and-video/can-i-connect-my-120-or-144hz-monitor-to-a-plugable-dock",
+      "title": "Plugable KB — Can I connect my high refresh rate monitor to a Plugable dock?",
+      "publisher": "Plugable",
+      "kind": "manufacturer_support",
+      "vendor_claim": true,
+      "checked_at": "2026-10-24T00:39:17+02:00",
+      "quotes": [
+        "DisplayLink USB Graphics technology and Silicon Motion based docking stations and graphics adapters, like our USB 3.0 dual display and USB Type-C triple display docking stations, are limited to 60Hz refresh rate by the USB graphics controller hardware."
+      ]
+    },
+    {
+      "id": "PL2",
+      "url": "https://kb.plugable.com/general-support-articles/how-to-determine-your-usb-c-port-video-capabilities",
+      "title": "Plugable KB — How to determine your USB-C port video capabilities",
+      "publisher": "Plugable",
+      "kind": "manufacturer_support",
+      "vendor_claim": true,
+      "checked_at": "2026-10-24T00:39:17+02:00",
+      "quotes": [
+        "DisplayPort video data is transmitted directly from the USB-C port, taking up two or four of the USB SuperSpeed data lines.",
+        "DisplayPort 1.4 capable hosts can support a single 8K 30Hz/4K 120Hz display and USB 2.0 data, or a single 4K 60Hz display and USB 10Gbps data.",
+        "Not all USB-C ports support video output."
+      ]
+    }
+  ]
+}
