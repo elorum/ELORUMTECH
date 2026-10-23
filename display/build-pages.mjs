@@ -55,7 +55,7 @@ export const GENERATORS = {
   'max-refresh-8': () => maxRefreshTable(8),
   'max-refresh-10': () => maxRefreshTable(10),
   'sources-solver': () => sourcesList(['V1', 'V2', 'V3', 'V4', 'A1', 'A2', 'H1', 'H2', 'MS1', 'MS2', 'MS3', 'MS4', 'MS5', 'PL1', 'PL2', 'PL3', 'PL4', 'PL5']),
-  'sources-nosignal': () => sourcesList(['MS1', 'MS5', 'MS2', 'MS4', 'PL1', 'PL2', 'PL3', 'PL4']),
+  'sources-nosignal': () => sourcesList(['MS1', 'MS5', 'MS2', 'MS4', 'PL1', 'PL2', 'PL3', 'PL4', 'DL1', 'DL2', 'DL3', 'DL4', 'HP1', 'IN1', 'IN2', 'NV1', 'NV2', 'HL1']),
   'sources-usbc': () => sourcesList(['A1', 'A2', 'V2', 'V3', 'MS2', 'PL1', 'PL2', 'PL3', 'PL5']),
   'sources-60hz': () => sourcesList(['MS3', 'PL1', 'PL2', 'PL4', 'PL5', 'V1', 'V3', 'H1', 'H2', 'V4'])
 };
