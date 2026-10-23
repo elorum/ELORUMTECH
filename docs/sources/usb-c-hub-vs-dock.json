@@ -1,0 +1,88 @@
+{
+  "schema": "elorumtech-guide-sources/1",
+  "job": "ELORUMTECH-SEO-IDXQUALITY-20261023-01",
+  "page": "guides/usb-c-hub-vs-dock.html",
+  "note": "Primary sources for the USB-C link (hub vs dock) table (SEO-IDX-QUALITY-01). Every quote is verbatim from the live page (whitespace normalised; PDFs via pdftotext). checked_at = when DEV-01 fetched it (CEST). Every figure in the table is cited with [ID] and must appear in that source's quotes (tests/seo-idx-quality.test.mjs).",
+  "sources": [
+    {
+      "id": "VA1",
+      "url": "https://vesa.org/featured-articles/vesa-brings-displayport-to-new-usb-type-c-connector/",
+      "title": "VESA — VESA Brings DisplayPort to New USB Type-C Connector (DisplayPort Alt Mode)",
+      "publisher": "VESA",
+      "kind": "standard_body",
+      "checked_at": "2026-10-23T16:57:15+02:00",
+      "quotes": [
+        "Using 5.4 Gbps across all four high-speed lanes will support up to 4K (4096 x 2160) display resolutions at a 60Hz frame rate with up to 30-bit color.",
+        "the use of two lanes for DisplayPort at 8.1 Gbps per lane would allow simultaneous transfer of SuperSpeed USB data (up to 10 Gbps in each direction) while also supporting a 4K UHD (3840 x 2160) DisplayPort monitor.",
+        "When using all four lanes for DisplayPort Alt Mode, which could drive a monitor with up to 5K (5120 x 2880) resolution, USB 2.0 data can still be carried across the USB Type-C connection using separate pins dedicated for that function.",
+        "Video source devices that support DisplayPort Alt Mode on a USB Type-C connector can use an appropriate adaptor to drive an HDMI, DVI or VGA display."
+      ]
+    },
+    {
+      "id": "V4",
+      "url": "https://www.displayport.org/faq/",
+      "title": "VESA DisplayPort — FAQ (DSC, adapters, DisplayPort over USB-C)",
+      "publisher": "VESA",
+      "kind": "standard_body",
+      "checked_at": "2026-10-23T16:57:16+02:00",
+      "quotes": [
+        "DisplayPort 1.4a supports 8K video at 60Hz and 24-bit color using a low 2:1 compression ratio",
+        "It is preferable to use a USB-C to DisplayPort adapter cable, and it is best to use a DP certified adapter cable.",
+        "use of such adapter is not recommended because it may result in poor picture quality, intermittent operation, or no video display.",
+        "DisplayPort, USB data, and USB Power Delivery can all be carried simultaneously through the same USB Type-C connector and cable."
+      ]
+    },
+    {
+      "id": "U1",
+      "url": "https://www.usb.org/usb4",
+      "title": "USB-IF — USB4",
+      "publisher": "USB Implementers Forum",
+      "kind": "standard_body",
+      "checked_at": "2026-10-23T16:57:19+02:00",
+      "quotes": [
+        "Two-lane operation using existing USB Type-C cables and up to 80 Gbps operation over 80 Gbps certified cables",
+        "USB4 doubles the maximum aggregate bandwidth of USB and enables multiple simultaneous data and display protocols.",
+        "The USB4 architecture defines a method to dynamically share a single high-speed link with multiple end device types"
+      ]
+    },
+    {
+      "id": "IN1",
+      "url": "https://www.thunderbolttechnology.net/sites/default/files/intel-thunderbolt4-announcement-press-deck.pdf",
+      "title": "Intel — Thunderbolt 4 announcement press deck (PDF)",
+      "publisher": "Intel",
+      "kind": "manufacturer_spec",
+      "checked_at": "2026-10-23T16:57:17+02:00",
+      "quotes": [
+        "Video: Support for two 4K displays or one 8K display",
+        "Same industry leading 40Gb/s performance and more",
+        "Required PC charging on at least one computer port",
+        "For thin and light notebooks that require less than 100W to charge"
+      ]
+    },
+    {
+      "id": "IN2",
+      "url": "https://www.intel.com/content/dam/www/central-libraries/us/en/documents/2023-09/thunderbolt-5-technology-brief.pdf",
+      "title": "Intel — Thunderbolt 5 technology brief (PDF)",
+      "publisher": "Intel",
+      "kind": "manufacturer_spec",
+      "checked_at": "2026-10-23T16:57:18+02:00",
+      "quotes": [
+        "While Thunderbolt 5 delivers 80 Gbps of bidirectional bandwidth for data",
+        "dedicating 120 Gbps for transmit traffic while providing 40 Gbps for receive",
+        "They also deliver up to 240W of power"
+      ]
+    },
+    {
+      "id": "U2",
+      "url": "https://www.usb.org/usb-charger-pd",
+      "title": "USB-IF — USB Charger (USB Power Delivery)",
+      "publisher": "USB Implementers Forum",
+      "kind": "standard_body",
+      "checked_at": "2026-10-23T16:57:19+02:00",
+      "quotes": [
+        "Increased power levels from existing USB standards up to 240W.",
+        "New 28V, 36V, and 48V fixed voltages enable up to 140W, 180W and 240W power levels, respectively."
+      ]
+    }
+  ]
+}

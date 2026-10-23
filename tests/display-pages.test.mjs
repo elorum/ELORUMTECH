@@ -11,8 +11,9 @@ const PAGES = [
   'usb-c-dock-display-limits.html',
   'monitor-stuck-at-60hz.html',
 ];
-// SEO-NOSIGNAL-01 (2026-10-23) updates external-monitor-not-detected.html; the other three pages stay at 2026-10-18.
-const DATE = (p) => (p === 'external-monitor-not-detected.html' ? '2026-10-23' : '2026-10-18');
+// SEO-NOSIGNAL-01 (2026-10-23) updates external-monitor-not-detected.html; SEO-IDX-QUALITY-01 (2026-10-23) updates
+// display-connection-solver.html (byline, Last reviewed, author). The other two pages stay at 2026-10-18.
+const DATE = (p) => (p === 'external-monitor-not-detected.html' || p === 'display-connection-solver.html' ? '2026-10-23' : '2026-10-18');
 const read = (p) => readFileSync(new URL('../' + p, import.meta.url), 'utf8');
 const unesc = (s) => s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
 const text = (h) => unesc(h.replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').trim();
@@ -31,7 +32,7 @@ test('pages exist with matching canonical, title, description and lang', () => {
   }
 });
 
-test('pages are in sitemap.xml (with lastmod 2026-10-18, no-signal page 2026-10-23) and linked from the guides hub', () => {
+test('pages are in sitemap.xml (with lastmod 2026-10-18, no-signal and solver pages 2026-10-23) and linked from the guides hub', () => {
   const sm = read('sitemap.xml');
   const hub = read('guides/index.html');
   for (const p of PAGES) {

@@ -1,0 +1,84 @@
+{
+  "schema": "elorumtech-guide-sources/1",
+  "job": "ELORUMTECH-SEO-IDXQUALITY-20261023-01",
+  "page": "guides/usb-c-to-hdmi-adapter-path.html",
+  "note": "Primary sources for the USB-C to HDMI adapter path table (SEO-IDX-QUALITY-01). Every quote is verbatim from the live page (whitespace normalised; PDFs via pdftotext). checked_at = when DEV-01 fetched it (CEST). Every figure in the table is cited with [ID] and must appear in that source's quotes (tests/seo-idx-quality.test.mjs).",
+  "sources": [
+    {
+      "id": "VA1",
+      "url": "https://vesa.org/featured-articles/vesa-brings-displayport-to-new-usb-type-c-connector/",
+      "title": "VESA — VESA Brings DisplayPort to New USB Type-C Connector (DisplayPort Alt Mode)",
+      "publisher": "VESA",
+      "kind": "standard_body",
+      "checked_at": "2026-10-23T16:57:15+02:00",
+      "quotes": [
+        "Using 5.4 Gbps across all four high-speed lanes will support up to 4K (4096 x 2160) display resolutions at a 60Hz frame rate with up to 30-bit color.",
+        "the use of two lanes for DisplayPort at 8.1 Gbps per lane would allow simultaneous transfer of SuperSpeed USB data (up to 10 Gbps in each direction) while also supporting a 4K UHD (3840 x 2160) DisplayPort monitor.",
+        "When using all four lanes for DisplayPort Alt Mode, which could drive a monitor with up to 5K (5120 x 2880) resolution, USB 2.0 data can still be carried across the USB Type-C connection using separate pins dedicated for that function.",
+        "Video source devices that support DisplayPort Alt Mode on a USB Type-C connector can use an appropriate adaptor to drive an HDMI, DVI or VGA display."
+      ]
+    },
+    {
+      "id": "HL2",
+      "url": "https://www.hdmi.org/spec/hdmi1_4b",
+      "title": "HDMI LA — HDMI 1.4b Specification overview",
+      "publisher": "HDMI Licensing Administrator",
+      "kind": "standard_body",
+      "checked_at": "2026-10-23T16:57:24+02:00",
+      "quotes": [
+        "This includes support for 4096×2160 at 24 Hz, 3840×2160 at 24, 25, and 30 Hz, and 1920×1080 at 120 Hz.",
+        "All resolutions and refresh rates can be support with the High Speed HDMI Cable."
+      ]
+    },
+    {
+      "id": "HF1",
+      "url": "https://hdmiforum.org/hdmi-forum-releases-version-2-0-hdmi-specification/",
+      "title": "HDMI Forum — HDMI Forum releases Version 2.0 of the HDMI Specification",
+      "publisher": "HDMI Forum",
+      "kind": "standard_body",
+      "checked_at": "2026-10-23T16:57:21+02:00",
+      "quotes": [
+        "offers a significant increase in bandwidth (up to 18Gbps) to support new features such as 4K@50/60 (2160p)",
+        "Current High Speed cables (category 2 cables) are capable of carrying the increased bandwidth."
+      ]
+    },
+    {
+      "id": "HF2",
+      "url": "https://hdmiforum.org/hdmi-forum-releases-version-2-1-hdmi-specification/",
+      "title": "HDMI Forum — HDMI Forum releases Version 2.1 of the HDMI Specification",
+      "publisher": "HDMI Forum",
+      "kind": "standard_body",
+      "checked_at": "2026-10-23T16:57:23+02:00",
+      "quotes": [
+        "supports a range of higher video resolutions and refresh rates including 8K60 and 4K120, and resolutions up to 10K.",
+        "bandwidth capability is increased up to 48Gbps."
+      ]
+    },
+    {
+      "id": "HL1",
+      "url": "https://www.hdmi.org/spec2sub/ultrahdmicables",
+      "title": "HDMI LA — Ultra96 HDMI Cable and Ultra High Speed HDMI Cable",
+      "publisher": "HDMI Licensing Administrator",
+      "kind": "standard_body",
+      "checked_at": "2026-10-23T16:57:23+02:00",
+      "quotes": [
+        "It is applicable for system configurations supporting up to 48Gbps maximum bandwidth.",
+        "The Ultra High Speed HDMI Cable was introduced in the HDMI 2.1 Specification"
+      ]
+    },
+    {
+      "id": "AP2",
+      "url": "https://support.apple.com/en-us/119850",
+      "title": "Apple Support — About the Apple USB-C Digital AV Multiport Adapter",
+      "publisher": "Apple",
+      "kind": "manufacturer_support",
+      "checked_at": "2026-10-23T16:57:24+02:00",
+      "quotes": [
+        "Model A2119 is the newest model of this adapter.",
+        "It supports these resolutions and refresh rates when used with macOS Mojave 10.14.6 or later or iOS 12.4 or later. 3840 x 2160 at 60Hz with these devices: 16-inch MacBook Pro introduced in 2019 or later 15-inch MacBook Pro introduced in 2017 or later 14-inch MacBook Pro introduced in 2021 or later 13-inch MacBook Pro with Apple silicon introduced in 2020 or later 13-inch MacBook Pro with four Thunderbolt 3 ports introduced in 2020 MacBook Air introduced in 2020 or later",
+        "3840 x 2160 at 30Hz with these devices: 13-inch MacBook Pro introduced in 2016 or later MacBook introduced in 2015 or later",
+        "Model A1621 supports these resolutions and refresh rates when used with macOS Sierra 10.12 or later or iOS 12 or later: 3840 x 2160 at 30Hz Up to 1080p at 60Hz"
+      ]
+    }
+  ]
+}
