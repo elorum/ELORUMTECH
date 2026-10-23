@@ -1,0 +1,164 @@
+# ELORUMTECH-BING-KEYWORD-PULL-20261023-01: manual, read-only Bing Webmaster keyword pull (28 keywords).
+# Only GET GetKeyword and GetKeywordStats. Never prints the key, URL, headers, curl stderr or any error body.
+# Output: keywords.csv + keyword_stats.csv as artifact (checked for the key before upload) and a summary table.
+name: bing-keyword-pull
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bing-keyword-pull:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      KEY: ${{ secrets.BING_WEBMASTER_API_KEY }}
+      API: https://ssl.bing.com/webmaster/api.svc/json
+      START_DATE: 2026-07-23
+      END_DATE: 2026-10-23
+      # jq filters live here so tests/bing-keyword-pull-workflow.test.mjs can execute them against fixtures.
+      KW_JQ: |
+        (.d // null)
+        | (if type == "array" then ((map(select(type == "object" and .Query? == $k)) + map(select(type == "object")))[0] // null) elif type == "object" then . else null end)
+        | if . == null then [$k, "", "", "200", "no data"]
+          else [$k, (.Impressions // "" | tostring), (.BroadImpressions // "" | tostring), "200", ""] end
+        | @csv
+      STATS_JQ: |
+        (.d // null)
+        | (if type == "array" then .[] elif type == "object" then . else empty end)
+        | select(type == "object")
+        | ((.Date // "") | tostring) as $d
+        | (if ($d | test("^/Date\\(-?[0-9]+")) then ($d | capture("^/Date\\((?<ms>-?[0-9]+)") | .ms | tonumber / 1000 | floor | strftime("%Y-%m-%d")) else $d end) as $day
+        | [$k, $day, (.Impressions // "" | tostring), (.BroadImpressions // "" | tostring), "200", ""]
+        | @csv
+      KEYWORDS: |
+        hdmi
+        displayport
+        hdmi 2.1
+        displayport vs hdmi
+        monitor stuck at 60hz
+        monitor not showing 144hz
+        165hz monitor only 60hz
+        120hz hdmi
+        monitor no signal
+        hdmi no signal
+        displayport no signal
+        hdr not working
+        hdr washed out
+        vrr
+        freesync not working
+        g-sync compatible
+        dsc display stream compression
+        usb c to hdmi not working
+        usb c monitor
+        thunderbolt dock
+        docking station not detecting monitor
+        usb c hub vs dock
+        macbook external monitor
+        bios fast boot
+        fast boot no display
+        no display after bios update
+        4k 120hz hdmi
+        ps5 120hz monitor
+    steps:
+      - name: Check secret and mask
+        run: |
+          if [ -z "$KEY" ]; then
+            echo "::error::Secret BING_WEBMASTER_API_KEY is not set for this repository."
+            exit 1
+          fi
+          echo "::add-mask::$KEY"
+
+      - name: GetKeyword and GetKeywordStats (GET only)
+        run: |
+          set +e
+          set -uo pipefail
+          umask 077
+          BODY="$(mktemp)"
+          ERR="$(mktemp)"
+          trap 'rm -f "$BODY" "$ERR"' EXIT
+          KCSV=keywords.csv
+          SCSV=keyword_stats.csv
+          printf '%s\n' 'keyword,impressions,broad_impressions,http_status,error' > "$KCSV"
+          printf '%s\n' 'keyword,date,impressions,broad_impressions,http_status,error' > "$SCSV"
+          OK=0
+          N=0
+          while IFS= read -r KW; do
+            KW="$(printf '%s' "$KW" | xargs)"
+            [ -z "$KW" ] && continue
+            N=$((N + 1))
+            RC=0
+            CODE=$(curl -sS -G --max-time 30 -o "$BODY" -w '%{http_code}' "$API/GetKeyword" --data-urlencode "q=$KW" --data-urlencode "country=us" --data-urlencode "language=en-US" --data-urlencode "startDate=$START_DATE" --data-urlencode "endDate=$END_DATE" --data-urlencode "apikey=$KEY" 2>"$ERR") || RC=$?
+            if [ "$RC" != "0" ]; then
+              printf '"%s",,,000,transport error (curl exit %s)\n' "$KW" "$RC" >> "$KCSV"
+              echo "GetKeyword \"$KW\": transport error (curl exit $RC)"
+            elif [ "$CODE" = "200" ]; then
+              OK=$((OK + 1))
+              ROW=$(jq -r --arg k "$KW" "$KW_JQ" "$BODY" 2>/dev/null) || ROW=""
+              if [ -z "$ROW" ]; then ROW="\"$KW\",,,200,response not parseable"; fi
+              printf '%s\n' "$ROW" >> "$KCSV"
+              echo "GetKeyword \"$KW\": HTTP 200"
+            else
+              printf '"%s",,,%s,request failed (body not shown)\n' "$KW" "$CODE" >> "$KCSV"
+              echo "GetKeyword \"$KW\": HTTP $CODE (request failed; response body not shown)"
+            fi
+            sleep 1
+            RC=0
+            CODE=$(curl -sS -G --max-time 30 -o "$BODY" -w '%{http_code}' "$API/GetKeywordStats" --data-urlencode "q=$KW" --data-urlencode "country=us" --data-urlencode "language=en-US" --data-urlencode "apikey=$KEY" 2>"$ERR") || RC=$?
+            if [ "$RC" != "0" ]; then
+              printf '"%s",,,,000,transport error (curl exit %s)\n' "$KW" "$RC" >> "$SCSV"
+              echo "GetKeywordStats \"$KW\": transport error (curl exit $RC)"
+            elif [ "$CODE" = "200" ]; then
+              OK=$((OK + 1))
+              ROWS=$(jq -r --arg k "$KW" "$STATS_JQ" "$BODY" 2>/dev/null) || ROWS="\"$KW\",,,,200,response not parseable"
+              if [ -z "$ROWS" ]; then ROWS="\"$KW\",,,,200,no data"; fi
+              printf '%s\n' "$ROWS" >> "$SCSV"
+              echo "GetKeywordStats \"$KW\": HTTP 200"
+            else
+              printf '"%s",,,,%s,request failed (body not shown)\n' "$KW" "$CODE" >> "$SCSV"
+              echo "GetKeywordStats \"$KW\": HTTP $CODE (request failed; response body not shown)"
+            fi
+            sleep 1
+          done <<< "$KEYWORDS"
+          {
+            echo "## Bing keyword pull (us / en-US, $START_DATE..$END_DATE)"
+            echo ""
+            echo "| keyword | impressions | broad_impressions | http_status | error |"
+            echo "|---|---|---|---|---|"
+            tail -n +2 "$KCSV" | tr -d '"' | awk -F, '{print "| "$1" | "$2" | "$3" | "$4" | "$5" |"}'
+            echo ""
+            echo "Keywords: $N. Successful calls: $OK of $((N * 2)). Weekly trend in artifact keyword_stats.csv."
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$N" != "28" ]; then
+            echo "::error::Expected 28 keywords, got $N."
+            exit 1
+          fi
+          if [ "$OK" = "0" ]; then
+            echo "::error::All Bing API calls failed."
+            exit 1
+          fi
+
+      - name: Key leak guard
+        run: |
+          for f in keywords.csv keyword_stats.csv; do
+            if [ ! -f "$f" ]; then
+              echo "::error::$f missing."
+              exit 1
+            fi
+          done
+          if grep -qF -- "$KEY" keywords.csv keyword_stats.csv; then
+            echo "::error::A CSV contains the API key; refusing to upload."
+            exit 1
+          fi
+
+      - name: Upload CSVs
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: bing-keyword-pull
+          path: |
+            keywords.csv
+            keyword_stats.csv
+          if-no-files-found: error
+          retention-days: 30
