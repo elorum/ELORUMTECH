@@ -5,6 +5,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execFileSync, spawnSync } from 'node:child_process';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const WF = fs.readFileSync(path.join(root, '.github/workflows/bing-keyword-pull.yml'), 'utf8');
@@ -238,7 +239,7 @@ const MUTATIONS = {
   'print .Message': swap('echo "GetKeyword \\"$KW\\": HTTP $CODE (request failed; response body not shown)"', 'echo "$(jq -r .Message "$BODY" 2>/dev/null)"'),
   'print stderr': swap('echo "GetKeyword \\"$KW\\": transport error (curl exit $RC)"', 'echo "err: $(head -c 200 "$ERR")"'),
   'sed redaction': swap('tr -d \'"\'', 'sed s/a/b/'),
-  'jq stderr shown': swap('@csv\' "$BODY" 2>/dev/null) || ROW=""', '@csv\' "$BODY") || ROW=""'),
+  'jq stderr shown': swap('"$KW_JQ" "$BODY" 2>/dev/null) || ROW=""', '"$KW_JQ" "$BODY") || ROW=""'),
   'remove trap': swap('          trap \'rm -f "$BODY" "$ERR"\' EXIT\n', ''),
   'trap misses ERR': swap('trap \'rm -f "$BODY" "$ERR"\' EXIT', 'trap \'rm -f "$BODY"\' EXIT'),
   'no umask': swap('          umask 077\n', ''),
@@ -266,3 +267,55 @@ for (const [name, mutated] of Object.entries(MUTATIONS)) {
     assert.ok(checkWorkflow(mutated).length > 0, `checker accepted unsafe mutation: ${name}`);
   });
 }
+
+// REM01 (BINGKW-QA-001): execute the real jq filters from the workflow against fixtures.
+const HAS_JQ = spawnSync('jq', ['--version']).status === 0;
+const JOBENV = parseYaml(WF).jobs['bing-keyword-pull'].env;
+const runJq = (filter, k, body) => execFileSync('jq', ['-r', '--arg', k ? 'k' : 'k', k, filter], { input: typeof body === 'string' ? body : JSON.stringify(body) }).toString();
+const jqTest = (name, fn) => test(name, { skip: HAS_JQ ? false : 'jq not installed; executable jq fixture tests skipped' }, fn);
+
+test('workflow uses the env jq filters (no inline jq programs)', () => {
+  assert.match(WF, /jq -r --arg k "\$KW" "\$KW_JQ" "\$BODY" 2>\/dev\/null/);
+  assert.match(WF, /jq -r --arg k "\$KW" "\$STATS_JQ" "\$BODY" 2>\/dev\/null/);
+  assert.equal((WF.match(/jq -r/g) || []).length, 2);
+});
+
+const KW_CASES = {
+  'object': [{ d: { Query: 'hdmi', Impressions: 12, BroadImpressions: 34 } }, '"hdmi","12","34","200",""\n'],
+  'array picks matching Query': [{ d: [{ Query: 'other', Impressions: 1, BroadImpressions: 2 }, { Query: 'hdmi', Impressions: 0, BroadImpressions: 5 }] }, '"hdmi","0","5","200",""\n'],
+  'array without match picks first object': [{ d: [7, { Query: 'x', Impressions: 3 }] }, '"hdmi","3","","200",""\n'],
+  'empty array': [{ d: [] }, '"hdmi","","","200","no data"\n'],
+  'null d': [{ d: null }, '"hdmi","","","200","no data"\n'],
+  'missing d': [{}, '"hdmi","","","200","no data"\n'],
+};
+for (const [n, [body, want]] of Object.entries(KW_CASES)) {
+  jqTest(`KW_JQ fixture: ${n}`, () => assert.equal(runJq(JOBENV.KW_JQ, 'hdmi', body), want));
+}
+
+const STATS_CASES = {
+  'object with ISO date': [{ d: { Date: '2026-10-19T00:00:00', Impressions: 4, BroadImpressions: 8 } }, '"vrr","2026-10-19T00:00:00","4","8","200",""\n'],
+  'plain date kept': [{ d: [{ Date: '2026-10-19', Impressions: 1, BroadImpressions: 2 }] }, '"vrr","2026-10-19","1","2","200",""\n'],
+  '/Date(ms)/': [{ d: [{ Date: '/Date(1729468800000)/', Impressions: 5, BroadImpressions: 9 }] }, '"vrr","2024-10-21","5","9","200",""\n'],
+  '/Date(ms+0000)/ and -0700': [{ d: [{ Date: '/Date(1729468800000+0000)/', Impressions: 5 }, { Date: '/Date(1730073600000-0700)/', BroadImpressions: 10 }] }, '"vrr","2024-10-21","5","","200",""\n"vrr","2024-10-28","","10","200",""\n'],
+  'missing and null date -> empty': [{ d: [{ Impressions: 2 }, { Date: null, Impressions: 3 }] }, '"vrr","","2","","200",""\n"vrr","","3","","200",""\n'],
+  'multiple rows mixed formats': [{ d: [{ Date: '/Date(1729468800000)/', Impressions: 1, BroadImpressions: 1 }, { Date: '2024-10-28', Impressions: 2, BroadImpressions: 2 }, { Date: '/Date(1730678400000)/', Impressions: 3, BroadImpressions: 3 }] }, '"vrr","2024-10-21","1","1","200",""\n"vrr","2024-10-28","2","2","200",""\n"vrr","2024-11-04","3","3","200",""\n'],
+  'null d -> no rows': [{ d: null }, ''],
+  'empty array -> no rows': [{ d: [] }, ''],
+  'non-object entries skipped': [{ d: [null, 'x', { Date: '2026-01-05', Impressions: 1 }] }, '"vrr","2026-01-05","1","","200",""\n'],
+};
+for (const [n, [body, want]] of Object.entries(STATS_CASES)) {
+  jqTest(`STATS_JQ fixture: ${n}`, () => assert.equal(runJq(JOBENV.STATS_JQ, 'vrr', body), want));
+}
+
+jqTest('jq filters fail (non-zero) on non-JSON body so the workflow writes its fallback row', () => {
+  assert.throws(() => execFileSync('jq', ['-r', '--arg', 'k', 'x', JOBENV.KW_JQ], { input: '<html>', stdio: ['pipe', 'pipe', 'ignore'] }));
+  assert.throws(() => execFileSync('jq', ['-r', '--arg', 'k', 'x', JOBENV.STATS_JQ], { input: '<html>', stdio: ['pipe', 'pipe', 'ignore'] }));
+});
+
+jqTest('regression BINGKW-QA-001: unconditional capture would drop ISO dates', () => {
+  const broken = JOBENV.STATS_JQ.replace(/\(if \(\$d \| test\([^)]*\)\) then (\(.*?\)) else \$d end\)/, '$1');
+  assert.notEqual(broken, JOBENV.STATS_JQ);
+  let out = '';
+  try { out = runJq(broken, 'vrr', { d: [{ Date: '2026-10-19', Impressions: 1 }] }); } catch { out = 'ERROR'; }
+  assert.notEqual(out, '"vrr","2026-10-19","1","","200",""\n');
+});
