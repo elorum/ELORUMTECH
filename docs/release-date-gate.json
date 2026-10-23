@@ -27,13 +27,13 @@
       "file": "guides/bios-fast-boot-troubleshooter.html",
       "url": "https://elorumtech.elorum.world/guides/bios-fast-boot-troubleshooter.html",
       "visibleUpdated": true,
-      "intendedReleaseDate": "2026-10-18"
+      "intendedReleaseDate": "2026-10-23"
     },
     {
       "file": "guides/display-connection-solver.html",
       "url": "https://elorumtech.elorum.world/guides/display-connection-solver.html",
       "visibleUpdated": true,
-      "intendedReleaseDate": "2026-10-18"
+      "intendedReleaseDate": "2026-10-23"
     },
     {
       "file": "guides/external-monitor-not-detected.html",
@@ -63,7 +63,7 @@
       "file": "guides/index.html",
       "url": "https://elorumtech.elorum.world/guides/",
       "visibleUpdated": true,
-      "intendedReleaseDate": "2026-10-18"
+      "intendedReleaseDate": "2026-10-23"
     },
     {
       "file": "guides/laptop-to-docking-station.html",
@@ -92,6 +92,30 @@
     {
       "file": "guides/vrr-gsync-freesync-compatibility.html",
       "url": "https://elorumtech.elorum.world/guides/vrr-gsync-freesync-compatibility.html",
+      "visibleUpdated": true,
+      "intendedReleaseDate": "2026-10-23"
+    },
+    {
+      "file": "guides/displayport-monitor-connection-path.html",
+      "url": "https://elorumtech.elorum.world/guides/displayport-monitor-connection-path.html",
+      "visibleUpdated": true,
+      "intendedReleaseDate": "2026-10-23"
+    },
+    {
+      "file": "guides/usb-c-hub-vs-dock.html",
+      "url": "https://elorumtech.elorum.world/guides/usb-c-hub-vs-dock.html",
+      "visibleUpdated": true,
+      "intendedReleaseDate": "2026-10-23"
+    },
+    {
+      "file": "guides/usb-c-to-hdmi-adapter-path.html",
+      "url": "https://elorumtech.elorum.world/guides/usb-c-to-hdmi-adapter-path.html",
+      "visibleUpdated": true,
+      "intendedReleaseDate": "2026-10-23"
+    },
+    {
+      "file": "guides/macbook-to-hdmi-display.html",
+      "url": "https://elorumtech.elorum.world/guides/macbook-to-hdmi-display.html",
       "visibleUpdated": true,
       "intendedReleaseDate": "2026-10-23"
     }

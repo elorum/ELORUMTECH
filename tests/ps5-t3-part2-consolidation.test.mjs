@@ -61,7 +61,9 @@ test('t3p2 sitemap lastmod 2026-10-23 exactly for changed URLs', () => {
   // SEO-NOSIGNAL-01 also ships the external-monitor / no-signal guide on 2026-10-23 (registered in docs/release-date-gate.json).
   // SEO-DPVSHDMI-01 also ships the new DisplayPort vs HDMI guide on 2026-10-23 (registered in docs/release-date-gate.json).
   // SEO-VRR-01 also ships the new VRR / G-Sync / FreeSync guide on 2026-10-23 (registered in docs/release-date-gate.json).
-  assert.deepEqual(at, [BASE + DELL, BASE + CABLE, BASE + 'guides/thunderbolt-dock-one-cable-4k-120.html', BASE + 'guides/external-monitor-not-detected.html', BASE + 'guides/displayport-vs-hdmi.html', BASE + 'guides/vrr-gsync-freesync-compatibility.html'].sort());
+  // SEO-IDX-QUALITY-01 also re-dates the solver, BIOS, guides hub and four display guides on 2026-10-23 (registered in docs/release-date-gate.json).
+  assert.deepEqual(at, [BASE + DELL, BASE + CABLE, BASE + 'guides/thunderbolt-dock-one-cable-4k-120.html', BASE + 'guides/external-monitor-not-detected.html', BASE + 'guides/displayport-vs-hdmi.html', BASE + 'guides/vrr-gsync-freesync-compatibility.html',
+    BASE + 'guides/', BASE + 'guides/display-connection-solver.html', BASE + 'guides/bios-fast-boot-troubleshooter.html', BASE + 'guides/displayport-monitor-connection-path.html', BASE + 'guides/usb-c-hub-vs-dock.html', BASE + 'guides/usb-c-to-hdmi-adapter-path.html', BASE + 'guides/macbook-to-hdmi-display.html'].sort());
   assert.match(sm, new RegExp(`<loc>${BASE}${P1440}</loc>\\s*<lastmod>2026-10-17</lastmod>`));
 });
 
