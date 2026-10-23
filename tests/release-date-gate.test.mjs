@@ -23,7 +23,7 @@ test('release-date gate: dateModified, visible Updated and sitemap lastmod equal
 test('release-date gate: detects divergence in any of the three signals', () => {
   const other = '2026-10-20';
   const p = decl.pages.find((x) => x.visibleUpdated);
-  const q = decl.pages.find((x) => !x.visibleUpdated);
+  const q = decl.pages.find((x) => !x.visibleUpdated) ?? p; // all pages may carry visible Updated (T3P2-QA-001)
   const pd = pageDeclaredDate(decl, p);
   const qd = pageDeclaredDate(decl, q);
   const swap = (target, from, to) => (rel) => {
