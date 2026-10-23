@@ -1,0 +1,299 @@
+{
+ "schema": "elorumtech-guide-sources/1",
+ "job": "ELORUMTECH-SEO-DPVSHDMI-20261023-01",
+ "page": "guides/displayport-vs-hdmi.html",
+ "note": "Primary sources for the DisplayPort vs HDMI guide. Every quote is verbatim from the fetched page (whitespace normalised). checked_at = when DEV-01 fetched it (CEST). Every figure on the page is cited with [ID] and must appear in that source's quotes (tests/seo-dpvshdmi.test.mjs).",
+ "sources": [
+  {
+   "id": "HF1",
+   "url": "https://hdmiforum.org/hdmi-forum-releases-version-2-0-hdmi-specification/",
+   "title": "HDMI Forum — HDMI Forum releases Version 2.0 of the HDMI Specification",
+   "publisher": "HDMI Forum",
+   "kind": "standard_body",
+   "checked_at": "2026-10-23T08:14:48+02:00",
+   "quotes": [
+    "offers a significant increase in bandwidth (up to 18Gbps) to support new features such as 4K@50/60 (2160p)",
+    "Version 2.0 of the HDMI Specification does not define new cables or new connectors.",
+    "Current High Speed cables (category 2 cables) are capable of carrying the increased bandwidth."
+   ]
+  },
+  {
+   "id": "HF2",
+   "url": "https://hdmiforum.org/hdmi-forum-releases-version-2-1-hdmi-specification/",
+   "title": "HDMI Forum — HDMI Forum releases Version 2.1 of the HDMI Specification",
+   "publisher": "HDMI Forum",
+   "kind": "standard_body",
+   "checked_at": "2026-10-23T08:15:42+02:00",
+   "quotes": [
+    "supports a range of higher video resolutions and refresh rates including 8K60 and 4K120, and resolutions up to 10K.",
+    "bandwidth capability is increased up to 48Gbps.",
+    "The Ultra High Speed HDMI Cable supports the 48G bandwidth for uncompressed HDMI 2.1 feature support.",
+    "Variable Refresh Rate (VRR) reduces or eliminates lag, stutter and frame tearing for more fluid and better detailed gameplay.",
+    "Auto Low Latency Mode (ALLM) allows the ideal latency setting to automatically be set",
+    "It ensures full compatibility between audio devices and upcoming HDMI 2.1 products."
+   ]
+  },
+  {
+   "id": "HL1",
+   "url": "https://www.hdmi.org/spec2sub/ultrahdmicables",
+   "title": "HDMI LA — Ultra96 HDMI Cable and Ultra High Speed HDMI Cable",
+   "publisher": "HDMI Licensing Administrator",
+   "kind": "standard_body",
+   "checked_at": "2026-10-23T08:14:46+02:00",
+   "quotes": [
+    "The HDMI 2.2 Specification introduced the latest cable – the",
+    "that supports up to 96Gbps bandwidth.",
+    "was introduced in the HDMI 2.1 Specification and entered the market in 2020. It is applicable for system configurations supporting up to 48Gbps maximum bandwidth.",
+    "It is a mandatory certification program",
+    "the labels can be scanned by standard QR code apps."
+   ]
+  },
+  {
+   "id": "HL2",
+   "url": "https://www.hdmi.org/spec/hdmi2",
+   "title": "HDMI LA — HDMI 2.2 Specification overview",
+   "publisher": "HDMI Licensing Administrator",
+   "kind": "standard_body",
+   "checked_at": "2026-10-23T08:15:16+02:00",
+   "quotes": [
+    "Up to 96Gbps bandwidth and next-gen HDMI Fixed Rate Link technology",
+    "Supported resolutions include 4K240 and 8K60, both uncompressed and with full chroma and 10/12-bit color.",
+    "HDMI 2.2 Specification is backward compatible with earlier versions of the Specification"
+   ]
+  },
+  {
+   "id": "HL3",
+   "url": "https://www.hdmi.org/spec2sub/enhancedaudioreturnchannel",
+   "title": "HDMI LA — Enhanced Audio Return Channel (eARC)",
+   "publisher": "HDMI Licensing Administrator",
+   "kind": "standard_body",
+   "checked_at": "2026-10-23T08:15:15+02:00",
+   "quotes": [
+    "eARC enables the audio to a TV that originates from cable, satellite, streaming or source devices to be sent to an AVR or sound bar through a single HDMI cable.",
+    "uncompressed 5.1 and 7.1, and 32-channel uncompressed audio",
+    "It also supports DTS-HD Master Audio™, DTS:X®, Dolby® TrueHD, Dolby Atmos®."
+   ]
+  },
+  {
+   "id": "HL4",
+   "url": "https://www.hdmi.org/spec2sub/variablerefreshrate",
+   "title": "HDMI LA — Variable Refresh Rate (VRR)",
+   "publisher": "HDMI Licensing Administrator",
+   "kind": "standard_body",
+   "checked_at": "2026-10-23T08:15:15+02:00",
+   "quotes": [
+    "VRR enables a gaming source such as a console or computer to deliver video frames as fast as it can, which in many cases is slower than the normal static refresh rate.",
+    "VRR reduces or eliminates lag, judder and frame tearing for more fluid and better detailed gameplay."
+   ]
+  },
+  {
+   "id": "V1",
+   "url": "https://vesa.org/displayport-developer/why-displayport/",
+   "title": "VESA — Why DisplayPort",
+   "publisher": "VESA",
+   "kind": "standard_body",
+   "checked_at": "2026-10-23T08:14:49+02:00",
+   "quotes": [
+    "Up to 8.1 Gbps per lane–32.4 Gbps over 4 lanes",
+    "Allowing for overhead — 25.92 Gbps over 4 lanes",
+    "Maximum link rate to up to 20 Gbps/lane and features more efficient 128b/132b channel coding, delivering a maximum payload of 77.37 Gbps",
+    "First standard to support 8K resolution (7680 x 4320) at 60 Hz refresh rate with full-color 4:4:4 resolution",
+    "DVI and HDMI supported only when DisplayPort source device has DP++ capability, and require a separate adaptor."
+   ]
+  },
+  {
+   "id": "V2",
+   "url": "https://vesa.org/featured-articles/vesa-releases-displayport-2-1-specification/",
+   "title": "VESA — VESA Releases DisplayPort 2.1 Specification",
+   "publisher": "VESA",
+   "kind": "standard_body",
+   "checked_at": "2026-10-23T08:14:49+02:00",
+   "quotes": [
+    "VESA certified DP40 cables support up to the UHBR10 link rate (10 Gbps), with four lanes, providing a maximum throughput of 40 Gbps",
+    "VESA certified DP80 cables support up to the UHBR20 link rate (20 Gbps), with four lanes, providing a maximum throughput of 80 Gbps.",
+    "longer cable lengths (beyond two meters for DP40 cables and beyond one meter for DP80 cables) without diminishing UHBR performance",
+    "mandated support for VESA’s visually lossless Display Stream Compression (DSC) codec"
+   ]
+  },
+  {
+   "id": "V3",
+   "url": "https://vesa.org/featured-articles/vesa-readies-displayport-uhbr-ultra-high-bit-rate-device-certification-and-begins-certification-of-uhbr-cables/",
+   "title": "VESA — DisplayPort UHBR device certification and DP40/DP80 cables",
+   "publisher": "VESA",
+   "kind": "standard_body",
+   "checked_at": "2026-10-23T08:14:49+02:00",
+   "quotes": [
+    "uncompressed 8K 60Hz HDR, 4K 240Hz HDR, two 4K 120Hz HDR or four 4K 60Hz HDR displays through a single cable",
+    "VESA certified DP80 cables will also support the UHBR13.5 link rate (13.5 Gbps)",
+    "full-feature passive USB-C cables already support UHBR bit rate speeds"
+   ]
+  },
+  {
+   "id": "V4",
+   "url": "https://www.displayport.org/faq/",
+   "title": "VESA DisplayPort — FAQ (incl. DSC and DisplayPort over USB-C)",
+   "publisher": "VESA",
+   "kind": "standard_body",
+   "checked_at": "2026-10-23T08:14:55+02:00",
+   "quotes": [
+    "VESA will only certify devices to the DisplayPort 2.1b spec that support new features outlined in the specification as well as a minimum of HBR2 with DSC.",
+    "AdaptiveSync was first supported by DisplayPort 1.2a",
+    "This is also branded as “Free-Sync” from AMD, which is based on VESA’s AdaptiveSync Standard.",
+    "DisplayPort 1.4a supports 8K video at 60Hz and 24-bit color using a low 2:1 compression ratio",
+    "The typical compression ratio of DSC range from 1:1 to about 3:1",
+    "It is currently included for optional use in VESA’s Embedded DisplayPort (eDP) Standard v1.4, HDMI and MIPI’s DSI Specification v1.2",
+    "DisplayPort, USB data, and USB Power Delivery can all be carried simultaneously through the same USB Type-C connector and cable.",
+    "use of such adapter is not recommended because it may result in poor picture quality, intermittent operation, or no video display.",
+    "HDMI has been the de-facto connection for home entertainment systems and is used widely on HDTVs as an AV interface.",
+    "Yes, DisplayPort supports multi-channel audio and many advanced audio features.",
+    "DisplayPort’s unique Multi-stream Transport (MST) capability",
+    "Two 4K (3840×2160) displays @144Hz and 24 bpp 4:4:4 (no compression)",
+    "Three QHD (2560×1440) @120Hz and 24 bpp 4:4:4 (no compression)",
+    "Adapters and Adapter cables are used to connect DisplayPort over USB-C to an HDMI input on the HDTV.",
+    "HDMI 2.0 is supported to enable 4K resolution."
+   ]
+  },
+  {
+   "id": "V5",
+   "url": "https://vesa.org/vesa-display-compression-codecs/dsc/",
+   "title": "VESA — DSC Display Stream Compression",
+   "publisher": "VESA",
+   "kind": "standard_body",
+   "checked_at": "2026-10-23T08:14:49+02:00",
+   "quotes": [
+    "low latency and visually lossless performance",
+    "The VESA DisplayPort™ (DP) 1.4a specification is the first DP standard to take advantage of DSC 1.2b"
+   ]
+  },
+  {
+   "id": "IN1",
+   "url": "https://www.intel.com/content/www/us/en/support/articles/000037416/graphics.html",
+   "title": "Intel Support — Which Intel Core processors / graphics support Multi-Stream Transport (MST)?",
+   "publisher": "Intel",
+   "kind": "manufacturer_support",
+   "checked_at": "2026-10-23T08:16:54+02:00",
+   "quotes": [
+    "MST is supported on DisplayPort 1.2 ports.",
+    "Daisy chainable displays have both a DisplayPort input and a DisplayPort output",
+    "supports MST via DisplayPort™ to DisplayPort™ only, up to three monitors with daisy-chaining or a DisplayPort™ hub."
+   ]
+  },
+  {
+   "id": "NV1",
+   "url": "https://nvidia.custhelp.com/app/answers/detail/a_id/5338",
+   "title": "NVIDIA Support — Using high resolution/refresh rate displays with VESA DSC on GeForce GPUs",
+   "publisher": "NVIDIA",
+   "kind": "manufacturer_support",
+   "checked_at": "2026-10-23T08:18:30+02:00",
+   "quotes": [
+    "DSC is used in both DisplayPort 1.4+ and HDMI 2.1 standards.",
+    "Display Stream Compression over DisplayPort 1.4+ is supported on Turing class (GeForce RTX 20-series/GeForce GTX 16-series) and higher GPUs.",
+    "Display Stream Compression over HDMI 2.1 is supported on Ampere class (GeForce RTX 30-series) GPUs.",
+    "you will not be able to use a third monitor with the GPU at the same time.",
+    "If the GPU detects that a display supports DSC, DSC mode will be enabled automatically.",
+    "for use with displays to achieve larger resolutions at higher refresh rates."
+   ]
+  },
+  {
+   "id": "NV2",
+   "url": "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/",
+   "title": "NVIDIA — GeForce RTX 5090 specifications (display support)",
+   "publisher": "NVIDIA",
+   "kind": "manufacturer_spec",
+   "checked_at": "2026-10-23T08:16:44+02:00",
+   "quotes": [
+    "DisplayPort 2.1b with UHBR20: up to 4K 480Hz or 8K 165Hz with DSC",
+    "As specified in HDMI 2.1b: up to 4K 480Hz or 8K 120Hz with DSC, Gaming VRR, HDR",
+    "3x DisplayPort"
+   ]
+  },
+  {
+   "id": "NV3",
+   "url": "https://www.nvidia.com/en-us/geforce/products/g-sync-monitors/",
+   "title": "NVIDIA — G-SYNC monitors (G-SYNC, G-SYNC ULTIMATE, G-SYNC Compatible)",
+   "publisher": "NVIDIA",
+   "kind": "manufacturer_spec",
+   "checked_at": "2026-10-23T08:14:56+02:00",
+   "quotes": [
+    "Doesn’t use NVIDIA processors but is validated by NVIDIA to deliver a good, basic variable refresh rate (VRR) experience for tear-free, stutter-free gaming."
+   ]
+  },
+  {
+   "id": "AMD1",
+   "url": "https://www.amd.com/en/products/graphics/technologies/freesync.html",
+   "title": "AMD — AMD FreeSync technology (FAQ)",
+   "publisher": "AMD",
+   "kind": "manufacturer_spec",
+   "checked_at": "2026-10-23T08:14:56+02:00",
+   "quotes": [
+    "leverages industry standards such as DisplayPort™ Adaptive-Sync and HDMI Variable Refresh Rate",
+    "AMD FreeSync technology can be delivered through DisplayPort and HDMI® connections.",
+    "VESA AdaptiveSync certification may not necessarily equate to AMD FreeSync certification."
+   ]
+  },
+  {
+   "id": "AP1",
+   "url": "https://support.apple.com/en-us/102236",
+   "title": "Apple Support — Use an 8K display with your Mac",
+   "publisher": "Apple",
+   "kind": "manufacturer_support",
+   "checked_at": "2026-10-23T08:14:55+02:00",
+   "quotes": [
+    "Ultra High Speed 48 Gbps HDMI cable",
+    "To get the highest resolution and refresh rate, don’t use an adapter with the HDMI cable.",
+    "These Mac models support 8K resolution, 4K resolution with refresh rates of up to 240Hz, and VRR on a compatible external display:"
+   ]
+  },
+  {
+   "id": "DL1",
+   "url": "https://www.dell.com/support/kbdoc/en-us/000124312/dell-thunderbolt-dock-wd19tb-and-apple-usb-c-hosts",
+   "title": "Dell Support — Dell Thunderbolt docks and Apple USB-C hosts (MST on macOS)",
+   "publisher": "Dell",
+   "kind": "manufacturer_support",
+   "checked_at": "2026-10-23T08:17:10+02:00",
+   "quotes": [
+    "This limitation is due to a lack of support for Multi-Stream Transport in macOS."
+   ]
+  },
+  {
+   "id": "DL2",
+   "url": "https://www.dell.com/support/kbdoc/en-us/000139468/frequently-asked-questions-faqs-about-the-hdmi-port-on-a-dell-pc",
+   "title": "Dell Support — Frequently asked questions about the HDMI port on a Dell PC",
+   "publisher": "Dell",
+   "kind": "manufacturer_support",
+   "checked_at": "2026-10-23T08:20:49+02:00",
+   "quotes": [
+    "HDMI 2.1 computer + HDMI 2.0 cable + HDMI 2.0 monitor = HDMI 2.0 performance (4K @ 60 Hz maximum).",
+    "For 4K @ 120 Hz: Ultra High Speed HDMI cable required."
+   ]
+  },
+  {
+   "id": "PS1",
+   "url": "https://www.playstation.com/en-us/support/hardware/ps5-4k-resolution-guide/",
+   "title": "PlayStation Support — PS5 4K resolution and HDMI guide",
+   "publisher": "Sony Interactive Entertainment",
+   "kind": "manufacturer_support",
+   "checked_at": "2026-10-23T08:16:44+02:00",
+   "quotes": [
+    "The PS5 console supports the HDMI 2.1 specification, and it also supports 4K 120Hz video output.",
+    "Ultra High-Speed Cable that is rated for 4K 120 Hz output",
+    "Is the PS5 console connected to an appropriate HDMI port (2.1) on the TV?",
+    "If your TV supports 1440p output, you can test for SDR/HDR 60 Hz/120 Hz and VRR video output.",
+    "PS5 Pro console 8K output requires a screen that supports 8K at 60Hz with Display Stream compression output.",
+    "VRR is disabled during 8K output."
+   ]
+  },
+  {
+   "id": "XB1",
+   "url": "https://support.xbox.com/en-US/help/hardware-network/display-sound/4k-gaming-at-120hz",
+   "title": "Xbox Support — Set up 4K gaming at 120 Hz on Xbox Series X",
+   "publisher": "Microsoft",
+   "kind": "manufacturer_support",
+   "checked_at": "2026-10-23T08:17:14+02:00",
+   "quotes": [
+    "An Ultra High Speed HDMI cable that supports HDMI 2.1",
+    "ensure that you’re using the provided Ultra High Speed HDMI cable."
+   ]
+  }
+ ]
+}
