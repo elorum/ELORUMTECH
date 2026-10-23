@@ -10,6 +10,7 @@ Spec: the REV-passed Issue #10 plan REM-01 (PLAN.md `8c6d3e45…`, EVIDENCE-SCHE
 | `engine-display.src.js` | UMD engine source (`ElorumDisplay`). Standards are embedded at `/*@@STANDARDS@@*/`. |
 | `build-engine.mjs` | Writes `engine-display.js` (source + embedded standards). Run after editing either file. |
 | `build-pages.mjs` | Regenerates the tables and source lists between `<!-- @@GEN:name -->…<!-- @@END -->` in the four guide pages. |
+| `devices.json` | Real-device library (ELORUMTECH-SOLVER-ADDITIONS-20261023-01): evidence `EV-DF01`…`EV-DF42` (one per verified fact in `docs/sources/display-connection-solver.json`, same quote, URL and `checked_at`) and schema `Device` records that carry only what those quotes state. Everything else is UNKNOWN, named tiers (HBR3, UHBR 20) become DERIVED rates, so these records can FAIL on a documented limit (e.g. MacBook Air M5 `max_displays` 2) but never PASS alone. `build-pages.mjs` renders the facts as the solver page's “Verified device facts” tables; `tests/solver-additions.test.mjs` ties facts, quotes, page rows and evidence together. |
 | `solver-ui.js` | Progressive enhancement for `guides/display-connection-solver.html` (textContent only, aria-live result, query-string preselect). |
 | `schema/evidence.schema.json` | Evidence schema, `0.2.0-impl` = REM-01 + REM-02 constraints. |
 | `spec/ACCEPTANCE-MATRIX.rem01.md` | Byte-exact copy of the REV-passed matrix; `tests/display-evidence.test.mjs` checks the hash and that every row id has a named test. |
