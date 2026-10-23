@@ -1,0 +1,118 @@
+{
+ "schema": "elorumtech-date-published/1",
+ "rule": "datePublished = Europe/Copenhagen calendar date of the first-parent commit on main that added the file (git log main --first-parent --diff-filter=A). TechArticle pages only. Never edit by hand; dateModified keeps its own release-date-gate rules.",
+ "pages": {
+  "compatibility/macbook-air-m5-dell-u2725qe.html": {
+   "datePublished": "2026-09-15",
+   "firstMainCommit": "d32ad8f8b5b43313f72f47f5e6e933e836b8fa18"
+  },
+  "compatibility/ps5-dell-u2725qe.html": {
+   "datePublished": "2026-09-15",
+   "firstMainCommit": "eed4ed48bbc5d9ee92e8121490838581bd73c06c"
+  },
+  "guides/bios-fast-boot-troubleshooter.html": {
+   "datePublished": "2026-10-18",
+   "firstMainCommit": "7e409af581d329373668a22f18b2655a715b8946"
+  },
+  "guides/console-handheld-display-hub.html": {
+   "datePublished": "2026-10-18",
+   "firstMainCommit": "221266b9f9ae2767aa979aaf5311e7d751716cc5"
+  },
+  "guides/console-hdmi-avr-passthrough-path.html": {
+   "datePublished": "2026-09-19",
+   "firstMainCommit": "d45cb155a441961d29872626a57229af6b727129"
+  },
+  "guides/displayport-monitor-connection-path.html": {
+   "datePublished": "2026-09-19",
+   "firstMainCommit": "4b7091c7a33168355bf8311fafccb0a165844ebc"
+  },
+  "guides/displayport-vs-hdmi.html": {
+   "datePublished": "2026-10-23",
+   "firstMainCommit": "b4bf12f53791b19cea1195233f10c5e89eaae548"
+  },
+  "guides/dual-monitor-dock-mst-vs-thunderbolt.html": {
+   "datePublished": "2026-09-19",
+   "firstMainCommit": "c41dabe825c82eff471bb39fd0ca2d5ea04c06dc"
+  },
+  "guides/external-monitor-not-detected.html": {
+   "datePublished": "2026-10-18",
+   "firstMainCommit": "02a9294efd11de31dcc34c6d73980c859bac84a1"
+  },
+  "guides/hdmi-capture-passthrough-path.html": {
+   "datePublished": "2026-09-19",
+   "firstMainCommit": "c41dabe825c82eff471bb39fd0ca2d5ea04c06dc"
+  },
+  "guides/ipad-usbc-to-monitor-hdmi.html": {
+   "datePublished": "2026-09-19",
+   "firstMainCommit": "4b7091c7a33168355bf8311fafccb0a165844ebc"
+  },
+  "guides/laptop-to-docking-station.html": {
+   "datePublished": "2026-09-15",
+   "firstMainCommit": "3921c598df62ed742a7bf2b83fa6e6cd91c13c35"
+  },
+  "guides/macbook-to-hdmi-display.html": {
+   "datePublished": "2026-09-18",
+   "firstMainCommit": "a637cee020c155b2645f94821ed0971ef3a2c96d"
+  },
+  "guides/monitor-stuck-at-60hz.html": {
+   "datePublished": "2026-10-18",
+   "firstMainCommit": "02a9294efd11de31dcc34c6d73980c859bac84a1"
+  },
+  "guides/nintendo-switch-2-display-path.html": {
+   "datePublished": "2026-09-19",
+   "firstMainCommit": "d45cb155a441961d29872626a57229af6b727129"
+  },
+  "guides/ps5-hdmi-2-1-cable-path.html": {
+   "datePublished": "2026-09-18",
+   "firstMainCommit": "39d9d663f2ff8a961fd9f8d5d75e06590b6b56fc"
+  },
+  "guides/ps5-to-1440p-monitor.html": {
+   "datePublished": "2026-09-15",
+   "firstMainCommit": "fdbf021d0136372e25dbcca60ffd532b79199d4b"
+  },
+  "guides/steam-deck-external-display.html": {
+   "datePublished": "2026-09-19",
+   "firstMainCommit": "4b7091c7a33168355bf8311fafccb0a165844ebc"
+  },
+  "guides/thunderbolt-dock-one-cable-4k-120.html": {
+   "datePublished": "2026-09-18",
+   "firstMainCommit": "39d9d663f2ff8a961fd9f8d5d75e06590b6b56fc"
+  },
+  "guides/usb-c-dock-display-limits.html": {
+   "datePublished": "2026-10-18",
+   "firstMainCommit": "02a9294efd11de31dcc34c6d73980c859bac84a1"
+  },
+  "guides/usb-c-hub-vs-dock.html": {
+   "datePublished": "2026-09-18",
+   "firstMainCommit": "a637cee020c155b2645f94821ed0971ef3a2c96d"
+  },
+  "guides/usb-c-laptop-to-4k-monitor.html": {
+   "datePublished": "2026-09-15",
+   "firstMainCommit": "b2c51860997308d1992495ce0aa855e4fa6984cb"
+  },
+  "guides/usb-c-pd-charger-compatibility.html": {
+   "datePublished": "2026-09-18",
+   "firstMainCommit": "a637cee020c155b2645f94821ed0971ef3a2c96d"
+  },
+  "guides/usb-c-phone-to-monitor.html": {
+   "datePublished": "2026-09-18",
+   "firstMainCommit": "a637cee020c155b2645f94821ed0971ef3a2c96d"
+  },
+  "guides/usb-c-to-hdmi-adapter-path.html": {
+   "datePublished": "2026-09-18",
+   "firstMainCommit": "39d9d663f2ff8a961fd9f8d5d75e06590b6b56fc"
+  },
+  "guides/usb4-vs-thunderbolt-4-monitor.html": {
+   "datePublished": "2026-09-18",
+   "firstMainCommit": "39d9d663f2ff8a961fd9f8d5d75e06590b6b56fc"
+  },
+  "guides/vrr-gsync-freesync-compatibility.html": {
+   "datePublished": "2026-10-23",
+   "firstMainCommit": "275cdd8fb68251587a728d924c6287f6f4efbc18"
+  },
+  "guides/xbox-series-display-compatibility.html": {
+   "datePublished": "2026-09-19",
+   "firstMainCommit": "4b7091c7a33168355bf8311fafccb0a165844ebc"
+  }
+ }
+}

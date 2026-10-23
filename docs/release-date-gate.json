@@ -118,6 +118,12 @@
       "url": "https://elorumtech.elorum.world/guides/macbook-to-hdmi-display.html",
       "visibleUpdated": true,
       "intendedReleaseDate": "2026-10-23"
+    },
+    {
+      "file": "about.html",
+      "url": "https://elorumtech.elorum.world/about.html",
+      "visibleUpdated": true,
+      "intendedReleaseDate": "2026-10-23"
     }
   ]
 }

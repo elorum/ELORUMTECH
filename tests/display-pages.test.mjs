@@ -17,6 +17,7 @@ const DATE = (p) => (p === 'external-monitor-not-detected.html' || p === 'displa
 const read = (p) => readFileSync(new URL('../' + p, import.meta.url), 'utf8');
 const unesc = (s) => s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
 const text = (h) => unesc(h.replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').trim();
+const PUBLISHED = JSON.parse(read('docs/date-published.json')).pages;
 const jsonld = (html) => [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1]));
 
 test('pages exist with matching canonical, title, description and lang', () => {
@@ -53,7 +54,9 @@ test('JSON-LD parses; FAQPage questions/answers equal the visible FAQ', () => {
     assert.equal(crumbs.itemListElement.at(-1).item, BASE + p);
     for (const d of docs) {
       if (d['@type'] === 'TechArticle' || d['@type'] === 'WebApplication') assert.equal(d.dateModified, DATE(p), p);
-      assert.ok(!('datePublished' in d), 'no datePublished in ' + p);
+      // INDEX-SIGNALS-01: datePublished only on TechArticle, and only the git first-commit date from docs/date-published.json.
+      if (d['@type'] === 'TechArticle') assert.equal(d.datePublished, PUBLISHED['guides/' + p].datePublished, p);
+      else assert.ok(!('datePublished' in d), 'no datePublished in ' + p);
     }
     const faq = docs.find((d) => d['@type'] === 'FAQPage');
     const visible = [...h.matchAll(/<details><summary>([\s\S]*?)<\/summary>([\s\S]*?)<\/details>/g)].map((m) => ({ q: text(m[1]), a: text(m[2]) }));

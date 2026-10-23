@@ -200,7 +200,7 @@ test('idxq: frozen-field guard catches mutants (title, meta, H1, FAQ answer, FAQ
   }
 });
 
-test('idxq: every page shows Updated 2026-10-23 once, a "By ELORUMTECH" byline to methodology and Last reviewed 2026-10-23', () => {
+test('idxq: every page shows Updated 2026-10-23 once, a "By Nicki A." byline to About and Last reviewed 2026-10-23', () => {
   for (const f of PAGES) {
     const h = read(f);
     assert.deepEqual([...h.matchAll(/Updated: (\d{4}-\d{2}-\d{2})/g)].map((m) => m[1]), [DATE], f);
@@ -210,7 +210,8 @@ test('idxq: every page shows Updated 2026-10-23 once, a "By ELORUMTECH" byline t
     if (EDITED.includes(f)) {
       const by = (h.match(/<p class="byline"[^>]*>[\s\S]*?<\/p>/g) || []);
       assert.equal(by.length, 1, f);
-      assert.ok(by[0].includes('By <a href="../methodology.html">ELORUMTECH</a> (organisation, not a single author) · Last reviewed: 2026-10-23'), f);
+      // INDEX-SIGNALS-01: the org-only byline is replaced by the owner-confirmed author (docs/site-author.json).
+      assert.ok(by[0].includes('By <a href="../about.html#editor">Nicki A.</a> · Last reviewed: 2026-10-23'), f);
       assert.ok(h.indexOf(by[0]) > h.indexOf('</h1>') && h.indexOf(by[0]) < h.indexOf('</section>', h.indexOf('</h1>')), `${f}: byline in hero`);
       assert.ok(fs.existsSync(path.join(root, 'methodology.html')));
     } else {
@@ -219,16 +220,18 @@ test('idxq: every page shows Updated 2026-10-23 once, a "By ELORUMTECH" byline t
   }
 });
 
-test('idxq: JSON-LD has exactly one dateModified = 2026-10-23 and author + publisher Organization ELORUMTECH', () => {
+test('idxq: JSON-LD has exactly one dateModified = 2026-10-23, author Person Nicki A. and publisher Organization ELORUMTECH', () => {
+  // INDEX-SIGNALS-01: author is the owner-confirmed Person; datePublished (TechArticle only) comes from docs/date-published.json.
+  const pub = JSON.parse(read('docs/date-published.json')).pages;
   for (const f of PAGES) {
     const h = read(f);
     assert.equal((h.match(/"dateModified"/g) || []).length, 1, f);
     const e = lds(h).find((o) => o.dateModified);
     assert.ok(['TechArticle', 'WebApplication', 'CollectionPage'].includes(e['@type']), f);
     assert.equal(e.dateModified, DATE, f);
-    assert.deepEqual(e.author, { '@type': 'Organization', name: 'ELORUMTECH' }, `${f} author`);
+    assert.deepEqual(e.author, { '@type': 'Person', name: 'Nicki A.' }, `${f} author`);
     assert.deepEqual(e.publisher, { '@type': 'Organization', name: 'ELORUMTECH' }, `${f} publisher`);
-    assert.equal(e.datePublished, undefined, `${f}: no invented datePublished`);
+    assert.equal(e.datePublished, e['@type'] === 'TechArticle' ? pub[f].datePublished : undefined, `${f}: datePublished only from git first-commit mapping`);
   }
 });
 
