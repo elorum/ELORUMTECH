@@ -60,7 +60,8 @@ test('t3p2 sitemap lastmod 2026-10-23 exactly for changed URLs', () => {
   // SEO-TBDOCK-01 also ships the Thunderbolt dock guide on 2026-10-23 (registered in docs/release-date-gate.json).
   // SEO-NOSIGNAL-01 also ships the external-monitor / no-signal guide on 2026-10-23 (registered in docs/release-date-gate.json).
   // SEO-DPVSHDMI-01 also ships the new DisplayPort vs HDMI guide on 2026-10-23 (registered in docs/release-date-gate.json).
-  assert.deepEqual(at, [BASE + DELL, BASE + CABLE, BASE + 'guides/thunderbolt-dock-one-cable-4k-120.html', BASE + 'guides/external-monitor-not-detected.html', BASE + 'guides/displayport-vs-hdmi.html'].sort());
+  // SEO-VRR-01 also ships the new VRR / G-Sync / FreeSync guide on 2026-10-23 (registered in docs/release-date-gate.json).
+  assert.deepEqual(at, [BASE + DELL, BASE + CABLE, BASE + 'guides/thunderbolt-dock-one-cable-4k-120.html', BASE + 'guides/external-monitor-not-detected.html', BASE + 'guides/displayport-vs-hdmi.html', BASE + 'guides/vrr-gsync-freesync-compatibility.html'].sort());
   assert.match(sm, new RegExp(`<loc>${BASE}${P1440}</loc>\\s*<lastmod>2026-10-17</lastmod>`));
 });
 
