@@ -69,8 +69,10 @@
       "quotes": [
         "While Thunderbolt 5 delivers 80 Gbps of bidirectional bandwidth for data",
         "dedicating 120 Gbps for transmit traffic while providing 40 Gbps for receive",
-        "They also deliver up to 240W of power"
-      ]
+        "They also deliver up to 240W of power",
+        "Thunderbolt 5 offers the simplest, most reliable, and fastest docking solutions available for connecting all the accessories on your desk with a single, flippable, reversible cable."
+      ],
+      "fetch_note": "CLEANUP-01: docking-solutions sentence (context of \"They also deliver up to 240W of power\") taken from the same-day copy fetched at 16:50 CEST; intel.com returned 403 to curl at 22:48 CEST."
     },
     {
       "id": "U2",

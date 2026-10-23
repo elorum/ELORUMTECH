@@ -281,10 +281,10 @@
   {
    "id": "AP2",
    "url": "https://support.apple.com/en-us/102236",
-   "title": "Apple Support — Use an 8K or 4K display with your Mac (HDMI VRR)",
+   "title": "Apple Support — Use an 8K display with your Mac (HDMI VRR)",
    "publisher": "Apple",
    "kind": "manufacturer_support",
-   "checked_at": "2026-10-23T16:30:20+02:00",
+   "checked_at": "2026-10-23T22:48:37+02:00",
    "quotes": [
     "These Mac models support 8K resolution, 4K resolution with refresh rates of up to 240Hz, and VRR on a compatible external display:",
     "MacBook Pro with M2 Pro, M3 Pro, M2 Max or M3 Max introduced in 2023 or later",
@@ -295,7 +295,8 @@
     "Connect the HDMI cable directly from the HDMI port on your Mac to your display.",
     "don’t use an adapter with the HDMI cable",
     "On some TVs, these settings appear under different names such as “game mode” for VRR",
-    "Make sure that your display is using the latest firmware from the manufacturer."
+    "Make sure that your display is using the latest firmware from the manufacturer.",
+    "To get the highest resolution and refresh rate, don’t use an adapter with the HDMI cable."
    ]
   },
   {

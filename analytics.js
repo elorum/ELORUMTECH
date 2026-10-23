@@ -28,9 +28,52 @@
     document.head.appendChild(script);
   }
 
+  // CLEANUP-01 (QA-01 #36 F4 / #38 R3, WCAG 2.4.11): while the fixed consent banner is shown, reserve room
+  // under the page (body padding + html scroll-padding) and scroll a focused element out from under the banner.
+  var reserved = null;
+
+  function bannerReserve(banner) {
+    var rect = banner.getBoundingClientRect();
+    var bottomGap = Math.max(0, window.innerHeight - rect.bottom);
+    return Math.ceil(rect.height + bottomGap + 16);
+  }
+
+  function reserveSpace(banner) {
+    var root = document.documentElement;
+    var body = document.body;
+    if (!reserved) reserved = { padding: body.style.paddingBottom, scrollPadding: root.style.scrollPaddingBottom };
+    var px = bannerReserve(banner) + "px";
+    body.style.paddingBottom = px;
+    root.style.scrollPaddingBottom = px;
+  }
+
+  function releaseSpace() {
+    if (!reserved) return;
+    document.body.style.paddingBottom = reserved.padding;
+    document.documentElement.style.scrollPaddingBottom = reserved.scrollPadding;
+    reserved = null;
+  }
+
+  function onResize() {
+    var banner = document.getElementById("elorumtech-analytics-consent");
+    if (banner) reserveSpace(banner);
+  }
+
+  function onFocusIn(event) {
+    var banner = document.getElementById("elorumtech-analytics-consent");
+    var target = event.target;
+    if (!banner || !target || !target.getBoundingClientRect || banner.contains(target)) return;
+    var top = banner.getBoundingClientRect().top;
+    var rect = target.getBoundingClientRect();
+    if (rect.bottom > top - 8 && rect.top < window.innerHeight) window.scrollBy(0, Math.ceil(rect.bottom - top + 16));
+  }
+
   function removeBanner() {
     var banner = document.getElementById("elorumtech-analytics-consent");
     if (banner) banner.remove();
+    releaseSpace();
+    window.removeEventListener("resize", onResize);
+    document.removeEventListener("focusin", onFocusIn);
   }
 
   function showBanner() {
@@ -73,6 +116,9 @@
     banner.appendChild(copy);
     banner.appendChild(actions);
     document.body.appendChild(banner);
+    reserveSpace(banner);
+    window.addEventListener("resize", onResize);
+    document.addEventListener("focusin", onFocusIn);
   }
 
   function trackToolInteractions() {

@@ -1,6 +1,6 @@
 // INDEX-SIGNALS-01 REM01 (ELORUMTECH-INDEX-SIGNALS-20261023-01-REM01, QA-01 F1):
 // homepage visible "Updated:" date == WebApplication JSON-LD dateModified == sitemap.xml lastmod == release-gate
-// declaration, all 2026-10-18. Grounded in git: the last content change to index.html on main is #28 / #24
+// declaration, all 2026-10-18. Grounded in git: the last content change to index.html on main is #24
 // (2026-10-18); #33 (2026-10-23) only added the shared theme <link>. Mutants for each check.
 import test from 'node:test';
 import assert from 'node:assert/strict';

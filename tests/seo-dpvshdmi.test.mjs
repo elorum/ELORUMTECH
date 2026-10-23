@@ -37,7 +37,8 @@ const FIGURES = [
   ['13.5 Gbps per lane', 'V3', 'UHBR13.5 link rate (13.5 Gbps)'],
   ['20 Gbps per lane, 80 Gbps over 4 lanes', 'V2', 'UHBR20 link rate (20 Gbps), with four lanes, providing a maximum throughput of 80 Gbps'],
   ['maximum payload 77.37 Gbps', 'V1', 'maximum payload of 77.37 Gbps'],
-  ['Uncompressed 8K 60Hz HDR or 4K 240Hz HDR', 'V3', 'uncompressed 8K 60Hz HDR, 4K 240Hz HDR'],
+  // CLEANUP-01 (QA-01 #37 R1): V3 gives these as examples for UHBR in general, so the UHBR20 cell says so.
+  ['VESA’s examples for UHBR in general (not UHBR20 alone): uncompressed 8K 60Hz HDR or 4K 240Hz HDR', 'V3', 'The higher bandwidths enabled by UHBR support a variety of use cases such as uncompressed 8K 60Hz HDR, 4K 240Hz HDR'],
   ['4K @ 60 Hz maximum', 'DL2', '4K @ 60 Hz maximum'],
   ['up to 4K 480Hz', 'NV2', 'up to 4K 480Hz'],
   ['QHD (2560×1440) @120Hz', 'V4', 'Three QHD (2560×1440) @120Hz'],
@@ -258,4 +259,85 @@ test('dpvshdmi REM01: scope checks catch mutants (old DP 2.1 labels, unscoped ma
     assert.notEqual(m, h, `mutation ${i} must change the page`);
     assert.ok(scopeProblems(m).length > 0, `mutant ${i} survived`);
   }
+});
+
+// ---------- CLEANUP-01 (ELORUMTECH-CLEANUP-20261023-01): QA-01 #37 R1, F2, F3 ----------
+// F2: figureOk passes when *some* block holds the value, so changing one of two occurrences slipped through. Pin how
+// many smallest blocks carry each figure; a changed occurrence drops the count.
+const blocksWith = (html, v) => [...main(html).matchAll(/<(li|td|p)\b[^>]*>([\s\S]*?)<\/\1>/g)].filter((m) => txt(m[2]).includes(v)).length;
+const COUNTS = {
+  "Up to 18 Gbps": 1,
+  "4K at 50/60 Hz (2160p)": 1,
+  "Up to 48 Gbps": 1,
+  "4K120 and 8K60, resolutions up to 10K": 1,
+  "Ultra High Speed HDMI Cable, up to 48 Gbps": 1,
+  "Up to 96 Gbps": 1,
+  "4K240 and 8K60, uncompressed": 1,
+  "Ultra96 HDMI Cable, up to 96 Gbps": 1,
+  "8.1 Gbps per lane, 32.4 Gbps over 4 lanes": 1,
+  "25.92 Gbps after overhead": 2,
+  "8K at 60 Hz, 24-bit colour, with 2:1 DSC": 1,
+  "10 Gbps per lane, 40 Gbps over 4 lanes": 1,
+  "13.5 Gbps per lane": 1,
+  "20 Gbps per lane, 80 Gbps over 4 lanes": 1,
+  "maximum payload 77.37 Gbps": 1,
+  "VESA’s examples for UHBR in general (not UHBR20 alone): uncompressed 8K 60Hz HDR or 4K 240Hz HDR": 1,
+  "4K @ 60 Hz maximum": 1,
+  "up to 4K 480Hz": 1,
+  "QHD (2560×1440) @120Hz": 1,
+  "8K at 60Hz with Display Stream Compression": 1,
+  "from 1:1 to about 3:1": 1,
+  "GeForce RTX 20-series/GTX 16-series": 1,
+  "first supported in DisplayPort 1.2a": 1,
+  "32-channel audio": 1,
+  "up to three monitors": 2,
+  "two 4K (3840×2160) displays @144Hz": 1,
+  "beyond two meters for DP40 and beyond one meter for DP80": 1,
+  "Ultra High Speed 48 Gbps HDMI cable": 2,
+  "3x DisplayPort, 1x HDMI": 1,
+};
+const countsOk = (html) => FIGURES.every((f) => COUNTS[f[0]] >= 1 && blocksWith(html, f[0]) === COUNTS[f[0]]);
+// F3: the 4K 480Hz claim names both ports, so each port needs its own NV2 quote (one quote can't back the other).
+const NV2_PORTS = [
+  ['up to 4K 480Hz on both DisplayPort 2.1b with UHBR20', 'NV2', 'DisplayPort 2.1b with UHBR20: up to 4K 480Hz'],
+  ['and HDMI 2.1b', 'NV2', 'As specified in HDMI 2.1b: up to 4K 480Hz'],
+];
+const r1Ok = (html) => {
+  const row = (main(html).match(/<tr><th scope="row">DisplayPort 2\.1 UHBR20<\/th>[\s\S]*?<\/tr>/) || [''])[0];
+  return /VESA’s examples for UHBR in general \(not UHBR20 alone\)/.test(txt(row)) && !/<td>Uncompressed 8K 60Hz HDR/.test(row) && row.includes('<a class="srcs" href="#src-V3">[V3]</a>');
+};
+
+test('dpvshdmi CLEANUP-01: UHBR20 row scopes V3’s examples to UHBR in general; V3 full sentence stored (#37 R1)', () => {
+  assert.ok(r1Ok(h));
+  assert.ok(src('V3').quotes.includes('The higher bandwidths enabled by UHBR support a variety of use cases such as uncompressed 8K 60Hz HDR, 4K 240Hz HDR, two 4K 120Hz HDR or four 4K 60Hz HDR displays through a single cable.'));
+  assert.equal(src('V3').checked_at, '2026-10-23T22:48:00+02:00');
+  assert.ok(h.includes('DP40/DP80 cables</a> — VESA, checked 2026-10-23 22:48 CEST</li>'));
+});
+
+test('dpvshdmi CLEANUP-01: per-figure occurrence counts and per-port NV2 quotes (#37 F2, F3)', () => {
+  assert.ok(countsOk(h));
+  for (const f of NV2_PORTS) assert.ok(figureOk(h, f), f[0]);
+});
+
+test('dpvshdmi CLEANUP-01: mutants (old UHBR20 wording, one-occurrence change, NV2 DP quote drift)', () => {
+  const old = h.replace('<td>VESA’s examples for UHBR in general (not UHBR20 alone): uncompressed 8K 60Hz HDR or 4K 240Hz HDR', '<td>Uncompressed 8K 60Hz HDR or 4K 240Hz HDR');
+  assert.notEqual(old, h); assert.equal(r1Ok(old), false);
+  // the old figure (any occurrence) would still pass on this mutant; the count pin catches it
+  const once = h.replace('25.92 Gbps after overhead', '26.92 Gbps after overhead');
+  assert.notEqual(once, h); assert.equal(countsOk(once), false);
+  const u48 = h.replace('Ultra High Speed 48 Gbps HDMI cable', 'Ultra High Speed 18 Gbps HDMI cable');
+  assert.notEqual(u48, h); assert.equal(countsOk(u48), false);
+  const dup = h.replace('</ul></div>', '<li>Up to 48 Gbps <a class="srcs" href="#src-HF2">[HF2]</a></li></ul></div>');
+  assert.notEqual(dup, h); assert.equal(countsOk(dup), false);
+  const nv2 = src('NV2');
+  const saved = nv2.quotes;
+  try {
+    nv2.quotes = saved.map((q) => q.replace('DisplayPort 2.1b with UHBR20: up to 4K 480Hz', 'DisplayPort 2.1b with UHBR20: up to 4K 360Hz'));
+    assert.equal(figureOk(h, ['up to 4K 480Hz', 'NV2', 'up to 4K 480Hz']), true, 'old check is blind to DP-quote drift');
+    assert.equal(figureOk(h, NV2_PORTS[0]), false);
+    nv2.quotes = saved.filter((q) => !q.startsWith('As specified in HDMI 2.1b'));
+    assert.equal(figureOk(h, NV2_PORTS[1]), false);
+  } finally { nv2.quotes = saved; }
+  const v3 = src('V3'); const sv = v3.quotes;
+  try { v3.quotes = sv.filter((q) => !q.startsWith('The higher bandwidths')); assert.equal(figureOk(h, FIGURES.find((f) => f[1] === 'V3' && f[0].startsWith('VESA’s examples'))), false); } finally { v3.quotes = sv; }
 });

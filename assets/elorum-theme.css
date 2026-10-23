@@ -116,3 +116,7 @@ footer :focus-visible{outline-color:var(--amber)!important}
 #elorumtech-analytics-consent :focus-visible{outline-color:var(--amber)!important}
 /* REM02: keep focus rings inside clipping boxes (breadcrumb band clip-path, scrolling tables) */
 nav[aria-label="Breadcrumb"] :focus-visible,.tbl :focus-visible,.tablewrap a:focus-visible{outline-offset:-2px!important}
+/* CLEANUP-01 (QA-01 #33 NB-4, #37 F1 pattern): scroll a focused link in a scrolling table fully into view */
+.tablewrap{scroll-padding-inline:40px}
+/* CLEANUP-01 (QA-01 #33 NB-1): vertical room for the inset ring on small inline links (inline padding: no text moves; none sideways, so links at a scroll edge are not pushed out) */
+nav[aria-label="Breadcrumb"] a:focus-visible,.tbl a:focus-visible,.tablewrap a:focus-visible{padding:3px 0}

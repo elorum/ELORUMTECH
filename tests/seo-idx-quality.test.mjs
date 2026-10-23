@@ -112,7 +112,8 @@ const SOURCED = {
       ['PC charging required on at least one port, for thin and light notebooks that need less than 100W', 'IN1', 'For thin and light notebooks that require less than 100W to charge'],
       ['80 Gbps both ways', 'IN2', 'delivers 80 Gbps of bidirectional bandwidth'],
       ['120 Gbps transmit with 40 Gbps receive', 'IN2', 'dedicating 120 Gbps for transmit traffic while providing 40 Gbps for receive'],
-      ['Up to 240W {IN2}', 'IN2', 'deliver up to 240W of power'],
+      // CLEANUP-01 (QA-01 #39 F5): Intel states 240W for Thunderbolt 5 docking solutions, so the cell says so.
+      ['Up to 240W from Thunderbolt 5 docking solutions, per Intel’s brief {IN2}', 'IN2', 'deliver up to 240W of power'],
       ['28V, 36V and 48V give 140W, 180W and 240W', 'U2', 'New 28V, 36V, and 48V fixed voltages enable up to 140W, 180W and 240W power levels'],
       ['Up to 240W; 28V', 'U2', 'Increased power levels from existing USB standards up to 240W.'],
     ],
@@ -158,7 +159,8 @@ const SOURCED = {
       ['the cable class for systems up to 48Gbps', 'HL1', 'applicable for system configurations supporting up to 48Gbps maximum bandwidth'],
       ['Apple lists a built-in HDMI port on MacBook Pro models introduced in 2021 or later', 'AP1', 'MacBook Pro introduced in 2021 or later'],
       ['and in 2012 through 2015; those connect directly with an HDMI cable', 'AP1', 'MacBook Pro introduced in 2012 through 2015'],
-      ['HDMI adapter (or dock HDMI out) → HDMI cable → TV or monitor', 'AP1', 'USB-C port: Connect to HDMI with an adapter'],
+      // CLEANUP-01 (QA-01 #39 R1): [AP1] now covers only the Mac path; the Windows-laptop sentence is marked as ours.
+      ['Apple’s path is an adapter to HDMI, then an HDMI cable to the TV or monitor', 'AP1', 'USB-C port: Connect to HDMI with an adapter'],
     ],
   },
 };
