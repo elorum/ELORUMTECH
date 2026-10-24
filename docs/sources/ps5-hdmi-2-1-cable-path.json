@@ -13,6 +13,7 @@
       "vendor_claim": false,
       "checked_at": "2026-10-24T01:43:11+02:00",
       "quotes": [
+        "The PS5 console supports the HDMI 2.1 specification, and it also supports 4K 120Hz video output.",
         "If your TV supports 1440p output, you can test for SDR/HDR 60 Hz/120 Hz and VRR video output. To use 1440p output, set your Resolution to 1440p .",
         "Turn on to enable 120 Hz video output for your TV and games that support 120 Hz frame rate. If you experience video output problems with these games on a monitor or other display device, turn off this setting.",
         "Even if you set ALLM to Off , it automatically switches to low-latency mode when you're using VRR output.",
@@ -25,18 +26,6 @@
         "Is the PS5 console directly connected to the TV by HDMI, or to a receiver or other piece of intermediary equipment that could be affecting the signal?",
         "Is the PS5 console connected to an appropriate HDMI port (2.1) on the TV?",
         "Is the PS5 Screen and Video > Video Output > Video Transfer Rate set to Auto ?"
-      ]
-    },
-    {
-      "id": "SNY1",
-      "url": "https://www.playstation.com/en-ph/local/news/playstation5-launch-day/",
-      "title": "PlayStation — PS5 launch-day specifications",
-      "publisher": "Sony Interactive Entertainment",
-      "kind": "manufacturer_spec",
-      "vendor_claim": false,
-      "checked_at": "2026-10-24T01:43:10+02:00",
-      "quotes": [
-        "Support of 4K 120Hz TVs, 8K TVs, VRR (specified by HDMI ver.2.1)"
       ]
     },
     {

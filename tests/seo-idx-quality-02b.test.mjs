@@ -28,7 +28,7 @@ const HUB = 'console-handheld-display-hub.html';
 // Switch 2: no dock HDMI version (MI-SOLV-044) and no TV-mode VRR (043). PS5/Xbox: no FRL link speeds (045/046).
 const NO_FRL = [/FRL/i, /\b(?:24|32|40) ?Gbps\b/];
 const PAGES = {
-  'guides/ps5-hdmi-2-1-cable-path.html': { h2: 'ps5-4k120-checks', label: 'PS5 4K 120 Hz checks', ids: ['SNY3', 'SNY1', 'HDM1'], hub: HUB, sib: 'console-hdmi-avr-passthrough-path.html', rows: 7, block: NO_FRL },
+  'guides/ps5-hdmi-2-1-cable-path.html': { h2: 'ps5-4k120-checks', label: 'PS5 4K 120 Hz checks', ids: ['SNY3', 'HDM1'], hub: HUB, sib: 'console-hdmi-avr-passthrough-path.html', rows: 7, block: NO_FRL },
   'guides/ps5-to-1440p-monitor.html': { h2: 'ps5-1440p-settings', label: 'PS5 1440p settings and monitor needs', ids: ['SNY2', 'SNY3'], hub: HUB, sib: 'ps5-hdmi-2-1-cable-path.html', rows: 5, block: NO_FRL },
   'guides/xbox-series-display-compatibility.html': { h2: 'xbox-spec-side-by-side', label: 'Xbox Series X vs Series S display specs', ids: ['XBX2', 'XBX1', 'HDM1'], hub: HUB, sib: 'ps5-hdmi-2-1-cable-path.html', rows: 7, block: NO_FRL },
   'guides/nintendo-switch-2-display-path.html': { h2: 'switch-2-tv-mode-parts', label: 'Switch 2 TV mode parts', ids: ['NIN1', 'NIN2', 'NIN4'], hub: HUB, sib: 'steam-deck-external-display.html', rows: 5, block: [/HDMI ?\d\.\d/, /VRR/i] },
@@ -127,7 +127,7 @@ function tableProblems(f, h, j) {
 // [text in a cell, the id that cell must cite, text the source's quote must contain]
 const FIGURES = {
   'guides/ps5-hdmi-2-1-cable-path.html': [
-    ['Support of 4K 120Hz TVs, 8K TVs and VRR, specified by HDMI ver.2.1', 'SNY1', 'Support of 4K 120Hz TVs, 8K TVs, VRR (specified by HDMI ver.2.1)'],
+    ['The PS5 console supports the HDMI 2.1 specification, and it also supports 4K 120Hz video output', 'SNY3', 'The PS5 console supports the HDMI 2.1 specification, and it also supports 4K 120Hz video output'],
     ['appropriate HDMI port (2.1)', 'SNY3', 'appropriate HDMI port (2.1) on the TV'],
     ['up to 48Gbps maximum bandwidth', 'HDM1', 'up to 48Gbps maximum bandwidth'],
     ['-1 or -2 limit output', 'SNY3', 'try selecting -1 or -2 to limit output'],
@@ -313,4 +313,17 @@ test('02b mutants: all 10 are killed', () => {
     assert.ok(h !== h0, `mutant did not change page: ${name}`);
     assert.ok(check(f, h, srcJson(f)).length > 0, `mutant survived: ${name}`);
   }
+});
+
+// REM01 (QA-01 B1): the base-PS5 Console row must not claim 8K (8K is PS5 Pro only per SNY3).
+const consoleRow8k = (h) => { const m = h.match(/<tr><th scope="row">Console<\/th>([\s\S]*?)<\/tr>/); return !m ? ['no Console row'] : (/8K|SNY1/.test(m[1]) ? ['base-PS5 Console row claims 8K / cites superseded SNY1'] : []); };
+test('02b REM01: base-PS5 Console row does not claim 8K', () => {
+  assert.deepEqual(consoleRow8k(read('guides/ps5-hdmi-2-1-cable-path.html')), []);
+  const h0 = read('guides/ps5-hdmi-2-1-cable-path.html');
+  const muts = [
+    (h) => h.replace('also supports 4K 120Hz video output <a', 'also supports 4K 120Hz and 8K video output <a'),
+    (h) => h.replace('video output <a class="srcs" href="#src-SNY3">[SNY3]</a></td><td>Nothing', 'video output <a class="srcs" href="#src-SNY1">[SNY1]</a></td><td>Nothing'),
+  ];
+  for (const m of muts) { const h = m(h0); assert.ok(h !== h0); assert.ok(consoleRow8k(h).length > 0); }
+  assert.ok(TBL(P1, muts[1](h0), srcJson(P1)).length > 0, 'dangling SNY1 must also fail table check');
 });
