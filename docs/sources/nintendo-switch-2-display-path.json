@@ -1,0 +1,53 @@
+{
+  "schema": "elorumtech-guide-sources/1",
+  "job": "ELORUMTECH-IDX-QUALITY-02B-20261024-01",
+  "page": "guides/nintendo-switch-2-display-path.html",
+  "note": "Sources for the IDX-QUALITY-02B data table on this page. Every quote is verbatim from the live page, re-fetched by DEV-01 on the checked_at time (CEST; whitespace normalised). Every figure in the table carries [ID] and must appear in that source's quotes (tests/seo-idx-quality-02b.test.mjs). MI-SOLV-043..052 (unverified console items) are excluded.",
+  "sources": [
+    {
+      "id": "NIN1",
+      "url": "https://www.nintendo.com/us/gaming-systems/switch-2/tech-specs/",
+      "title": "Nintendo — Nintendo Switch 2 Tech Specs",
+      "publisher": "Nintendo",
+      "kind": "manufacturer_spec",
+      "vendor_claim": false,
+      "checked_at": "2026-10-24T01:43:13+02:00",
+      "quotes": [
+        "Maximum of 3840x2160 (4K) resolution at 60 fps (TV mode)",
+        "Supports 120 fps when 1920x1080/2560x1440 resolutions are selected",
+        "Supports HDR10",
+        "2 USB Ports (USB 2.0 compatible) on the side",
+        "AC adapter port",
+        "HDMI port"
+      ]
+    },
+    {
+      "id": "NIN2",
+      "url": "https://support.nintendo.com/sg/switch2/play/use/playmode/tvmode/index.html",
+      "title": "Nintendo Support — Playing in TV Mode (Switch 2)",
+      "publisher": "Nintendo",
+      "kind": "manufacturer_support",
+      "vendor_claim": false,
+      "checked_at": "2026-10-24T01:43:14+02:00",
+      "quotes": [
+        "Do not use the Nintendo Switch AC adapter [ HAC-002(EUR)] when connecting a Nintendo Switch 2 console to a TV (this can charge the console, but there will be no video output to the TV).",
+        "A Nintendo Switch dock cannot be used because the Nintendo Switch 2 console cannot be plugged into it.",
+        "TV mode is power-intensive. Make sure to plug the AC adapter directly into an outlet without using a power strip.",
+        "If there is another device connected between the dock and the TV (such as an HDMI selector), disconnect it and connect the dock directly to the TV using the HDMI cable."
+      ]
+    },
+    {
+      "id": "NIN4",
+      "url": "https://en-americas-support.nintendo.com/app/answers/detail/a_id/68459/~/how-to-connect-a-nintendo-switch%26nbsp%3B2-console-to-a-tv",
+      "title": "Nintendo Support — How to Connect a Nintendo Switch 2 Console to a TV",
+      "publisher": "Nintendo",
+      "kind": "manufacturer_support",
+      "vendor_claim": false,
+      "checked_at": "2026-10-24T01:43:15+02:00",
+      "quotes": [
+        "A Nintendo Switch 2 AC Adapter (model no. NGN-01)",
+        "Important: The HDMI cable included with Nintendo Switch is not Ultra High Speed and cannot be used to play Nintendo Switch 2 in TV mode."
+      ]
+    }
+  ]
+}

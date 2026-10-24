@@ -1,0 +1,56 @@
+{
+  "schema": "elorumtech-guide-sources/1",
+  "job": "ELORUMTECH-IDX-QUALITY-02B-20261024-01",
+  "page": "guides/xbox-series-display-compatibility.html",
+  "note": "Sources for the IDX-QUALITY-02B data table on this page. Every quote is verbatim from the live page, re-fetched by DEV-01 on the checked_at time (CEST; whitespace normalised). Every figure in the table carries [ID] and must appear in that source's quotes (tests/seo-idx-quality-02b.test.mjs). MI-SOLV-043..052 (unverified console items) are excluded.",
+  "sources": [
+    {
+      "id": "XBX2",
+      "url": "https://www.xbox.com/en-US/consoles/xbox-series-x",
+      "title": "Xbox — Xbox Series X",
+      "publisher": "Microsoft",
+      "kind": "manufacturer_spec",
+      "vendor_claim": false,
+      "checked_at": "2026-10-24T01:43:12+02:00",
+      "quotes": [
+        "Gaming Resolution. True 4K",
+        "High Dynamic Range. Up to 8K HDR",
+        "Performance Target. Up to 120 FPS",
+        "HDMI Features. Auto Low Latency Mode. HDMI Variable Refresh Rate. AMD FreeSync.",
+        "HDMI. 1x HDMI 2.1 port",
+        "With XBOX Series X, an XBOX Series X console, controller, Ultra High Speed HDMI cable, and power cord are included.",
+        "**4K at up to 120FPS: Requires supported content and display."
+      ]
+    },
+    {
+      "id": "XBX1",
+      "url": "https://www.xbox.com/en-US/consoles/xbox-series-s",
+      "title": "Xbox — Xbox Series S",
+      "publisher": "Microsoft",
+      "kind": "manufacturer_spec",
+      "vendor_claim": false,
+      "checked_at": "2026-10-24T01:43:12+02:00",
+      "quotes": [
+        "Gaming Resolution. 1440p",
+        "Performance Target. Up to 120 FPS",
+        "HDMI Features. Auto Low Latency Mode. HDMI Variable Refresh Rate. AMD FreeSync.",
+        "HDMI. 1x HDMI 2.1 port",
+        "With XBOX Series S, an XBOX Series S console, controller, Ultra High Speed HDMI cable, and power cord are included.",
+        "**Up to 120 FPS: Requires supported content and display."
+      ]
+    },
+    {
+      "id": "HDM1",
+      "url": "https://www.hdmi.org/spec21sub/ultrahighspeedcable",
+      "title": "HDMI Licensing Administrator — Ultra High Speed HDMI Cable",
+      "publisher": "HDMI Licensing Administrator / HDMI Forum",
+      "kind": "standard_body",
+      "vendor_claim": false,
+      "checked_at": "2026-10-24T01:43:17+02:00",
+      "quotes": [
+        "The Ultra High Speed HDMI Cable was introduced in the HDMI 2.1 Specification and entered the market in 2020. It is applicable for system configurations supporting up to 48Gbps maximum bandwidth.",
+        "To identify the cable, make sure the packaging displays the required Ultra96 HDMI Cable or Ultra High Speed HDMI Cable Certification Label shown above."
+      ]
+    }
+  ]
+}

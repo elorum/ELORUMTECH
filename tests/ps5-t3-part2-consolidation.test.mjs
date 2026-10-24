@@ -17,8 +17,8 @@ const meta = (h) => (h.match(/name="description" content="([^"]*)"/) || [])[1];
 const hrefs = (h) => [...h.matchAll(/<a [^>]*href="([^"]+)"[^>]*>([^<]+)<\/a>/g)].map((m) => ({ href: m[1], text: m[2] }));
 
 const SEO = {
-  [CABLE]: { title: 'PS5 HDMI 2.1 Cable: Bandwidth, 4K120, VRR | ELORUMTECH', h1: 'PS5 HDMI 2.1 cable path', faq: 5 }, // CLEANUP-01 (QA-01 #40 F4): JSON-LD now carries all 5 visible FAQ entries
-  [DELL]: { title: 'PS5 + Dell U2725QE: 4K 120Hz Compatibility | ELORUMTECH', h1: 'PlayStation 5 → Dell U2725QE', faq: 4 },
+  [CABLE]: { title: 'PS5 HDMI 2.1 Cable: Bandwidth, 4K120, VRR | ELORUMTECH', h1: 'PS5 HDMI 2.1 cable path', faq: 5, dm: '2026-10-24' }, // IDX-QUALITY-02B: sourced table + Last reviewed 2026-10-24 // CLEANUP-01 (QA-01 #40 F4): JSON-LD now carries all 5 visible FAQ entries
+  [DELL]: { title: 'PS5 + Dell U2725QE: 4K 120Hz Compatibility | ELORUMTECH', h1: 'PlayStation 5 → Dell U2725QE', faq: 4, dm: '2026-10-23' },
 };
 
 for (const [file, s] of Object.entries(SEO)) {
@@ -31,7 +31,7 @@ for (const [file, s] of Object.entries(SEO)) {
     assert.doesNotMatch(h, /noindex/i);
     assert.equal((h.match(/"@type":"FAQPage"/g) || []).length, 1);
     assert.equal((faqBlock(h).match(/"@type":"Question"/g) || []).length, s.faq);
-    assert.match(h, /"dateModified":"2026-10-23"/);
+    assert.ok(h.includes(`"dateModified":"${s.dm}"`));
   });
 }
 
@@ -42,7 +42,7 @@ test('t3p2 cable hub: descriptive links to 1440p, Dell, console hub and Display 
     const l = links.find((x) => x.href === w && x.text.trim().split(/\s+/).length >= 3);
     assert.ok(l, `descriptive link to ${w}`);
   }
-  assert.match(read(CABLE), /Updated: 2026-10-23/);
+  assert.match(read(CABLE), /Updated: 2026-10-24/); // IDX-QUALITY-02B (was 2026-10-23)
 });
 
 test('t3p2 Dell: generic cable section collapsed into link to primary cable page + 1440p link', () => {
@@ -63,9 +63,11 @@ test('t3p2 sitemap lastmod 2026-10-23 exactly for changed URLs', () => {
   // SEO-VRR-01 also ships the new VRR / G-Sync / FreeSync guide on 2026-10-23 (registered in docs/release-date-gate.json).
   // SEO-IDX-QUALITY-01 also re-dates the solver, BIOS, guides hub and four display guides on 2026-10-23 (registered in docs/release-date-gate.json).
   // INDEX-SIGNALS-01 also re-dates about.html (editor line + elorum.world link) on 2026-10-23 (registered in docs/release-date-gate.json).
-  assert.deepEqual(at, [BASE + DELL, BASE + CABLE, BASE + 'guides/thunderbolt-dock-one-cable-4k-120.html', BASE + 'guides/external-monitor-not-detected.html', BASE + 'guides/displayport-vs-hdmi.html', BASE + 'guides/vrr-gsync-freesync-compatibility.html',
+  // IDX-QUALITY-02B moved the cable path and the 1440p page to 2026-10-24 (pinned below).
+  assert.deepEqual(at, [BASE + DELL, BASE + 'guides/thunderbolt-dock-one-cable-4k-120.html', BASE + 'guides/external-monitor-not-detected.html', BASE + 'guides/displayport-vs-hdmi.html', BASE + 'guides/vrr-gsync-freesync-compatibility.html',
     BASE + 'guides/', BASE + 'guides/display-connection-solver.html', BASE + 'guides/bios-fast-boot-troubleshooter.html', BASE + 'guides/displayport-monitor-connection-path.html', BASE + 'guides/usb-c-hub-vs-dock.html', BASE + 'guides/usb-c-to-hdmi-adapter-path.html', BASE + 'guides/macbook-to-hdmi-display.html', BASE + 'about.html'].sort());
-  assert.match(sm, new RegExp(`<loc>${BASE}${P1440}</loc>\\s*<lastmod>2026-10-17</lastmod>`));
+  assert.match(sm, new RegExp(`<loc>${BASE}${P1440}</loc>\\s*<lastmod>2026-10-24</lastmod>`));
+  assert.match(sm, new RegExp(`<loc>${BASE}${CABLE}</loc>\\s*<lastmod>2026-10-24</lastmod>`));
 });
 
 test('t3p2 Dell: visible Updated 2026-10-23 (T3P2-QA-001)', () => {

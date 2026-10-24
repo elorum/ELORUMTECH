@@ -1,0 +1,45 @@
+{
+  "schema": "elorumtech-guide-sources/1",
+  "job": "ELORUMTECH-IDX-QUALITY-02B-20261024-01",
+  "page": "guides/ps5-hdmi-2-1-cable-path.html",
+  "note": "Sources for the IDX-QUALITY-02B data table on this page. Every quote is verbatim from the live page, re-fetched by DEV-01 on the checked_at time (CEST; whitespace normalised). Every figure in the table carries [ID] and must appear in that source's quotes (tests/seo-idx-quality-02b.test.mjs). MI-SOLV-043..052 (unverified console items) are excluded.",
+  "sources": [
+    {
+      "id": "SNY3",
+      "url": "https://www.playstation.com/en-us/support/hardware/ps5-4k-resolution-guide/",
+      "title": "PlayStation Support — PS5 4K resolution and video output settings",
+      "publisher": "Sony Interactive Entertainment",
+      "kind": "manufacturer_support",
+      "vendor_claim": false,
+      "checked_at": "2026-10-24T01:43:11+02:00",
+      "quotes": [
+        "The PS5 console supports the HDMI 2.1 specification, and it also supports 4K 120Hz video output.",
+        "If your TV supports 1440p output, you can test for SDR/HDR 60 Hz/120 Hz and VRR video output. To use 1440p output, set your Resolution to 1440p .",
+        "Turn on to enable 120 Hz video output for your TV and games that support 120 Hz frame rate. If you experience video output problems with these games on a monitor or other display device, turn off this setting.",
+        "Even if you set ALLM to Off , it automatically switches to low-latency mode when you're using VRR output.",
+        "If you experience flickering on the screen, try selecting -1 or -2 to limit output.",
+        "VRR is disabled during 8K output.",
+        "PS5 Pro console 8K output requires a screen that supports 8K at 60Hz with Display Stream compression output.",
+        "Does the TV claim to support 4K 120 Hz?",
+        "Is the TV using its latest firmware?",
+        "Are you using the cable included with the PS5 console or an Ultra High-Speed Cable that is rated for 4K 120 Hz output?",
+        "Is the PS5 console directly connected to the TV by HDMI, or to a receiver or other piece of intermediary equipment that could be affecting the signal?",
+        "Is the PS5 console connected to an appropriate HDMI port (2.1) on the TV?",
+        "Is the PS5 Screen and Video > Video Output > Video Transfer Rate set to Auto ?"
+      ]
+    },
+    {
+      "id": "HDM1",
+      "url": "https://www.hdmi.org/spec21sub/ultrahighspeedcable",
+      "title": "HDMI Licensing Administrator — Ultra High Speed HDMI Cable",
+      "publisher": "HDMI Licensing Administrator / HDMI Forum",
+      "kind": "standard_body",
+      "vendor_claim": false,
+      "checked_at": "2026-10-24T01:43:17+02:00",
+      "quotes": [
+        "The Ultra High Speed HDMI Cable was introduced in the HDMI 2.1 Specification and entered the market in 2020. It is applicable for system configurations supporting up to 48Gbps maximum bandwidth.",
+        "To identify the cable, make sure the packaging displays the required Ultra96 HDMI Cable or Ultra High Speed HDMI Cable Certification Label shown above."
+      ]
+    }
+  ]
+}

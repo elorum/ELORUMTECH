@@ -35,6 +35,8 @@ const PAGES = {
   'guides/monitor-stuck-at-60hz.html': { h2: 'all-causes', label: 'Every cause, and what to test next', ids: ['LG1', 'H1', 'PL2', 'MS3', 'CDG2', 'PS1'], hub: 'displayport-vs-hdmi.html', sib: 'usb-c-laptop-to-4k-monitor.html', rows: 6, gen: ['MS3', 'H1', 'PL2'] },
 };
 const FILES = Object.keys(PAGES);
+// IDX-QUALITY-02B (6 console pages) also ships on 2026-10-24; those are not "bumped" by this job.
+const ALSO_TODAY = ['guides/ps5-hdmi-2-1-cable-path.html', 'guides/ps5-to-1440p-monitor.html', 'guides/xbox-series-display-compatibility.html', 'guides/nintendo-switch-2-display-path.html', 'guides/steam-deck-external-display.html', 'guides/console-hdmi-avr-passthrough-path.html'];
 // gen: ids whose <li> already exists in the generated @@GEN:sources-60hz block (display/standards.json, untouched by
 // this job). Their li wording is the generator's; the table cell itself still has to carry the vendor label.
 
@@ -226,8 +228,8 @@ function dateProblems(files, read2, sm, gate) {
     if (JSON.stringify(g) !== JSON.stringify([{ file: f, url: urlOf(f), visibleUpdated: true, intendedReleaseDate: DATE }])) out.push(`gate ${f}`);
   }
   // Untouched pages are not bumped to this job's date.
-  for (const p of gate.pages) if (p.intendedReleaseDate === DATE && !files.includes(p.file)) out.push(`gate bumped ${p.file}`);
-  for (const m of sm.matchAll(/<loc>([^<]+)<\/loc>\s*<lastmod>([^<]+)<\/lastmod>/g)) if (m[2] === DATE && !files.map(urlOf).includes(m[1])) out.push(`lastmod bumped ${m[1]}`);
+  for (const p of gate.pages) if (p.intendedReleaseDate === DATE && !files.includes(p.file) && !ALSO_TODAY.includes(p.file)) out.push(`gate bumped ${p.file}`);
+  for (const m of sm.matchAll(/<loc>([^<]+)<\/loc>\s*<lastmod>([^<]+)<\/lastmod>/g)) if (m[2] === DATE && !files.map(urlOf).includes(m[1]) && !ALSO_TODAY.map(urlOf).includes(m[1])) out.push(`lastmod bumped ${m[1]}`);
   return out;
 }
 const allHtml = () => {
@@ -237,7 +239,7 @@ const allHtml = () => {
 };
 function untouchedDateProblems(files) {
   const out = [];
-  for (const f of allHtml()) if (!files.includes(f) && /"dateModified":"2026-10-24"|Updated: 2026-10-24/.test(read(f))) out.push(`bumped ${f}`);
+  for (const f of allHtml()) if (!files.includes(f) && !ALSO_TODAY.includes(f) && /"dateModified":"2026-10-24"|Updated: 2026-10-24/.test(read(f))) out.push(`bumped ${f}`);
   return out;
 }
 
