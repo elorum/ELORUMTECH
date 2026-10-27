@@ -16,7 +16,7 @@
   // Mirrors clearAnalyticsCookies() in Elorum-site AnalyticsConsent.tsx: expire _ga, _ga_*, _gid and _gat
   // on this host and on .elorum.world (GA's default 'auto' cookie domain for elorumtech.elorum.world).
   function clearAnalyticsCookies() {
-    document.cookie.split(";").forEach(function (cookie) {
+    String(document.cookie || "").split(";").forEach(function (cookie) {
       var name = (cookie.split("=")[0] || "").trim();
       if (!name || (name.indexOf("_ga") !== 0 && name !== "_gid" && name !== "_gat")) return;
       document.cookie = name + "=; Max-Age=0; path=/; SameSite=Lax";
