@@ -13,6 +13,17 @@
     try { localStorage.setItem(consentKey, value); } catch (error) {}
   }
 
+  // Mirrors clearAnalyticsCookies() in Elorum-site AnalyticsConsent.tsx: expire _ga, _ga_*, _gid and _gat
+  // on this host and on .elorum.world (GA's default 'auto' cookie domain for elorumtech.elorum.world).
+  function clearAnalyticsCookies() {
+    document.cookie.split(";").forEach(function (cookie) {
+      var name = (cookie.split("=")[0] || "").trim();
+      if (!name || (name.indexOf("_ga") !== 0 && name !== "_gid" && name !== "_gat")) return;
+      document.cookie = name + "=; Max-Age=0; path=/; SameSite=Lax";
+      document.cookie = name + "=; Max-Age=0; path=/; domain=.elorum.world; SameSite=Lax";
+    });
+  }
+
   function loadAnalytics() {
     if (loaded) return;
     loaded = true;
@@ -112,6 +123,7 @@
       // Withdrawal after "Privacy choices": stop this page's already-loaded tag from sending more hits
       // (Google's documented ga-disable-<ID> flag). It does not delete existing GA cookies; next load skips GA.
       if (loaded) window["ga-disable-" + measurementId] = true;
+      clearAnalyticsCookies();
       removeBanner();
     });
 

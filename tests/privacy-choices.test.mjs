@@ -29,11 +29,14 @@ test('PC-2 privacy.html points to Privacy choices and no longer says to clear br
   const h = read('privacy.html');
   assert.ok(h.split('data-analytics-choices').length >= 3);
   assert.doesNotMatch(h, /clear this site’s stored data/);
-  assert.match(h, /Cookies Google Analytics already set are not deleted by this choice/);
+  assert.doesNotMatch(h, /are not deleted by this choice/);
+  assert.match(h, /also deletes the Google Analytics cookies/);
+  assert.match(h, /shared <strong>elorum\.world<\/strong> domain/);
 });
 
 // Minimal DOM to run analytics.js and click the link / banner buttons.
-function makeEnv(stored) {
+function makeEnv(stored, cookies = []) {
+  const jar = new Set(cookies); const writes = [];
   const store = new Map(stored ? [['elorumtech-analytics-consent', stored]] : []);
   const listeners = {}; const body = [];
   const el = (tag) => ({ tag, children: [], style: {}, attrs: {}, listeners: {}, id: '',
@@ -43,7 +46,8 @@ function makeEnv(stored) {
     remove() { const i = body.indexOf(this); if (i >= 0) body.splice(i, 1); },
     contains() { return false; }, getBoundingClientRect: () => ({ top: 0, bottom: 0, height: 0 }) });
   const find = (id) => body.find((n) => n.id === id) || null;
-  const document = { readyState: 'complete', createElement: el, getElementById: find,
+  const document = { get cookie() { return [...jar].map((n) => n + '=x').join('; '); }, set cookie(v) { writes.push(v); const n = v.split('=')[0]; if (/Max-Age=0/.test(v)) jar.delete(n); },
+    readyState: 'complete', createElement: el, getElementById: find,
     head: { appendChild() {} }, documentElement: { style: {} },
     body: { style: {}, appendChild(n) { body.push(n); } },
     addEventListener(t, f) { (listeners[t] ||= []).push(f); }, removeEventListener() {} };
@@ -53,7 +57,7 @@ function makeEnv(stored) {
   const click = (target) => { let prevented = false; for (const f of listeners.click || []) f({ target, preventDefault() { prevented = true; } }); return prevented; };
   const link = { closest: (s) => (s === '[data-analytics-choices]' ? link : null) };
   const buttons = () => find('elorumtech-analytics-consent').children[1].children;
-  return { store, window, find, click, link, buttons };
+  return { store, window, find, click, link, buttons, jar, writes };
 }
 test('PC-3 analytics.js: Privacy choices reopens the banner after a stored choice; Necessary only after Allow disables the loaded tag', () => {
   const e = makeEnv('granted');
@@ -76,4 +80,18 @@ test('PC-3-MUT a page without consent stored still shows the banner once; denied
   d.click(d.link); assert.ok(d.find('elorumtech-analytics-consent'));
   const n = makeEnv(null); assert.ok(n.find('elorumtech-analytics-consent'));
   assert.equal(n.click({ closest: () => null }), false);
+});
+
+test('PC-4 Necessary only deletes _ga, _ga_<ID>, _gid, _gat on host and .elorum.world; other cookies kept; Allow deletes nothing', () => {
+  const names = ['_ga', '_ga_NBJBV3XERH', '_ga_0FVWBVZ11S', '_gid', '_gat', 'other'];
+  const e = makeEnv('granted', names);
+  e.click(e.link); e.buttons()[1].listeners.click();
+  assert.deepEqual([...e.jar], ['other']);
+  for (const n of names.slice(0, 5)) {
+    assert.ok(e.writes.includes(n + '=; Max-Age=0; path=/; SameSite=Lax'), n + ' host');
+    assert.ok(e.writes.includes(n + '=; Max-Age=0; path=/; domain=.elorum.world; SameSite=Lax'), n + ' .elorum.world');
+  }
+  assert.equal(e.window['ga-disable-G-NBJBV3XERH'], true);
+  const a = makeEnv(null, names); a.buttons()[0].listeners.click();
+  assert.equal(a.writes.length, 0); assert.equal(a.jar.size, 6);
 });
