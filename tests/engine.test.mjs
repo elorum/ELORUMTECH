@@ -223,8 +223,8 @@ test('port capability warn appears for USB-C laptop paths in buildResult spec', 
 test('sitemap loc count updated and all files exist', () => {
   const xml = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
   const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
-  // 34 since SEO-VRR-01 added guides/vrr-gsync-freesync-compatibility.html (33 since SEO-DPVSHDMI-01).
-  assert.equal(locs.length, 34, 'expected 34 locs, got ' + locs.length);
+  // 35 since COMPANY-DETAILS added privacy.html; 34 since SEO-VRR-01 added guides/vrr-gsync-freesync-compatibility.html (33 since SEO-DPVSHDMI-01).
+  assert.equal(locs.length, 35, 'expected 35 locs, got ' + locs.length);
   for (const loc of locs) {
     const rel = loc.replace('https://elorumtech.elorum.world/', '').replace(/\/$/, '');
     const file = rel === '' ? path.join(root, 'index.html')

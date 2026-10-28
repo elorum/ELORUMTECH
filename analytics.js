@@ -13,6 +13,17 @@
     try { localStorage.setItem(consentKey, value); } catch (error) {}
   }
 
+  // Mirrors clearAnalyticsCookies() in Elorum-site AnalyticsConsent.tsx: expire _ga, _ga_*, _gid and _gat
+  // on this host and on .elorum.world (GA's default 'auto' cookie domain for elorumtech.elorum.world).
+  function clearAnalyticsCookies() {
+    String(document.cookie || "").split(";").forEach(function (cookie) {
+      var name = (cookie.split("=")[0] || "").trim();
+      if (!name || (name.indexOf("_ga") !== 0 && name !== "_gid" && name !== "_gat")) return;
+      document.cookie = name + "=; Max-Age=0; path=/; SameSite=Lax";
+      document.cookie = name + "=; Max-Age=0; path=/; domain=.elorum.world; SameSite=Lax";
+    });
+  }
+
   function loadAnalytics() {
     if (loaded) return;
     loaded = true;
@@ -98,6 +109,7 @@
     accept.style.cssText = "border:0;border-radius:10px;padding:11px 15px;background:#79f2c0;color:#06100c;font-weight:800;cursor:pointer";
     accept.addEventListener("click", function () {
       setConsent("granted");
+      window["ga-disable-" + measurementId] = false;
       loadAnalytics();
       removeBanner();
     });
@@ -108,6 +120,10 @@
     reject.style.cssText = "border:1px solid #445064;border-radius:10px;padding:11px 15px;background:transparent;color:#f6f8fb;font-weight:700;cursor:pointer";
     reject.addEventListener("click", function () {
       setConsent("denied");
+      // Withdrawal after "Privacy choices": stop this page's already-loaded tag from sending more hits
+      // (Google's documented ga-disable-<ID> flag). It does not delete existing GA cookies; next load skips GA.
+      if (loaded) window["ga-disable-" + measurementId] = true;
+      clearAnalyticsCookies();
       removeBanner();
     });
 
@@ -135,7 +151,18 @@
     });
   }
 
+  // "Privacy choices" footer link: reopen the same banner so the stored choice can be changed.
+  function bindPrivacyChoices() {
+    document.addEventListener("click", function (event) {
+      var link = event.target.closest && event.target.closest("[data-analytics-choices]");
+      if (!link) return;
+      event.preventDefault();
+      showBanner();
+    });
+  }
+
   function start() {
+    bindPrivacyChoices();
     trackToolInteractions();
     var consent = getConsent();
     if (consent === "granted") loadAnalytics();

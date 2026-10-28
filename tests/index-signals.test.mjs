@@ -67,10 +67,11 @@ const HEAD = {
  "guides/vrr-gsync-freesync-compatibility.html": "5df198e0e8ba8658",
  "guides/xbox-series-display-compatibility.html": "e9fa94e291c96121",
  "index.html": "51ba56438b551f0a",
- "methodology.html": "7b22b0a01d01b32f"
+ "methodology.html": "7b22b0a01d01b32f",
+ "privacy.html": "f060a2f0b765f11e"
 };
 const headHash = (h) => { const e = extract(h); return crypto.createHash('sha256').update(JSON.stringify([e.title, e.metaDescription, e.h1, e.canonical])).digest('hex').slice(0, 16); };
-test('IS-0 title, meta description, H1 and canonical unchanged on all 35 pages (main 9a609f95)', () => {
+test('IS-0 title, meta description, H1 and canonical unchanged on all 35 pages (main 9a609f95) + new privacy.html pinned', () => {
   assert.deepEqual(ALL, Object.keys(HEAD).sort());
   for (const f of ALL) assert.equal(headHash(read(f)), HEAD[f], f);
 });
